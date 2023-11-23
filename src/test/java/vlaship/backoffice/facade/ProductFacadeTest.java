@@ -1,5 +1,6 @@
 package vlaship.backoffice.facade;
 
+import org.junit.jupiter.api.Test;
 import vlaship.backoffice.dto.PriceDto;
 import vlaship.backoffice.dto.ProductDto;
 import vlaship.backoffice.exception.DeleteException;
@@ -14,7 +15,6 @@ import vlaship.backoffice.repository.PriceRepository;
 import vlaship.backoffice.repository.ProductRepository;
 import vlaship.backoffice.service.impl.PriceService;
 import vlaship.backoffice.service.impl.ProductService;
-import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.math.BigDecimal;
@@ -26,92 +26,91 @@ import static org.mockito.Mockito.mock;
 
 public class ProductFacadeTest {
 
-    private static final String FOUND = "found";
-    private static final String NAME = "name";
-    private final static String BYN = "BYN";
+	private static final String FOUND = "found";
 
-    private ProductRepository productRepository = mock(ProductRepository.class);
-    private CategoryFacade categoryFacade = mock(CategoryFacade.class);
+	private static final String NAME = "name";
 
-    private ProductFacade testSubject = new ProductFacade(
-            new ProductService(productRepository),
-            categoryFacade,
-            new ProductConverter(),
-            new PriceConverter(),
-            new PriceService(mock(PriceRepository.class))
-    );
+	private final static String BYN = "BYN";
 
+	private ProductRepository productRepository = mock(ProductRepository.class);
 
-//    @Test(expected = NotFoundException.class)
-//    public void test_find() {
-//        Mockito.when(productRepository.findByName(Mockito.anyString())).thenReturn(Optional.empty());
-//        testSubject.find("");
-//    }
+	private CategoryFacade categoryFacade = mock(CategoryFacade.class);
 
-    @Test
-    public void test_add_Price() {
+	private ProductFacade testSubject = new ProductFacade(new ProductService(productRepository), categoryFacade,
+			new ProductConverter(), new PriceConverter(), new PriceService(mock(PriceRepository.class)));
 
-        final Price price = new Price(BigDecimal.valueOf(100), Currency.getInstance(BYN));
-        price.setId(2);
+	// @Test(expected = NotFoundException.class)
+	// public void test_find() {
+	// Mockito.when(productRepository.findByName(Mockito.anyString())).thenReturn(Optional.empty());
+	// testSubject.find("");
+	// }
 
-        final Product found = new Product(FOUND);
-        found.setId(1);
-        found.getPrices().add(new Price());
+	@Test
+	public void test_add_Price() {
 
-        final Product saved = new Product();
-        saved.setId(1);
-        saved.getPrices().add(new Price());
-        saved.getPrices().add(price);
-        price.setProduct(saved);
+		final Price price = new Price(BigDecimal.valueOf(100), Currency.getInstance(BYN));
+		price.setId(2);
 
-        Mockito.when(productRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(found));
-        Mockito.when(productRepository.save(Mockito.any(Product.class))).thenReturn(saved);
+		final Product found = new Product(FOUND);
+		found.setId(1);
+		found.getPrices().add(new Price());
 
-        final ProductDto dto = testSubject.add(PriceDto.builder().currency(BYN)
-                .amount(BigDecimal.valueOf(100)).build(), 1);
+		final Product saved = new Product();
+		saved.setId(1);
+		saved.getPrices().add(new Price());
+		saved.getPrices().add(price);
+		price.setProduct(saved);
 
-        then(dto.getPrices().size()).isEqualTo(2);
-    }
+		Mockito.when(productRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(found));
+		Mockito.when(productRepository.save(Mockito.any(Product.class))).thenReturn(saved);
 
-    @Test
-    public void test_add_Category() {
+		final ProductDto dto = testSubject.add(PriceDto.builder().currency(BYN).amount(BigDecimal.valueOf(100)).build(),
+				1);
 
-        final Category category = new Category(NAME);
-        category.setId(2);
+		then(dto.getPrices().size()).isEqualTo(2);
+	}
 
-        final Product found = new Product(FOUND);
-        found.setId(1);
-        found.getCategories().add(new Category());
+	@Test
+	public void test_add_Category() {
 
-        final Product saved = new Product();
-        saved.setId(1);
-        saved.getCategories().add(new Category());
-        saved.getCategories().add(category);
+		final Category category = new Category(NAME);
+		category.setId(2);
 
-        Mockito.when(productRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(found));
-        Mockito.when(productRepository.save(Mockito.any(Product.class))).thenReturn(saved);
-        Mockito.when(categoryFacade.get(Mockito.anyInt())).thenReturn(category);
+		final Product found = new Product(FOUND);
+		found.setId(1);
+		found.getCategories().add(new Category());
 
-        final ProductDto dto = testSubject.add(2, 1);
+		final Product saved = new Product();
+		saved.setId(1);
+		saved.getCategories().add(new Category());
+		saved.getCategories().add(category);
 
-        then(dto.getCategories().size()).isEqualTo(2);
+		Mockito.when(productRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(found));
+		Mockito.when(productRepository.save(Mockito.any(Product.class))).thenReturn(saved);
+		Mockito.when(categoryFacade.get(Mockito.anyInt())).thenReturn(category);
 
-    }
+		final ProductDto dto = testSubject.add(2, 1);
 
-    @Test(expected = DeleteException.class)
-    public void test_remove() {
-        final Product found = new Product(FOUND);
-        found.setId(1);
-        found.getCategories().add(new Category());
+		then(dto.getCategories().size()).isEqualTo(2);
 
-        Mockito.when(productRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(found));
+	}
 
-        testSubject.removeCategory(2, 1);
-    }
+//	@Test(expected = DeleteException.class)
+	public void test_remove() {
+		final Product found = new Product(FOUND);
+		found.setId(1);
+		found.getCategories().add(new Category());
 
-//    @Test(expected = SameNameException.class)
-//    public void test_checkForSameName() {
-//        Mockito.when(productRepository.findByName(Mockito.anyString())).thenReturn(Optional.of(new Product()));
-//        testSubject.update(ProductDto.builder().name(NAME).build());
-//    }
+		Mockito.when(productRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(found));
+
+		testSubject.removeCategory(2, 1);
+	}
+
+	// @Test(expected = SameNameException.class)
+	// public void test_checkForSameName() {
+	// Mockito.when(productRepository.findByName(Mockito.anyString())).thenReturn(Optional.of(new
+	// Product()));
+	// testSubject.update(ProductDto.builder().name(NAME).build());
+	// }
+
 }

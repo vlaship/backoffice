@@ -1,0 +1,33 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20231122_01_01
+      author: vlaship
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: password
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 20231122_01_02
+      author: vlaship
+      changes:
+        - addUniqueConstraint:
+            tableName: users
+            columnNames: name
+            constraintName: uc_users_name

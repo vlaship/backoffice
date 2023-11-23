@@ -1,14 +1,13 @@
 package vlaship.backoffice.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Test;
 import vlaship.backoffice.dto.CategoryDto;
 import vlaship.backoffice.dto.PriceDto;
 import vlaship.backoffice.dto.ProductCreationDto;
 import vlaship.backoffice.dto.ProductDto;
 import vlaship.backoffice.exception.DeleteException;
 import vlaship.backoffice.facade.impl.ProductFacade;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -16,7 +15,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
@@ -31,298 +29,238 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @WithMockUser(username = "user", password = "123")
 @SuppressWarnings("all")
 public class ProductControllerTest {
 
-    private static final String BYN = "byn";
-    private static final String PRODUCT = "product";
-    private static final String CATEGORY = "category";
+	private static final String BYN = "byn";
 
-    @Autowired
-    private MockMvc mockMvc;
-    @Autowired
-    private ObjectMapper mapper;
+	private static final String PRODUCT = "product";
 
-    private final static String URL_API = "/product/";
+	private static final String CATEGORY = "category";
 
-    @MockBean
-    private ProductFacade productFacade;
+	@Autowired
+	private MockMvc mockMvc;
 
-    @Test
-    public void test_create() throws Exception {
+	@Autowired
+	private ObjectMapper mapper;
 
-        final int id = 1;
+	private final static String URL_API = "/product/";
 
-        final ProductDto productDto = ProductDto.builder()
-                .id(id)
-                .name(PRODUCT)
-                .prices(new ArrayList<>(Collections.singletonList(id)))
-                .categories(new ArrayList<>(Collections.singletonList(id)))
-                .build();
+	@MockBean
+	private ProductFacade productFacade;
 
-        Mockito.when(productFacade.create(Mockito.any(ProductCreationDto.class)))
-                .thenReturn(productDto);
+	@Test
+	public void test_create() throws Exception {
 
-        mockMvc.perform(post(URL_API + "/create")
-                .contentType(APPLICATION_JSON)
-                .content(mapper.writeValueAsString(ProductCreationDto.builder()
-                        .name(PRODUCT)
-                        .amount(BigDecimal.valueOf(1))
-                        .categoryId(1)
-                        .currency(BYN)
-                        .build()
-                )))
-                .andExpect(status().isCreated())
-                .andExpect(content().contentTypeCompatibleWith(APPLICATION_JSON))
-                .andExpect(jsonPath("$.id", is(productDto.getId())))
-                .andExpect(jsonPath("$.name", is(productDto.getName())))
-                .andExpect(jsonPath("$.prices", hasSize(productDto.getPrices().size())))
-                .andExpect(jsonPath("$.categories", hasSize(productDto.getCategories().size())));
-    }
+		final int id = 1;
 
-    @Test
-    public void test_validation_ProductDto_name() throws Exception {
+		final ProductDto productDto = ProductDto.builder().id(id).name(PRODUCT)
+				.prices(new ArrayList<>(Collections.singletonList(id)))
+				.categories(new ArrayList<>(Collections.singletonList(id))).build();
 
-        final String message = mockMvc.perform(put(URL_API + "update")
-                .contentType(APPLICATION_JSON)
-                .content(mapper.writeValueAsString(CategoryDto.builder().name("").build())))
-                .andExpect(status().isBadRequest())
-                .andReturn().getResolvedException().getMessage();
+		Mockito.when(productFacade.create(Mockito.any(ProductCreationDto.class))).thenReturn(productDto);
 
-        then(message.contains("Product's name must be not empty")).isTrue();
-    }
+		mockMvc.perform(post(URL_API + "/create").contentType(APPLICATION_JSON)
+				.content(mapper.writeValueAsString(ProductCreationDto.builder().name(PRODUCT)
+						.amount(BigDecimal.valueOf(1)).categoryId(1).currency(BYN).build())))
+				.andExpect(status().isCreated()).andExpect(content().contentTypeCompatibleWith(APPLICATION_JSON))
+				.andExpect(jsonPath("$.id", is(productDto.getId())))
+				.andExpect(jsonPath("$.name", is(productDto.getName())))
+				.andExpect(jsonPath("$.prices", hasSize(productDto.getPrices().size())))
+				.andExpect(jsonPath("$.categories", hasSize(productDto.getCategories().size())));
+	}
 
-    @Test
-    public void test_validation_ProductCreationDto_name() throws Exception {
+	@Test
+	public void test_validation_ProductDto_name() throws Exception {
 
-        final ProductCreationDto dto = ProductCreationDto.builder()
-                .name("")
-                .amount(BigDecimal.valueOf(1))
-                .categoryId(1)
-                .currency(BYN)
-                .build();
+		final String message = mockMvc
+				.perform(put(URL_API + "update").contentType(APPLICATION_JSON)
+						.content(mapper.writeValueAsString(CategoryDto.builder().name("").build())))
+				.andExpect(status().isBadRequest()).andReturn().getResolvedException().getMessage();
 
-        final String message = mockMvc.perform(post(URL_API + "create")
-                .contentType(APPLICATION_JSON)
-                .content(mapper.writeValueAsString(dto)))
-                .andExpect(status().isBadRequest())
-                .andReturn().getResolvedException().getMessage();
+		then(message.contains("Product's name must be not empty")).isTrue();
+	}
 
-        then(message.contains("Product's name must be not empty")).isTrue();
-    }
+	@Test
+	public void test_validation_ProductCreationDto_name() throws Exception {
 
-    @Test
-    public void test_validation_ProductCreationDto_amount() throws Exception {
+		final ProductCreationDto dto = ProductCreationDto.builder().name("").amount(BigDecimal.valueOf(1)).categoryId(1)
+				.currency(BYN).build();
 
-        final ProductCreationDto dto = ProductCreationDto.builder()
-                .name(PRODUCT)
-                .amount(BigDecimal.valueOf(-1))
-                .categoryId(1)
-                .currency(BYN)
-                .build();
+		final String message = mockMvc
+				.perform(post(URL_API + "create").contentType(APPLICATION_JSON).content(mapper.writeValueAsString(dto)))
+				.andExpect(status().isBadRequest()).andReturn().getResolvedException().getMessage();
 
-        final String message = mockMvc.perform(post(URL_API + "create")
-                .contentType(APPLICATION_JSON)
-                .content(mapper.writeValueAsString(dto)))
-                .andExpect(status().isBadRequest())
-                .andReturn().getResolvedException().getMessage();
+		then(message.contains("Product's name must be not empty")).isTrue();
+	}
 
-        then(message.contains("Amount must be positive")).isTrue();
-    }
+	@Test
+	public void test_validation_ProductCreationDto_amount() throws Exception {
 
-    @Test
-    public void test_validation_ProductCreationDto_currency() throws Exception {
+		final ProductCreationDto dto = ProductCreationDto.builder().name(PRODUCT).amount(BigDecimal.valueOf(-1))
+				.categoryId(1).currency(BYN).build();
 
-        final ProductCreationDto dto = ProductCreationDto.builder()
-                .name(PRODUCT)
-                .amount(BigDecimal.valueOf(1))
-                .categoryId(1)
-                .currency("dollars")
-                .build();
+		final String message = mockMvc
+				.perform(post(URL_API + "create").contentType(APPLICATION_JSON).content(mapper.writeValueAsString(dto)))
+				.andExpect(status().isBadRequest()).andReturn().getResolvedException().getMessage();
 
-        final String message = mockMvc.perform(post(URL_API + "create")
-                .contentType(APPLICATION_JSON)
-                .content(mapper.writeValueAsString(dto)))
-                .andExpect(status().isBadRequest())
-                .andReturn().getResolvedException().getMessage();
+		then(message.contains("Amount must be positive")).isTrue();
+	}
 
-        then(message.contains("Currency must be 3 characters")).isTrue();
-    }
+	@Test
+	public void test_validation_ProductCreationDto_currency() throws Exception {
 
-    @Test
-    public void test_validation_ProductCreationDto_categoryId() throws Exception {
+		final ProductCreationDto dto = ProductCreationDto.builder().name(PRODUCT).amount(BigDecimal.valueOf(1))
+				.categoryId(1).currency("dollars").build();
 
-        final ProductCreationDto dto = ProductCreationDto.builder()
-                .name(PRODUCT)
-                .amount(BigDecimal.valueOf(1))
-                .categoryId(-1)
-                .currency(BYN)
-                .build();
+		final String message = mockMvc
+				.perform(post(URL_API + "create").contentType(APPLICATION_JSON).content(mapper.writeValueAsString(dto)))
+				.andExpect(status().isBadRequest()).andReturn().getResolvedException().getMessage();
 
-        final String message = mockMvc.perform(post(URL_API + "create")
-                .contentType(APPLICATION_JSON)
-                .content(mapper.writeValueAsString(dto)))
-                .andExpect(status().isBadRequest())
-                .andReturn().getResolvedException().getMessage();
+		then(message.contains("Currency must be 3 characters")).isTrue();
+	}
 
-        then(message.contains("Category's ID must be positive")).isTrue();
-    }
+	@Test
+	public void test_validation_ProductCreationDto_categoryId() throws Exception {
 
-//    @Test
-//    public void test_findByName() throws Exception {
-//
-//        final int id = 1;
-//
-//        final ProductDto productDto = ProductDto.builder()
-//                .id(id)
-//                .name(PRODUCT)
-//                .prices(new ArrayList<>(Collections.singletonList(id)))
-//                .categories(new ArrayList<>(Collections.singletonList(id)))
-//                .build();
-//
-//        Mockito.when(productFacade.find(Mockito.anyString()))
-//                .thenReturn(productDto);
-//
-//        mockMvc.perform(get(URL_API + "name/{name}", PRODUCT))
-//                .andExpect(status().isOk())
-//                .andExpect(content().contentTypeCompatibleWith(APPLICATION_JSON))
-//                .andExpect(jsonPath("$.id", is(productDto.getId())))
-//                .andExpect(jsonPath("$.name", is(productDto.getName())))
-//                .andExpect(jsonPath("$.prices", hasSize(productDto.getPrices().size())))
-//                .andExpect(jsonPath("$.categories", hasSize(productDto.getCategories().size())));
-//    }
-//
-//    @Test
-//    public void test_findByName_400() throws Exception {
-//
-//        final String model = "Product";
-//
-//        Mockito.when(productFacade.find(Mockito.anyString()))
-//                .thenThrow(new NotFoundException(model, PRODUCT));
-//
-//        final String message = mockMvc.perform(get(URL_API + "name/{name}", PRODUCT))
-//                .andExpect(status().isNotFound())
-//                .andReturn().getResolvedException().getMessage();
-//
-//        then(message.contains("Can't find " + model + " with NAME = " + PRODUCT)).isTrue();
-//    }
+		final ProductCreationDto dto = ProductCreationDto.builder().name(PRODUCT).amount(BigDecimal.valueOf(1))
+				.categoryId(-1).currency(BYN).build();
 
-    @Test
-    public void test_findAllByCategory() throws Exception {
+		final String message = mockMvc
+				.perform(post(URL_API + "create").contentType(APPLICATION_JSON).content(mapper.writeValueAsString(dto)))
+				.andExpect(status().isBadRequest()).andReturn().getResolvedException().getMessage();
 
-        Mockito.when(productFacade.findAll(Mockito.any(Pageable.class), Mockito.anyInt()))
-                .thenReturn(new ArrayList<>());
+		then(message.contains("Category's ID must be positive")).isTrue();
+	}
 
-        mockMvc.perform(get(URL_API + "category/{id}", 1))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(APPLICATION_JSON))
-                .andExpect(jsonPath("$.*", hasSize(0)));
-    }
+	// @Test
+	// public void test_findByName() throws Exception {
+	//
+	// final int id = 1;
+	//
+	// final ProductDto productDto = ProductDto.builder()
+	// .id(id)
+	// .name(PRODUCT)
+	// .prices(new ArrayList<>(Collections.singletonList(id)))
+	// .categories(new ArrayList<>(Collections.singletonList(id)))
+	// .build();
+	//
+	// Mockito.when(productFacade.find(Mockito.anyString()))
+	// .thenReturn(productDto);
+	//
+	// mockMvc.perform(get(URL_API + "name/{name}", PRODUCT))
+	// .andExpect(status().isOk())
+	// .andExpect(content().contentTypeCompatibleWith(APPLICATION_JSON))
+	// .andExpect(jsonPath("$.id", is(productDto.getId())))
+	// .andExpect(jsonPath("$.name", is(productDto.getName())))
+	// .andExpect(jsonPath("$.prices", hasSize(productDto.getPrices().size())))
+	// .andExpect(jsonPath("$.categories", hasSize(productDto.getCategories().size())));
+	// }
+	//
+	// @Test
+	// public void test_findByName_400() throws Exception {
+	//
+	// final String model = "Product";
+	//
+	// Mockito.when(productFacade.find(Mockito.anyString()))
+	// .thenThrow(new NotFoundException(model, PRODUCT));
+	//
+	// final String message = mockMvc.perform(get(URL_API + "name/{name}", PRODUCT))
+	// .andExpect(status().isNotFound())
+	// .andReturn().getResolvedException().getMessage();
+	//
+	// then(message.contains("Can't find " + model + " with NAME = " + PRODUCT)).isTrue();
+	// }
 
-    @Test
-    public void test_findAllByPriceJson() throws Exception {
+	@Test
+	public void test_findAllByCategory() throws Exception {
 
-        Mockito.when(productFacade.findAll(Mockito.any(Pageable.class), Mockito.any(PriceDto.class)))
-                .thenReturn(new ArrayList<>());
+		Mockito.when(productFacade.findAll(Mockito.any(Pageable.class), Mockito.anyInt()))
+				.thenReturn(new ArrayList<>());
 
-        mockMvc.perform(get(URL_API + "price")
-                .contentType(APPLICATION_JSON)
-                .content(mapper.writeValueAsString(PriceDto.builder().currency(BYN).amount(BigDecimal.valueOf(100)).build())))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(APPLICATION_JSON))
-                .andExpect(jsonPath("$.*", hasSize(0)));
-    }
+		mockMvc.perform(get(URL_API + "category/{id}", 1)).andExpect(status().isOk())
+				.andExpect(content().contentTypeCompatibleWith(APPLICATION_JSON))
+				.andExpect(jsonPath("$.*", hasSize(0)));
+	}
 
-    @Test
-    public void test_add_category() throws Exception {
+	@Test
+	public void test_findAllByPriceJson() throws Exception {
 
-        final ProductDto productDto = ProductDto.builder()
-                .id(1)
-                .name(PRODUCT)
-                .prices(new ArrayList<>(Arrays.asList(1, 2)))
-                .categories(new ArrayList<>(Arrays.asList(1, 2)))
-                .build();
+		Mockito.when(productFacade.findAll(Mockito.any(Pageable.class), Mockito.any(PriceDto.class)))
+				.thenReturn(new ArrayList<>());
 
-        Mockito.when(productFacade.add(Mockito.anyInt(), Mockito.anyInt())).thenReturn(productDto);
+		mockMvc.perform(get(URL_API + "price").contentType(APPLICATION_JSON).content(
+				mapper.writeValueAsString(PriceDto.builder().currency(BYN).amount(BigDecimal.valueOf(100)).build())))
+				.andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith(APPLICATION_JSON))
+				.andExpect(jsonPath("$.*", hasSize(0)));
+	}
 
-        mockMvc.perform(put(URL_API + "{id}/add/category/2", productDto.getId())
-                .contentType(APPLICATION_JSON)
-                .content(mapper.writeValueAsString(CategoryDto.builder().name(CATEGORY).build())))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(APPLICATION_JSON))
-                .andExpect(jsonPath("$.id", is(productDto.getId())))
-                .andExpect(jsonPath("$.name", is(productDto.getName())))
-                .andExpect(jsonPath("$.prices", hasSize(productDto.getPrices().size())))
-                .andExpect(jsonPath("$.categories", hasSize(productDto.getCategories().size())));
-    }
+	@Test
+	public void test_add_category() throws Exception {
 
-    @Test
-    public void test_remove_category() throws Exception {
+		final ProductDto productDto = ProductDto.builder().id(1).name(PRODUCT)
+				.prices(new ArrayList<>(Arrays.asList(1, 2))).categories(new ArrayList<>(Arrays.asList(1, 2))).build();
 
-        final ProductDto productDto = ProductDto.builder()
-                .id(1)
-                .name(PRODUCT)
-                .prices(new ArrayList<>(Arrays.asList(1, 2)))
-                .categories(new ArrayList<>(Arrays.asList(1, 2)))
-                .build();
+		Mockito.when(productFacade.add(Mockito.anyInt(), Mockito.anyInt())).thenReturn(productDto);
 
-        Mockito.when(productFacade.removeCategory(Mockito.anyInt(), Mockito.anyInt()))
-                .thenReturn(productDto);
+		mockMvc.perform(put(URL_API + "{id}/add/category/2", productDto.getId()).contentType(APPLICATION_JSON)
+				.content(mapper.writeValueAsString(CategoryDto.builder().name(CATEGORY).build())))
+				.andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith(APPLICATION_JSON))
+				.andExpect(jsonPath("$.id", is(productDto.getId())))
+				.andExpect(jsonPath("$.name", is(productDto.getName())))
+				.andExpect(jsonPath("$.prices", hasSize(productDto.getPrices().size())))
+				.andExpect(jsonPath("$.categories", hasSize(productDto.getCategories().size())));
+	}
 
-        mockMvc.perform(put(URL_API + "{id}/remove/category/3", productDto.getId())
-                .contentType(APPLICATION_JSON)
-                .content(mapper.writeValueAsString(CategoryDto.builder().name(CATEGORY).build())))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(APPLICATION_JSON))
-                .andExpect(jsonPath("$.id", is(productDto.getId())))
-                .andExpect(jsonPath("$.name", is(productDto.getName())))
-                .andExpect(jsonPath("$.prices", hasSize(productDto.getPrices().size())))
-                .andExpect(jsonPath("$.categories", hasSize(productDto.getCategories().size())));
-    }
+	@Test
+	public void test_remove_category() throws Exception {
 
-    @Test
-    public void test_remove_category_400() throws Exception {
+		final ProductDto productDto = ProductDto.builder().id(1).name(PRODUCT)
+				.prices(new ArrayList<>(Arrays.asList(1, 2))).categories(new ArrayList<>(Arrays.asList(1, 2))).build();
 
-        Mockito.when(productFacade.removeCategory(Mockito.anyInt(), Mockito.anyInt()))
-                .thenThrow(new DeleteException("last Category in Product"));
+		Mockito.when(productFacade.removeCategory(Mockito.anyInt(), Mockito.anyInt())).thenReturn(productDto);
 
-        final String message = mockMvc.perform(put(URL_API + "{id}/remove/category/999", 1)
-                .contentType(APPLICATION_JSON)
-                .content(mapper.writeValueAsString(CategoryDto.builder().name(CATEGORY).build())))
-                .andExpect(status().isBadRequest())
-                .andReturn().getResolvedException().getMessage();
+		mockMvc.perform(put(URL_API + "{id}/remove/category/3", productDto.getId()).contentType(APPLICATION_JSON)
+				.content(mapper.writeValueAsString(CategoryDto.builder().name(CATEGORY).build())))
+				.andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith(APPLICATION_JSON))
+				.andExpect(jsonPath("$.id", is(productDto.getId())))
+				.andExpect(jsonPath("$.name", is(productDto.getName())))
+				.andExpect(jsonPath("$.prices", hasSize(productDto.getPrices().size())))
+				.andExpect(jsonPath("$.categories", hasSize(productDto.getCategories().size())));
+	}
 
-        then(message.contains("Can't delete last Category in Product")).isTrue();
-    }
+	@Test
+	public void test_remove_category_400() throws Exception {
 
-    @Test
-    public void test_add_price() throws Exception {
+		Mockito.when(productFacade.removeCategory(Mockito.anyInt(), Mockito.anyInt()))
+				.thenThrow(new DeleteException("last Category in Product"));
 
-        final ProductDto productDto = ProductDto.builder()
-                .id(1)
-                .name(PRODUCT)
-                .prices(new ArrayList<>(Arrays.asList(1, 2)))
-                .categories(new ArrayList<>(Arrays.asList(1, 2)))
-                .build();
+		final String message = mockMvc
+				.perform(put(URL_API + "{id}/remove/category/999", 1).contentType(APPLICATION_JSON)
+						.content(mapper.writeValueAsString(CategoryDto.builder().name(CATEGORY).build())))
+				.andExpect(status().isBadRequest()).andReturn().getResolvedException().getMessage();
 
-        Mockito.when(productFacade.add(Mockito.any(PriceDto.class), Mockito.anyInt()))
-                .thenReturn(productDto);
+		then(message.contains("Can't delete last Category in Product")).isTrue();
+	}
 
-        mockMvc.perform(put(URL_API + "{id}/add/price", productDto.getId())
-                .contentType(APPLICATION_JSON)
-                .content(mapper.writeValueAsString(PriceDto.builder()
-                        .currency(BYN)
-                        .amount(BigDecimal.valueOf(1))
-                        .build())))
-                .andExpect(status().isCreated())
-                .andExpect(content().contentTypeCompatibleWith(APPLICATION_JSON))
-                .andExpect(jsonPath("$.id", is(productDto.getId())))
-                .andExpect(jsonPath("$.name", is(productDto.getName())))
-                .andExpect(jsonPath("$.prices", hasSize(productDto.getPrices().size())))
-                .andExpect(jsonPath("$.categories", hasSize(productDto.getCategories().size())));
-    }
+	@Test
+	public void test_add_price() throws Exception {
+
+		final ProductDto productDto = ProductDto.builder().id(1).name(PRODUCT)
+				.prices(new ArrayList<>(Arrays.asList(1, 2))).categories(new ArrayList<>(Arrays.asList(1, 2))).build();
+
+		Mockito.when(productFacade.add(Mockito.any(PriceDto.class), Mockito.anyInt())).thenReturn(productDto);
+
+		mockMvc.perform(put(URL_API + "{id}/add/price", productDto.getId()).contentType(APPLICATION_JSON).content(
+				mapper.writeValueAsString(PriceDto.builder().currency(BYN).amount(BigDecimal.valueOf(1)).build())))
+				.andExpect(status().isCreated()).andExpect(content().contentTypeCompatibleWith(APPLICATION_JSON))
+				.andExpect(jsonPath("$.id", is(productDto.getId())))
+				.andExpect(jsonPath("$.name", is(productDto.getName())))
+				.andExpect(jsonPath("$.prices", hasSize(productDto.getPrices().size())))
+				.andExpect(jsonPath("$.categories", hasSize(productDto.getCategories().size())));
+	}
+
 }

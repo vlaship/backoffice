@@ -1,42 +1,44 @@
 package vlaship.backoffice.controller;
 
-import vlaship.backoffice.dto.IDto;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
+import vlaship.backoffice.dto.Dto;
 import vlaship.backoffice.facade.Facade;
-import vlaship.backoffice.model.IModel;
+import vlaship.backoffice.model.Model;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
-public class AbstractController<M extends IModel, D extends IDto> {
+@SecurityRequirement(name = "Bearer Authentication")
+public class AbstractController<M extends Model, D extends Dto> {
 
-    private final Facade<M, D> facade;
+	private final Facade<M, D> facade;
 
-    @PutMapping("/update")
-    public D update(@Valid final @RequestBody D dto) {
-        return facade.update(dto);
-    }
+	@PutMapping("/update")
+	public ResponseEntity<D> update(@Valid final @RequestBody D dto) {
+		return ResponseEntity.accepted().body(facade.update(dto));
+	}
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/delete/{id}")
-    public void delete(final @PathVariable("id") Integer id) {
-        facade.delete(id);
-    }
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<Void> delete(final @PathVariable("id") Integer id) {
+		facade.delete(id);
+		return ResponseEntity.accepted().build();
+	}
 
-    @GetMapping("/{id}")
-    public D find(final @PathVariable("id") Integer id) {
-        return facade.find(id);
-    }
+	@GetMapping("/{id}")
+	public ResponseEntity<D> find(final @PathVariable("id") Integer id) {
+		return ResponseEntity.ok(facade.find(id));
+	}
 
-    @GetMapping("/list")
-    public List<D> findAll(final Pageable pageable) {
-        return facade.findAll(pageable);
-    }
+	@GetMapping("/list")
+	public ResponseEntity<List<D>> findAll(final Pageable pageable) {
+		return ResponseEntity.ok(facade.findAll(pageable));
+	}
 
-    public AbstractController(final Facade<M, D> facade) {
-        this.facade = facade;
-    }
+	public AbstractController(final Facade<M, D> facade) {
+		this.facade = facade;
+	}
 
 }

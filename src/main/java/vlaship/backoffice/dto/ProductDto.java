@@ -5,19 +5,25 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+
 import java.util.List;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class ProductDto implements IDto {
-    private Integer id;
-    @NotNull
-    @NotEmpty(message = "Product's name must be not empty")
-    private String name;
-    private List<Integer> prices;
-    private List<Integer> categories;
+public class ProductDto implements Dto {
+
+	private Integer id;
+
+	@NotNull
+	@NotEmpty(message = "Product's name must be not empty")
+	private String name;
+
+	private List<Integer> prices;
+
+	private List<Integer> categories;
+
 }

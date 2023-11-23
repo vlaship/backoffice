@@ -1,0 +1,39 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20231122_05_01
+      author: vlaship
+      changes:
+        - createTable:
+            tableName: price
+            columns:
+              - column:
+                  name: id
+                  type: INTEGER
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: amount
+                  type: DECIMAL
+                  constraints:
+                    nullable: false
+              - column:
+                  name: currency
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: product_id
+                  type: INTEGER
+
+  - changeSet:
+      id: 20231122_05_02
+      author: vlaship
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: price
+            baseColumnNames: product_id
+            constraintName: FK_PRICE_ON_PRODUCT
+            referencedTableName: product
+            referencedColumnNames: id

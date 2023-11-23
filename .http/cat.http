@@ -1,0 +1,29 @@
+### sign up
+POST {{host}}/api/auth/signup
+Content-Type: application/json
+
+{
+  "username": "user",
+  "password": "pass"
+}
+
+### login
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "user",
+  "password": "pass"
+}
+
+### /category/list
+GET {{host}}/api/category/list
+Authorization: Bearer {{token}}
+
+### /product/list
+GET {{host}}/api/product/list?page=0&size=1&sort=namn,asc
+Authorization: Bearer {{token}}
+
+### /product/1
+GET {{host}}/api/product/1
+Authorization: Bearer {{token}}

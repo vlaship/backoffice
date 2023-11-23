@@ -1,46 +1,63 @@
 package vlaship.backoffice.model;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.Hibernate;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
-@ToString(exclude = {"products", "subCategories", "parent"})
-public class Category implements IModel {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class Category implements Model {
 
-    @Column(nullable = false)
-    private String name;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 
-    @ManyToMany
-    @JoinTable(
-            name = "category_product",
-            joinColumns = @JoinColumn(name = "category_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id")
-    )
-    private List<Product> products = new ArrayList<>();
+	@Column(nullable = false)
+	private String name;
 
-    @OneToMany(mappedBy = "parent")
-    private List<Category> subCategories = new ArrayList<>();
+	@ManyToMany
+	@JoinTable(name = "category_product", joinColumns = @JoinColumn(name = "category_id"),
+			inverseJoinColumns = @JoinColumn(name = "product_id"))
+	@ToString.Exclude
+	private List<Product> products = new ArrayList<>();
 
-    @ManyToOne
-    @JoinColumn(name = "parent_id")
-    private Category parent;
+	@OneToMany(mappedBy = "parent")
+	@ToString.Exclude
+	private List<Category> subCategories = new ArrayList<>();
 
-    public Category(final String name) {
-        this.name = name;
-    }
+	@ManyToOne
+	@JoinColumn(name = "parent_id")
+	private Category parent;
 
-    public Category(final String name, final Category parent) {
-        this.name = name;
-        this.parent = parent;
-    }
+	public Category(final String name) {
+		this.name = name;
+	}
+
+	public Category(final String name, final Category parent) {
+		this.name = name;
+		this.parent = parent;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o))
+			return false;
+		Category category = (Category) o;
+		return id != null && Objects.equals(id, category.id);
+	}
+
+	@Override
+	public int hashCode() {
+		return getClass().hashCode();
+	}
+
 }

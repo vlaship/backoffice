@@ -53,7 +53,7 @@ Implement a backoffice application which support:
     ● Basic auth for REST endpoints
 
 
-Application should expose REST API to perform operations above (JSON format). All endpoints should be secured. Provide tests for verifying functionality for all application layers from DAO to controllers. At least 100 products and categories should be generated.
+Application should expose REST API to perform operations above (JSON format). All endpoints should be secured. Provide tests for verifying functionality for all application layers from DAO to controllers.
 
 
 Technologies to use:
@@ -68,4 +68,4 @@ Technologies to use:
 
     ● Spring Test
 
-    ● H2 db
+    ● PostgreSQL

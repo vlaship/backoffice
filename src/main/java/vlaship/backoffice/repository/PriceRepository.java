@@ -11,12 +11,12 @@ import java.util.List;
 
 public interface PriceRepository extends JpaRepository<Price, Integer> {
 
-    List<Price> findAllByAmountBetweenAndCurrency(BigDecimal from, BigDecimal to, Currency currency, Pageable pageable);
+	List<Price> findAllByAmountBetweenAndCurrency(BigDecimal from, BigDecimal to, Currency currency, Pageable pageable);
 
-    List<Price> findAllByCurrency(Currency currency, Pageable pageable);
+	List<Price> findAllByCurrency(Currency currency, Pageable pageable);
 
-    List<Price> findAllByProduct(Product product, Pageable pageable);
+	List<Price> findAllByProduct(Product product, Pageable pageable);
 
-    Integer countAllByProduct(Product product);
+	Integer countAllByProduct(Product product);
 
 }

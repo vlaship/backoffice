@@ -1,0 +1,34 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20231122_02_01
+      author: vlaship
+      changes:
+        - createTable:
+            tableName: category
+            columns:
+              - column:
+                  name: id
+                  type: INTEGER
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: parent_id
+                  type: INTEGER
+
+  - changeSet:
+      id: 20231122_02_02
+      author: vlaship
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: category
+            baseColumnNames: parent_id
+            constraintName: FK_CATEGORY_ON_PARENT
+            referencedTableName: category
+            referencedColumnNames: id

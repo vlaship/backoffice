@@ -1,35 +1,53 @@
 package vlaship.backoffice.model;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.Hibernate;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Currency;
+import java.util.Objects;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
-@ToString(exclude = "product")
-public class Price implements IModel {
+public class Price implements Model {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 
-    @Column(nullable = false)
-    private BigDecimal amount;
+	@Column(nullable = false)
+	private BigDecimal amount;
 
-    @Column(nullable = false)
-    private Currency currency;
+	@Column(nullable = false)
+	private Currency currency;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
+	@ManyToOne
+	@JoinColumn(name = "product_id")
+	@ToString.Exclude
+	private Product product;
 
-    public Price(final BigDecimal amount, final Currency currency) {
-        this.amount = amount;
-        this.currency = currency;
-    }
+	public Price(final BigDecimal amount, final Currency currency) {
+		this.amount = amount;
+		this.currency = currency;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o))
+			return false;
+		Price price = (Price) o;
+		return id != null && Objects.equals(id, price.id);
+	}
+
+	@Override
+	public int hashCode() {
+		return getClass().hashCode();
+	}
+
 }

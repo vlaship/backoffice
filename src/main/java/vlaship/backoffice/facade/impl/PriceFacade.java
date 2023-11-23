@@ -21,48 +21,52 @@ import java.util.stream.Collectors;
 @Transactional
 public class PriceFacade extends AbstractFacade<Price, PriceDto> {
 
-    private final PriceService priceService;
-    private final PriceConverter priceConverter;
-    private final ProductService productService;
+	private final PriceService priceService;
 
-    public List<PriceDto> findAll(final Pageable pageable,
-                                  final String currency, final BigDecimal from,
-                                  final BigDecimal to) {
-        return priceService.findAll(pageable, currency, from, to).stream()
-                .map(priceConverter::convert)
-                .collect(Collectors.toList());
-    }
+	private final PriceConverter priceConverter;
 
-    public List<PriceDto> findAll(final Pageable pageable, final BetweenPrice betweenPrice) {
-        return findAll(pageable, betweenPrice.getCurrency(), betweenPrice.getFrom(), betweenPrice.getTo());
-    }
+	private final ProductService productService;
 
-    public List<PriceDto> findAll(final Pageable pageable, final Integer productId) {
-        return priceService.findAll(pageable, productService.get(productId)).stream()
-                .map(priceConverter::convert)
-                .collect(Collectors.toList());
-    }
+	public List<PriceDto> findAll(final Pageable pageable, final String currency, final BigDecimal from,
+			final BigDecimal to) {
+		return priceService.findAll(pageable, currency, from, to)
+			.stream()
+			.map(priceConverter::convert)
+			.collect(Collectors.toList());
+	}
 
-    public List<PriceDto> findAll(final Pageable pageable, final String currency) {
-        return priceService.findAll(pageable, currency).stream()
-                .map(priceConverter::convert)
-                .collect(Collectors.toList());
-    }
+	public List<PriceDto> findAll(final Pageable pageable, final BetweenPrice betweenPrice) {
+		return findAll(pageable, betweenPrice.getCurrency(), betweenPrice.getFrom(), betweenPrice.getTo());
+	}
 
-    @Override
-    protected void checkForDelete(final Price price) {
-        if (priceService.countAllByProduct(price.getProduct()) < 2) {
-            throw new DeleteException("last " + price + " in " + price.getProduct());
-        }
-    }
+	public List<PriceDto> findAll(final Pageable pageable, final Integer productId) {
+		return priceService.findAll(pageable, productService.get(productId))
+			.stream()
+			.map(priceConverter::convert)
+			.collect(Collectors.toList());
+	}
 
-    @Autowired
-    public PriceFacade(final PriceService priceService,
-                       final PriceConverter priceConverter,
-                       final ProductService productService) {
-        super(priceConverter, priceService);
-        this.priceService = priceService;
-        this.priceConverter = priceConverter;
-        this.productService = productService;
-    }
+	public List<PriceDto> findAll(final Pageable pageable, final String currency) {
+		return priceService.findAll(pageable, currency)
+			.stream()
+			.map(priceConverter::convert)
+			.collect(Collectors.toList());
+	}
+
+	@Override
+	protected void checkForDelete(final Price price) {
+		if (priceService.countAllByProduct(price.getProduct()) < 2) {
+			throw new DeleteException("last " + price + " in " + price.getProduct());
+		}
+	}
+
+	@Autowired
+	public PriceFacade(final PriceService priceService, final PriceConverter priceConverter,
+			final ProductService productService) {
+		super(priceConverter, priceService);
+		this.priceService = priceService;
+		this.priceConverter = priceConverter;
+		this.productService = productService;
+	}
+
 }
