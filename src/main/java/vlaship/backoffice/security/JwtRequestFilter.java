@@ -2,10 +2,11 @@ package vlaship.backoffice.security;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,8 +15,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
-
-import java.io.IOException;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
@@ -43,9 +42,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain chain
-    ) throws ServletException, IOException {
+    ) {
 
-        var jwtToken = getJwtFromRequest(request);
+        var jwtToken = extractToken(request);
 
         try {
             if (jwtToken != null && jwtTokenUtil.validateToken(jwtToken)) {
@@ -67,10 +66,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
     }
 
-    private String getUsername(String jwtToken) {
-        if (jwtToken == null) {
-            return null;
-        }
+    @Nullable
+    private String getUsername(@NonNull String jwtToken) {
         try {
             return jwtTokenUtil.extractUsername(jwtToken);
         } catch (IllegalArgumentException e) {
@@ -81,7 +78,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         return null;
     }
 
-    private String getJwtFromRequest(HttpServletRequest request) {
+    @Nullable
+    private String extractToken(@NonNull HttpServletRequest request) {
         var bearerToken = request.getHeader(AUTHORIZATION_HEADER);
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(TOKEN_PREFIX)) {
             return bearerToken.substring(TOKEN_PREFIX.length());

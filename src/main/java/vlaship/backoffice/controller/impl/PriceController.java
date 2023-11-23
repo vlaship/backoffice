@@ -19,42 +19,53 @@ import java.util.List;
 @RequestMapping("/api/price")
 public class PriceController extends AbstractController<Price, PriceDto> {
 
-	private final PriceFacade priceFacade;
+    private final PriceFacade priceFacade;
 
-	@GetMapping("/between/{currency}/{from}/{to}")
-	public ResponseEntity<List<PriceDto>> findAllBetween(final @PathVariable("currency") String currency,
-			final @PathVariable("from") BigDecimal from, final @PathVariable("to") BigDecimal to,
-			final Pageable pageable) {
-		return ResponseEntity.ok(priceFacade.findAll(pageable, currency, from, to));
-	}
+    @GetMapping("/between/{currency}/{from}/{to}")
+    public ResponseEntity<List<PriceDto>> findAllBetween(
+            final @PathVariable("currency") String currency,
+            final @PathVariable("from") BigDecimal from,
+            final @PathVariable("to") BigDecimal to,
+            final Pageable pageable
+    ) {
+        return ResponseEntity.ok(priceFacade.findAll(pageable, currency, from, to));
+    }
 
-	@GetMapping("/between")
-	public ResponseEntity<List<PriceDto>> findAllBetween(@Valid final @RequestBody BetweenPrice betweenPrice,
-			final Pageable pageable) {
-		return ResponseEntity.ok(priceFacade.findAll(pageable, betweenPrice));
-	}
+    @GetMapping("/between")
+    public ResponseEntity<List<PriceDto>> findAllBetween(
+            @Valid final @RequestBody BetweenPrice betweenPrice,
+            final Pageable pageable
+    ) {
+        return ResponseEntity.ok(priceFacade.findAll(pageable, betweenPrice));
+    }
 
-	@GetMapping("/currency/{currency}")
-	public ResponseEntity<List<PriceDto>> findAllByCurrency(final @PathVariable("currency") String currency,
-			final Pageable pageable) {
-		return ResponseEntity.ok(priceFacade.findAll(pageable, currency));
-	}
+    @GetMapping("/currency/{currency}")
+    public ResponseEntity<List<PriceDto>> findAllByCurrency(
+            final @PathVariable("currency") String currency,
+            final Pageable pageable
+    ) {
+        return ResponseEntity.ok(priceFacade.findAll(pageable, currency));
+    }
 
-	@GetMapping("/product/{productId}")
-	public ResponseEntity<List<PriceDto>> findAllByProduct(final @PathVariable("productId") Integer productId,
-			final Pageable pageable) {
-		return ResponseEntity.ok(priceFacade.findAll(pageable, productId));
-	}
+    @GetMapping("/product/{productId}")
+    public ResponseEntity<List<PriceDto>> findAllByProduct(
+            final @PathVariable("productId") Long productId,
+            final Pageable pageable
+    ) {
+        return ResponseEntity.ok(priceFacade.findAll(pageable, productId));
+    }
 
-	@GetMapping("/product")
-	public ResponseEntity<List<PriceDto>> findAllByProduct(@Valid final @RequestBody ProductDto productDto,
-			final Pageable pageable) {
-		return ResponseEntity.ok(priceFacade.findAll(pageable, productDto.getId()));
-	}
+    @GetMapping("/product")
+    public ResponseEntity<List<PriceDto>> findAllByProduct(
+            @Valid final @RequestBody ProductDto productDto,
+            final Pageable pageable
+    ) {
+        return ResponseEntity.ok(priceFacade.findAll(pageable, productDto.id()));
+    }
 
-	public PriceController(final PriceFacade priceFacade) {
-		super(priceFacade);
-		this.priceFacade = priceFacade;
-	}
+    public PriceController(final PriceFacade priceFacade) {
+        super(priceFacade);
+        this.priceFacade = priceFacade;
+    }
 
 }

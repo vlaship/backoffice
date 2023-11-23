@@ -17,33 +17,41 @@ import java.util.List;
 @Transactional
 public class PriceService extends AbstractService<Price> {
 
-	private final PriceRepository repository;
+    private final PriceRepository repository;
 
-	@NonNull
-	public List<Price> findAll(@NonNull final Pageable pageable, @NonNull final String currency) {
-		return repository.findAllByCurrency(Currency.getInstance(currency.toUpperCase()), pageable);
-	}
+    @NonNull
+    public List<Price> findAll(@NonNull final Pageable pageable, @NonNull final String currency) {
+        return repository.findAllByCurrency(Currency.getInstance(currency.toUpperCase()), pageable);
+    }
 
-	@NonNull
-	public List<Price> findAll(@NonNull final Pageable pageable, @NonNull final Product product) {
-		return repository.findAllByProduct(product, pageable);
-	}
+    @NonNull
+    public List<Price> findAll(@NonNull final Pageable pageable, @NonNull final Product product) {
+        return repository.findAllByProduct(product, pageable);
+    }
 
-	@NonNull
-	public List<Price> findAll(@NonNull final Pageable pageable, @NonNull final String currency,
-			@NonNull final BigDecimal from, @NonNull final BigDecimal to) {
-		return repository.findAllByAmountBetweenAndCurrency(from, to, Currency.getInstance(currency.toUpperCase()),
-				pageable);
-	}
+    @NonNull
+    public List<Price> findAll(
+            @NonNull final Pageable pageable,
+            @NonNull final String currency,
+            @NonNull final BigDecimal from,
+            @NonNull final BigDecimal to
+    ) {
+        return repository.findAllByAmountBetweenAndCurrency(
+                from,
+                to,
+                Currency.getInstance(currency.toUpperCase()),
+                pageable
+        );
+    }
 
-	public int countAllByProduct(@NonNull final Product product) {
-		return repository.countAllByProduct(product);
-	}
+    public int countAllByProduct(@NonNull final Product product) {
+        return repository.countAllByProduct(product);
+    }
 
-	public PriceService(final PriceRepository repository) {
-		super(repository);
-		this.repository = repository;
-		setTypeClass(Price.class);
-	}
+    public PriceService(final PriceRepository repository) {
+        super(repository);
+        this.repository = repository;
+        setTypeClass(Price.class);
+    }
 
 }

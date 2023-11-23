@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: 20231122_02_01
+      id: 20231122_05_01
       author: vlaship
       changes:
         - createTable:
-            tableName: category
+            tableName: prices
             columns:
               - column:
                   name: id
@@ -14,21 +14,26 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: name
+                  name: amount
+                  type: DECIMAL
+                  constraints:
+                    nullable: false
+              - column:
+                  name: currency
                   type: VARCHAR(255)
                   constraints:
                     nullable: false
               - column:
-                  name: parent_id
+                  name: product_id
                   type: INTEGER
 
   - changeSet:
-      id: 20231122_02_02
+      id: 20231122_05_02
       author: vlaship
       changes:
         - addForeignKeyConstraint:
-            baseTableName: category
-            baseColumnNames: parent_id
-            constraintName: FK_CATEGORY_ON_PARENT
-            referencedTableName: category
+            baseTableName: prices
+            baseColumnNames: product_id
+            constraintName: FK_PRICE_ON_PRODUCT
+            referencedTableName: products
             referencedColumnNames: id

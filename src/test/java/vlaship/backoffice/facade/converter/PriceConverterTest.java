@@ -2,7 +2,7 @@ package vlaship.backoffice.facade.converter;
 
 import org.junit.jupiter.api.BeforeAll;
 import vlaship.backoffice.dto.PriceDto;
-import vlaship.backoffice.facade.converter.impl.PriceConverter;
+import vlaship.backoffice.mapper.impl.PriceMapper;
 import vlaship.backoffice.model.Price;
 import vlaship.backoffice.model.Product;
 import org.junit.jupiter.api.Test;
@@ -17,7 +17,7 @@ import static org.assertj.core.api.BDDAssertions.then;
 
 public class PriceConverterTest {
 
-	private PriceConverter testSubject = new PriceConverter();
+	private PriceMapper testSubject = new PriceMapper();
 
 	private static List<Price> models;
 
@@ -27,9 +27,9 @@ public class PriceConverterTest {
 	public static void setupDtos() {
 
 		dtos = new ArrayList<>(
-				Arrays.asList(PriceDto.builder().id(1).currency("byn").amount(BigDecimal.valueOf(100)).build(),
-						PriceDto.builder().id(2).currency("eur").amount(BigDecimal.valueOf(200)).build(),
-						PriceDto.builder().id(3).currency("usd").amount(BigDecimal.valueOf(300)).build()));
+				Arrays.asList(PriceDto.builder().id(1l).currency("byn").amount(BigDecimal.valueOf(100)).build(),
+						PriceDto.builder().id(2l).currency("eur").amount(BigDecimal.valueOf(200)).build(),
+						PriceDto.builder().id(3l).currency("usd").amount(BigDecimal.valueOf(300)).build()));
 	}
 
 	@BeforeAll
@@ -47,8 +47,8 @@ public class PriceConverterTest {
 
 		final Product product1 = new Product();
 		final Product product2 = new Product();
-		product1.setId(1);
-		product2.setId(2);
+		product1.setId(1l);
+		product2.setId(2l);
 
 		price1.setProduct(product1);
 		price2.setProduct(product1);
@@ -58,20 +58,20 @@ public class PriceConverterTest {
 	@Test
 	public void test_convert_PriceToPriceDto() {
 		for (int i = 0; i < 3; i++) {
-			final PriceDto dto = testSubject.convert(models.get(i));
-			then(dto.getId()).isEqualTo(models.get(i).getId());
-			then(dto.getAmount()).isEqualTo(models.get(i).getAmount());
-			then(dto.getCurrency()).isEqualTo(models.get(i).getCurrency().getCurrencyCode());
-			then(dto.getProductId()).isEqualTo(models.get(i).getProduct().getId());
+			final PriceDto dto = testSubject.map(models.get(i));
+			then(dto.id()).isEqualTo(models.get(i).getId());
+			then(dto.amount()).isEqualTo(models.get(i).getAmount());
+			then(dto.currency()).isEqualTo(models.get(i).getCurrency().getCurrencyCode());
+			then(dto.productId()).isEqualTo(models.get(i).getProduct().getId());
 		}
 	}
 
 	@Test
 	public void test_convert_PriceDtoToPrice() {
 		for (int i = 0; i < 3; i++) {
-			final Price model = testSubject.convert(dtos.get(i));
-			then(model.getAmount()).isEqualTo(dtos.get(i).getAmount());
-			then(model.getCurrency().getCurrencyCode()).isEqualToIgnoringCase(dtos.get(i).getCurrency());
+			final Price model = testSubject.map(dtos.get(i));
+			then(model.getAmount()).isEqualTo(dtos.get(i).amount());
+			then(model.getCurrency().getCurrencyCode()).isEqualToIgnoringCase(dtos.get(i).currency());
 			then(model.getId()).isNull();
 			then(model.getProduct()).isNull();
 		}
@@ -80,10 +80,10 @@ public class PriceConverterTest {
 	@Test
 	public void test_convert_PriceDtoPriceToPrice() {
 		for (int i = 0; i < 3; i++) {
-			final Price model = testSubject.convert(dtos.get(i), models.get(i));
+			final Price model = testSubject.merge(dtos.get(i), models.get(i));
 			then(model.getId()).isEqualTo(models.get(i).getId());
-			then(model.getAmount()).isEqualTo(dtos.get(i).getAmount());
-			then(model.getCurrency().getCurrencyCode()).isEqualToIgnoringCase(dtos.get(i).getCurrency());
+			then(model.getAmount()).isEqualTo(dtos.get(i).amount());
+			then(model.getCurrency().getCurrencyCode()).isEqualToIgnoringCase(dtos.get(i).currency());
 			then(model.getProduct()).isEqualTo(models.get(i).getProduct());
 		}
 	}

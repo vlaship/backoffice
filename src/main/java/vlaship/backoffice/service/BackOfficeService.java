@@ -9,18 +9,18 @@ import java.util.List;
 
 public interface BackOfficeService<M extends Model> {
 
-	@NonNull
-	M find(@NonNull Integer id);
+    @NonNull
+    M find(@NonNull Long id);
 
-	@NonNull
-	List<M> findAll(@NonNull Pageable pageable);
+    @NonNull
+    List<M> findAll(@NonNull Pageable pageable);
 
-	void delete(@NonNull M m);
+    void delete(@NonNull M m);
 
-	@NonNull
-	M save(@NonNull M m);
+    @NonNull
+    M save(@NonNull M m);
 
-	@NonNull
-	M get(@NonNull Integer id);
+    @NonNull
+    M get(@NonNull Long id);
 
 }

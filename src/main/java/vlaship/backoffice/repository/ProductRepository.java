@@ -11,18 +11,21 @@ import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.List;
 
-public interface ProductRepository extends JpaRepository<Product, Integer> {
+public interface ProductRepository extends JpaRepository<Product, Long> {
 
-	List<Product> findAllByName(String name, Pageable pageable);
+    List<Product> findAllByName(String name, Pageable pageable);
 
-	@Query("""
+    @Query("""
                 SELECT prod FROM Price price
                 INNER JOIN Product prod ON prod.id = price.product.id
                 WHERE price.amount = :amount AND price.currency LIKE :currency
             """)
-	List<Product> findAllByPrice(@Param("amount") BigDecimal amount, @Param("currency") Currency currency,
-			Pageable pageable);
+    List<Product> findAllByPrice(
+            @Param("amount") BigDecimal amount,
+            @Param("currency") Currency currency,
+            Pageable pageable
+    );
 
-	List<Product> findAllByCategories(Category category, Pageable pageable);
+    List<Product> findAllByCategories(Category category, Pageable pageable);
 
 }

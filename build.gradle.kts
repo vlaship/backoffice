@@ -1,8 +1,8 @@
 plugins {
     java
-    id("org.springframework.boot") version "3.1.5"
-    id("io.spring.dependency-management") version "1.1.3"
-    id("io.spring.javaformat") version "0.0.40"
+    id("org.springframework.boot") version "3.2.0"
+    id("io.spring.dependency-management") version "1.1.4"
+//    id("io.spring.javaformat") version "0.0.40" add \n between fields
     id("com.gorylenko.gradle-git-properties") version "2.4.1"
     id("org.graalvm.buildtools.native") version "0.9.28"
 }
@@ -21,7 +21,7 @@ configurations {
     }
 }
 
-val jwtVersion = "0.11.5"
+val jwtVersion = "0.11.5" // latest "0.12.3", but doesn't work with graalvm
 val openApiVersion = "2.2.0"
 val mapstructVersion = "1.5.5.Final"
 val preLiquibaseVersion = "1.4.0"

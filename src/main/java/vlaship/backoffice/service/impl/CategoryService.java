@@ -14,17 +14,17 @@ import java.util.List;
 @Transactional
 public class CategoryService extends AbstractService<Category> {
 
-	private final CategoryRepository repository;
+    private final CategoryRepository repository;
 
-	@NonNull
-	public List<Category> findAll(@NonNull final Pageable pageable, @NonNull final String name) {
-		return repository.findAllByName(name, pageable);
-	}
+    @NonNull
+    public List<Category> findAll(@NonNull final Pageable pageable, @NonNull final String name) {
+        return repository.findAllByName(name, pageable);
+    }
 
-	public CategoryService(final CategoryRepository repository) {
-		super(repository);
-		this.repository = repository;
-		setTypeClass(Category.class);
-	}
+    public CategoryService(final CategoryRepository repository) {
+        super(repository);
+        this.repository = repository;
+        setTypeClass(Category.class);
+    }
 
 }

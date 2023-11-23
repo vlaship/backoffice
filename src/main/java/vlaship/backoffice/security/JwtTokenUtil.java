@@ -5,6 +5,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.lang.NonNull;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
@@ -23,11 +24,13 @@ public class JwtTokenUtil implements Serializable {
     private final JwtProperties jwtProperties;
     private static final SignatureAlgorithm ALG = SignatureAlgorithm.HS512;
 
+    @NonNull
     public String generateToken(Authentication authentication) {
         var claims = new HashMap<String, Object>();
         return doGenerateToken(claims, authentication.getName());
     }
 
+    @NonNull
     private String doGenerateToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
                 .setClaims(claims)
@@ -38,7 +41,7 @@ public class JwtTokenUtil implements Serializable {
                 .compact();
     }
 
-    public boolean validateToken(String token) {
+    public boolean validateToken(@NonNull String token) {
         try {
             Jwts.parser()
                     .setSigningKey(getSecretKey())
@@ -57,31 +60,36 @@ public class JwtTokenUtil implements Serializable {
         return false;
     }
 
-    private boolean isTokenExpired(String token) {
+    private boolean isTokenExpired(@NonNull String token) {
         var expiration = extractExpiration(token);
         return expiration.before(new Date());
     }
 
-    public String extractUsername(String token) {
+    @NonNull
+    public String extractUsername(@NonNull String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
-    public Date extractExpiration(String token) {
+    @NonNull
+    public Date extractExpiration(@NonNull String token) {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+    @NonNull
+    public <T> T extractClaim(@NonNull String token, @NonNull Function<Claims, T> claimsResolver) {
         var claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
-    private Claims extractAllClaims(String token) {
+    @NonNull
+    private Claims extractAllClaims(@NonNull String token) {
         return Jwts.parser()
                 .setSigningKey(getSecretKey())
                 .parseClaimsJws(token)
                 .getBody();
     }
 
+    @NonNull
     private SecretKey getSecretKey() {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtProperties.getSecret()));
     }

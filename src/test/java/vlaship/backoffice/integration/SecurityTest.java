@@ -20,13 +20,13 @@ class SecurityTest {
     private MockMvc mockMvc;
 
     @Test
-    public void test_without_auth() throws Exception {
+    void test_without_auth() throws Exception {
         mockMvc.perform(get("/")).andExpect(status().isUnauthorized());
     }
 
     @Test
     @WithMockUser(username = "user", password = "123")
-    public void test_with_auth() throws Exception {
+    void test_with_auth() throws Exception {
         mockMvc.perform(get("/")).andExpect(status().isOk()).andExpect(content().string(containsString("root")));
     }
 

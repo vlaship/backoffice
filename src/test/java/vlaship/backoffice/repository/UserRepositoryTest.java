@@ -9,24 +9,24 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import static org.assertj.core.api.BDDAssertions.then;
 
 @DataJpaTest
-public class UserRepositoryTest {
+class UserRepositoryTest {
 
-	private static final String username = "test";
+    private static final String username = "test";
 
-	@Autowired
-	private UserRepository repository;
+    @Autowired
+    private UserRepository repository;
 
-	@BeforeEach
-	public void setup() {
-		repository.save(new User(username, ""));
-	}
+    @BeforeEach
+    public void setup() {
+        repository.save(new User(username, ""));
+    }
 
-	@Test
-	public void test_findByName() {
-		final User user = repository.findByName(username).orElseThrow();
-		then(user.getName()).isEqualTo(username);
+    @Test
+    void test_findByName() {
+        final User user = repository.findByName(username).orElseThrow();
+        then(user.getName()).isEqualTo(username);
 
-		then(repository.findByName("123").isPresent()).isFalse();
-	}
+        then(repository.findByName("123").isPresent()).isFalse();
+    }
 
 }

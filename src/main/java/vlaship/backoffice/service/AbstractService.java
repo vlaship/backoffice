@@ -14,43 +14,43 @@ import java.util.List;
 
 public abstract class AbstractService<M extends Model> implements BackOfficeService<M> {
 
-	@Getter
-	@Setter
-	private Class<M> typeClass;
+    @Getter
+    @Setter
+    private Class<M> typeClass;
 
-	private final JpaRepository<M, Integer> repository;
+    private final JpaRepository<M, Long> repository;
 
-	@NonNull
-	@Override
-	public M find(@NonNull final Integer id) {
-		return repository.findById(id).orElseThrow(() -> new NotFoundException(typeClass.getSimpleName(), id));
-	}
+    @NonNull
+    @Override
+    public M find(@NonNull final Long id) {
+        return repository.findById(id).orElseThrow(() -> new NotFoundException(typeClass.getSimpleName(), id));
+    }
 
-	@NonNull
-	@Override
-	public M get(@NonNull final Integer id) {
-		return repository.findById(id).orElseThrow(() -> new BadRequestException(typeClass.getSimpleName(), id));
-	}
+    @NonNull
+    @Override
+    public M get(@NonNull final Long id) {
+        return repository.findById(id).orElseThrow(() -> new BadRequestException(typeClass.getSimpleName(), id));
+    }
 
-	@NonNull
-	@Override
-	public List<M> findAll(@NonNull final Pageable pageable) {
-		return repository.findAll(pageable).getContent();
-	}
+    @NonNull
+    @Override
+    public List<M> findAll(@NonNull final Pageable pageable) {
+        return repository.findAll(pageable).getContent();
+    }
 
-	@Override
-	public void delete(@NonNull final M m) {
-		repository.delete(m);
-	}
+    @Override
+    public void delete(@NonNull final M m) {
+        repository.delete(m);
+    }
 
-	@NonNull
-	@Override
-	public M save(@NonNull final M m) {
-		return repository.save(m);
-	}
+    @NonNull
+    @Override
+    public M save(@NonNull final M m) {
+        return repository.save(m);
+    }
 
-	protected AbstractService(final JpaRepository<M, Integer> repository) {
-		this.repository = repository;
-	}
+    protected AbstractService(final JpaRepository<M, Long> repository) {
+        this.repository = repository;
+    }
 
 }

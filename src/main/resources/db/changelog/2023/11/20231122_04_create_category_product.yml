@@ -25,7 +25,7 @@ databaseChangeLog:
             baseTableName: category_product
             baseColumnNames: category_id
             constraintName: fk_catpro_on_category
-            referencedTableName: category
+            referencedTableName: categories
             referencedColumnNames: id
 
   - changeSet:
@@ -36,5 +36,5 @@ databaseChangeLog:
             baseTableName: category_product
             baseColumnNames: product_id
             constraintName: fk_catpro_on_product
-            referencedTableName: product
+            referencedTableName: products
             referencedColumnNames: id

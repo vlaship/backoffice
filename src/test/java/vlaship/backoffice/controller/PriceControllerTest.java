@@ -79,7 +79,7 @@ public class PriceControllerTest {
 
 	@Test
 	public void test_delete_400() throws Exception {
-		doThrow(new DeleteException("last price in product")).when(priceFacade).delete(Mockito.anyInt());
+		doThrow(new DeleteException("last price in product")).when(priceFacade).delete(Mockito.anyLong());
 
 		final String message = mockMvc.perform(delete(URL_API + "delete/{id}", 2)).andExpect(status().isBadRequest())
 				.andReturn().getResolvedException().getMessage();
@@ -128,7 +128,7 @@ public class PriceControllerTest {
 		Mockito.when(priceFacade.findAll(Mockito.any(Pageable.class), Mockito.anyInt())).thenReturn(new ArrayList<>());
 
 		mockMvc.perform(get(URL_API + "product").contentType(APPLICATION_JSON)
-				.content(mapper.writeValueAsString(ProductDto.builder().id(2).name(PRODUCT).build())))
+				.content(mapper.writeValueAsString(ProductDto.builder().id(2L).name(PRODUCT).build())))
 				.andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith(APPLICATION_JSON))
 				.andExpect(jsonPath("$.*", hasSize(0)));
 	}

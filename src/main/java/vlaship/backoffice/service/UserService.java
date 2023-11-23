@@ -1,6 +1,7 @@
 package vlaship.backoffice.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,12 +19,13 @@ public class UserService {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenUtil jwtTokenUtil;
 
-    public String login(User user) {
+    @NonNull
+    public String login(@NonNull User user) {
         var auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getName(), user.getPassword()));
         return jwtTokenUtil.generateToken(auth);
     }
 
-    public void signup(User user) {
+    public void signup(@NonNull User user) {
         var encoded = passwordEncoder.encode(user.getPassword());
         user.setPassword(encoded);
         userRepository.save(user);

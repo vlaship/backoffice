@@ -1,4 +1,4 @@
-package vlaship.backoffice.security;
+package vlaship.backoffice.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

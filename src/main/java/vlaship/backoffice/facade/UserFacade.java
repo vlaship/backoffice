@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import vlaship.backoffice.dto.LoginRequest;
 import vlaship.backoffice.dto.LoginResponse;
 import vlaship.backoffice.dto.SignupRequest;
-import vlaship.backoffice.facade.converter.UserConverter;
+import vlaship.backoffice.mapper.UserMapper;
 import vlaship.backoffice.service.UserService;
 
 @Service
@@ -14,14 +14,14 @@ import vlaship.backoffice.service.UserService;
 public class UserFacade {
 
     private final UserService userService;
-    private final UserConverter userConverter;
+    private final UserMapper userMapper;
 
     public LoginResponse login(@NonNull LoginRequest req) {
-        var token = userService.login(userConverter.convert(req));
-        return userConverter.convert(token);
+        var token = userService.login(userMapper.convert(req));
+        return userMapper.convert(token);
     }
 
     public void signup(SignupRequest request) {
-        userService.signup(userConverter.convert(request));
+        userService.signup(userMapper.convert(request));
     }
 }

@@ -17,28 +17,31 @@ import java.util.List;
 @Transactional
 public class ProductService extends AbstractService<Product> {
 
-	private final ProductRepository repository;
+    private final ProductRepository repository;
 
-	@NonNull
-	public List<Product> findAll(@NonNull final Pageable pageable, @NonNull final String name) {
-		return repository.findAllByName(name, pageable);
-	}
+    @NonNull
+    public List<Product> findAll(@NonNull final Pageable pageable, @NonNull final String name) {
+        return repository.findAllByName(name, pageable);
+    }
 
-	@NonNull
-	public List<Product> findAll(@NonNull final Pageable pageable, @NonNull final Category category) {
-		return repository.findAllByCategories(category, pageable);
-	}
+    @NonNull
+    public List<Product> findAll(@NonNull final Pageable pageable, @NonNull final Category category) {
+        return repository.findAllByCategories(category, pageable);
+    }
 
-	@NonNull
-	public List<Product> findAll(@NonNull final Pageable pageable, @NonNull final BigDecimal amount,
-			final String currency) {
-		return repository.findAllByPrice(amount, Currency.getInstance(currency.toUpperCase()), pageable);
-	}
+    @NonNull
+    public List<Product> findAll(
+            @NonNull final Pageable pageable,
+            @NonNull final BigDecimal amount,
+            @NonNull final String currency
+    ) {
+        return repository.findAllByPrice(amount, Currency.getInstance(currency.toUpperCase()), pageable);
+    }
 
-	public ProductService(final ProductRepository repository) {
-		super(repository);
-		this.repository = repository;
-		setTypeClass(Product.class);
-	}
+    public ProductService(final ProductRepository repository) {
+        super(repository);
+        this.repository = repository;
+        setTypeClass(Product.class);
+    }
 
 }

@@ -12,8 +12,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -44,18 +43,19 @@ public class CategoryControllerTest {
 	@Test
 	public void test_create() throws Exception {
 
-		final CategoryDto category = CategoryDto.builder().id(2).name(CATEGORY).parentId(1)
-				.subCategories(new ArrayList<>(Arrays.asList(3, 4, 5))).build();
+		final CategoryDto category = CategoryDto.builder().id(2l).name(CATEGORY).parentId(1l)
+				.subCategories(List.of(3l, 4l, 5l)).build();
 
 		Mockito.when(categoryFacade.create(Mockito.any(CategoryDto.class))).thenReturn(category);
 
 		mockMvc.perform(post(URL_API + "create").contentType(APPLICATION_JSON)
-				.content(mapper.writeValueAsString(CategoryDto.builder().name(CATEGORY).parentId(1)
-						.subCategories(new ArrayList<>(Arrays.asList(3, 4, 5))).build())))
+				.content(mapper.writeValueAsString(CategoryDto.builder().name(CATEGORY).parentId(1l)
+						.subCategories(List.of(3l, 4l, 5l)).build())))
+
 				.andExpect(status().isCreated()).andExpect(content().contentTypeCompatibleWith(APPLICATION_JSON))
-				.andExpect(jsonPath("$.id", is(category.getId()))).andExpect(jsonPath("$.name", is(category.getName())))
-				.andExpect(jsonPath("$.parentId", is(category.getParentId())))
-				.andExpect(jsonPath("$.subCategories", hasSize(category.getSubCategories().size())));
+				.andExpect(jsonPath("$.id", is(category.id()))).andExpect(jsonPath("$.name", is(category.name())))
+				.andExpect(jsonPath("$.parentId", is(category.parentId())))
+				.andExpect(jsonPath("$.subCategories", hasSize(category.subCategories().size())));
 	}
 
 	@Test
@@ -73,7 +73,7 @@ public class CategoryControllerTest {
 	// public void test_findByName() throws Exception {
 	//
 	// final CategoryDto category = CategoryDto.builder().id(2).name(CATEGORY).parentId(1)
-	// .subCategories(new ArrayList<>(Arrays.asList(3, 4, 5))).build();
+	// .subCategories(List.of(3, 4, 5))).build();
 	//
 	// Mockito.when(categoryFacade.find(Mockito.anyString()))
 	// .thenReturn(category);
@@ -81,7 +81,7 @@ public class CategoryControllerTest {
 	// mockMvc.perform(get(URL_API + "name/{name}", category.getName()))
 	// .andExpect(status().isOk())
 	// .andExpect(content().contentTypeCompatibleWith(APPLICATION_JSON))
-	// .andExpect(jsonPath("$.id", is(category.getId())))
+	// .andExpect(jsonPath("$.id", is(category.id())))
 	// .andExpect(jsonPath("$.name", is(category.getName())))
 	// .andExpect(jsonPath("$.parentId", is(category.getParentId())))
 	// .andExpect(jsonPath("$.subCategories",

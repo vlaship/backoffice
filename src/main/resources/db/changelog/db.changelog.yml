@@ -2,10 +2,10 @@ databaseChangeLog:
   - include:
       file: db/changelog/2023/11/20231122_01_create_users.yml
   - include:
-      file: db/changelog/2023/11/20231122_02_create_category.yml
+      file: db/changelog/2023/11/20231122_02_create_categories.yml
   - include:
-      file: db/changelog/2023/11/20231122_03_create_product.yml
+      file: db/changelog/2023/11/20231122_03_create_products.yml
   - include:
       file: db/changelog/2023/11/20231122_04_create_category_product.yml
   - include:
-      file: db/changelog/2023/11/20231122_05_create_price.yml
+      file: db/changelog/2023/11/20231122_05_create_prices.yml

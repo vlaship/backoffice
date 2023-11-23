@@ -16,8 +16,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.BDDAssertions.then;
@@ -45,10 +43,11 @@ public class AbstractControllerTest {
 
 	@BeforeAll
 	public static void setupPrices() {
-		priceList = new ArrayList<>(Arrays.asList(
-				PriceDto.builder().id(1).amount(BigDecimal.valueOf(1500)).currency("byn").productId(1).build(),
-				PriceDto.builder().id(2).amount(BigDecimal.valueOf(2500)).currency("eur").productId(1).build(),
-				PriceDto.builder().id(3).amount(BigDecimal.valueOf(3500)).currency("usd").productId(1).build()));
+		priceList = List.of(
+				PriceDto.builder().id(1l).amount(BigDecimal.valueOf(1500)).currency("byn").productId(1l).build(),
+				PriceDto.builder().id(2l).amount(BigDecimal.valueOf(2500)).currency("eur").productId(1l).build(),
+				PriceDto.builder().id(3l).amount(BigDecimal.valueOf(3500)).currency("usd").productId(1l).build()
+        );
 	}
 
 	@MockBean
@@ -62,23 +61,23 @@ public class AbstractControllerTest {
 		mockMvc.perform(get(URL_API + "list")).andExpect(status().isOk())
 				.andExpect(content().contentTypeCompatibleWith(APPLICATION_JSON))
 				.andExpect(jsonPath("$.*", hasSize(priceList.size())))
-				.andExpect(jsonPath("$.*.id", hasItem(is(priceDto.getId())))).andExpect(jsonPath("$.*.amount").exists())
-				.andExpect(jsonPath("$.*.productId", hasItem(is(priceDto.getProductId()))))
-				.andExpect(jsonPath("$.*.currency", hasItem(is(priceDto.getCurrency()))));
+				.andExpect(jsonPath("$.*.id", hasItem(is(priceDto.id())))).andExpect(jsonPath("$.*.amount").exists())
+				.andExpect(jsonPath("$.*.productId", hasItem(is(priceDto.productId()))))
+				.andExpect(jsonPath("$.*.currency", hasItem(is(priceDto.currency()))));
 	}
 
 	@Test
 	public void test_id() throws Exception {
-		Mockito.when(priceFacade.find(Mockito.anyInt())).thenReturn(priceList.get(1));
+		Mockito.when(priceFacade.find(Mockito.anyLong())).thenReturn(priceList.get(1));
 
 		final PriceDto priceDto = priceList.get(1);
 
 		mockMvc.perform(get(URL_API + "{id}", 2)).andExpect(status().isOk())
 				.andExpect(content().contentTypeCompatibleWith(APPLICATION_JSON))
-				.andExpect(jsonPath("$.id", is(priceDto.getId())))
-				.andExpect((jsonPath("$.amount").value(priceDto.getAmount())))
-				.andExpect(jsonPath("$.productId", is(priceDto.getProductId())))
-				.andExpect(jsonPath("$.currency", is(priceDto.getCurrency())));
+				.andExpect(jsonPath("$.id", is(priceDto.id())))
+				.andExpect((jsonPath("$.amount").value(priceDto.amount())))
+				.andExpect(jsonPath("$.productId", is(priceDto.productId())))
+				.andExpect(jsonPath("$.currency", is(priceDto.currency())));
 	}
 
 	@Test
@@ -87,7 +86,7 @@ public class AbstractControllerTest {
 		final int id = 111;
 		final String model = "Price";
 
-		Mockito.when(priceFacade.find(Mockito.anyInt())).thenThrow(new NotFoundException(model, id));
+		Mockito.when(priceFacade.find(Mockito.anyLong())).thenThrow(new NotFoundException(model, id));
 
 		final String message = mockMvc.perform(get(URL_API + "{id}", id)).andExpect(status().isNotFound()).andReturn()
 				.getResolvedException().getMessage();
@@ -98,22 +97,22 @@ public class AbstractControllerTest {
 	@Test
 	public void test_update() throws Exception {
 
-		final PriceDto priceDto = PriceDto.builder().amount(BigDecimal.valueOf(100)).currency("byn").id(1).productId(1)
+		final PriceDto priceDto = PriceDto.builder().amount(BigDecimal.valueOf(100)).currency("byn").id(1l).productId(1l)
 				.build();
 
 		Mockito.when(priceFacade.update(Mockito.any(PriceDto.class))).thenReturn(priceDto);
 
 		mockMvc.perform(
 				put(URL_API + "update").contentType(APPLICATION_JSON).content(mapper.writeValueAsString(priceDto)))
-				.andExpect(status().isOk()).andExpect(jsonPath("$.id", is(priceDto.getId())))
-				.andExpect(jsonPath("$.amount").value(priceDto.getAmount().toString()))
-				.andExpect(jsonPath("$.productId", is(priceDto.getProductId())))
-				.andExpect(jsonPath("$.currency", is(priceDto.getCurrency())));
+				.andExpect(status().isOk()).andExpect(jsonPath("$.id", is(priceDto.id())))
+				.andExpect(jsonPath("$.amount").value(priceDto.amount().toString()))
+				.andExpect(jsonPath("$.productId", is(priceDto.productId())))
+				.andExpect(jsonPath("$.currency", is(priceDto.currency())));
 	}
 
 	@Test
 	public void test_delete() throws Exception {
-		doNothing().when(priceFacade).delete(Mockito.anyInt());
+		doNothing().when(priceFacade).delete(Mockito.anyLong());
 
 		mockMvc.perform(delete(URL_API + "delete/{id}", 2)).andExpect(status().isNoContent());
 	}

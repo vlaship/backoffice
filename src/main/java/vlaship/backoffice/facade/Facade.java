@@ -9,20 +9,20 @@ import java.util.List;
 
 public interface Facade<M extends Model, D extends Dto> {
 
-	@NonNull
-	D find(@NonNull Integer id);
+    @NonNull
+    D find(@NonNull Long id);
 
-	@NonNull
-	List<D> findAll(@NonNull Pageable pageable);
+    @NonNull
+    List<D> findAll(@NonNull Pageable pageable);
 
-	@NonNull
-	D update(@NonNull D dto);
+    @NonNull
+    D update(@NonNull D dto);
 
-	void delete(@NonNull Integer id);
+    void delete(@NonNull Long id);
 
-	@NonNull
-	M get(@NonNull Integer id);
+    @NonNull
+    M get(@NonNull Long id);
 
-	// M get(D d);
+    // M get(D d);
 
 }

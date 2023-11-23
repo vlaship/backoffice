@@ -4,6 +4,12 @@ spring:
   main:
     banner-mode: 'off'
   # ===============================
+  # = VIRTUAL THREADS
+  # ===============================
+  threads:
+    virtual:
+      enabled: true
+  # ===============================
   # = DATASOURCE
   # ===============================
   datasource:

@@ -7,6 +7,6 @@ import java.io.Serializable;
 public interface Dto extends Serializable {
 
 	@NonNull
-	Integer getId();
+    Long id();
 
 }

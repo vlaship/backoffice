@@ -2,9 +2,7 @@ package vlaship.backoffice.facade;
 
 import org.junit.jupiter.api.Test;
 import vlaship.backoffice.dto.CategoryDto;
-import vlaship.backoffice.exception.DeleteException;
-import vlaship.backoffice.exception.NotFoundException;
-import vlaship.backoffice.facade.converter.impl.CategoryConverter;
+import vlaship.backoffice.mapper.impl.CategoryMapper;
 import vlaship.backoffice.facade.impl.CategoryFacade;
 import vlaship.backoffice.model.Category;
 import vlaship.backoffice.model.Product;
@@ -17,56 +15,56 @@ import java.util.Optional;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.mockito.Mockito.mock;
 
-public class CategoryFacadeTest {
+ class CategoryFacadeTest {
 
 	private static final String NAME = "name";
 
 	private CategoryRepository categoryRepository = mock(CategoryRepository.class);
 
 	private CategoryFacade testSubject = new CategoryFacade(
-			new CategoryConverter(new CategoryService(categoryRepository)), new CategoryService(categoryRepository));
+			new CategoryMapper(new CategoryService(categoryRepository)), new CategoryService(categoryRepository));
 
 	@Test
-	public void test_create() {
+	 void test_create() {
 
 		final Category category = new Category(NAME);
-		category.setId(1);
+		category.setId(1l);
 
 		final CategoryDto sourceDto = CategoryDto.builder().name(NAME).build();
-		then(sourceDto.getId()).isNull();
+		then(sourceDto.id()).isNull();
 
 		Mockito.when(categoryRepository.save(Mockito.any(Category.class))).thenReturn(category);
 
 		final CategoryDto dto = testSubject.create(sourceDto);
-		then(dto.getName()).isEqualTo(sourceDto.getName());
-		then(dto.getId()).isEqualTo(category.getId());
+		then(dto.name()).isEqualTo(sourceDto.name());
+		then(dto.id()).isEqualTo(category.getId());
 	}
 
 //	@Test(expected = DeleteException.class)
-	public void test_delete_has_subCategory() {
+	 void test_delete_has_subCategory() {
 		final Category category = new Category();
 		category.getSubCategories().add(new Category());
 
-		Mockito.when(categoryRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(category));
-		testSubject.delete(0);
+		Mockito.when(categoryRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(category));
+		testSubject.delete(0L);
 	}
 
 //	@Test(expected = DeleteException.class)
-	public void test_delete_has_Product() {
+	 void test_delete_has_Product() {
 		final Category category = new Category();
 		category.getProducts().add(new Product());
 
-		Mockito.when(categoryRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(category));
-		testSubject.delete(0);
+		Mockito.when(categoryRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(category));
+		testSubject.delete(0L);
 	}
 
 //	@Test(expected = NotFoundException.class)
-	public void test_delete_has_NFE() {
+	 void test_delete_has_NFE() {
 		final Category category = new Category();
 		category.getProducts().add(new Product());
 
-		Mockito.when(categoryRepository.findById(Mockito.anyInt())).thenReturn(Optional.empty());
-		testSubject.delete(0);
+		Mockito.when(categoryRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+		testSubject.delete(0L);
 	}
 
 	// @Test
@@ -74,7 +72,7 @@ public class CategoryFacadeTest {
 	// Mockito.when(repository.findByName(Mockito.anyString())).thenReturn(Optional.of(new
 	// Category(NAME)));
 	// final CategoryDto category = testSubject.find(NAME);
-	// then(category.getName()).isEqualTo(NAME);
+	// then(categoryname()).isEqualTo(NAME);
 	// }
 	//
 	// @Test(expected = SameNameException.class)
