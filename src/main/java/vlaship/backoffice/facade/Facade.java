@@ -1,22 +1,28 @@
 package vlaship.backoffice.facade;
 
-import vlaship.backoffice.dto.IDto;
-import vlaship.backoffice.model.IModel;
+import org.springframework.lang.NonNull;
+import vlaship.backoffice.dto.Dto;
+import vlaship.backoffice.model.Model;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-public interface Facade<M extends IModel, D extends IDto> {
+public interface Facade<M extends Model, D extends Dto> {
 
-    D find(Integer id);
+    @NonNull
+    D find(@NonNull Long id);
 
-    List<D> findAll(Pageable pageable);
+    @NonNull
+    List<D> findAll(@NonNull Pageable pageable);
 
-    D update(D dto);
+    @NonNull
+    D update(@NonNull D dto);
 
-    void delete(Integer id);
+    void delete(@NonNull Long id);
 
-    M get(Integer id);
+    @NonNull
+    M get(@NonNull Long id);
 
-//    M get(D d);
+    // M get(D d);
+
 }

@@ -1,23 +1,19 @@
 package vlaship.backoffice.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+
 import java.util.List;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
-public class ProductDto implements IDto {
-    private Integer id;
-    @NotNull
-    @NotEmpty(message = "Product's name must be not empty")
-    private String name;
-    private List<Integer> prices;
-    private List<Integer> categories;
+public record ProductDto(
+        Long id,
+        @NotNull
+        @NotEmpty(message = "Product's name must be not empty")
+        String name,
+        List<Long> prices,
+        List<Long> categories
+) implements Dto {
 }

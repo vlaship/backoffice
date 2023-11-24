@@ -1,44 +1,72 @@
+db.schema.name: back_office
+
 spring:
   main:
     banner-mode: 'off'
-  profiles:
-    active: all
+  # ===============================
+  # = VIRTUAL THREADS
+  # ===============================
+  threads:
+    virtual:
+      enabled: true
+  # ===============================
+  # = DATASOURCE
+  # ===============================
   datasource:
-    url: jdbc:h2:mem:db
-    platform: h2
-    username: sa
-    password:
-    driverClassName: org.h2.Driver
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    username: ${DB_USER}
+    password: ${DB_PASS}
+    driverClassName: org.postgresql.Driver
+  # ===============================
+  # = LIQUIBASE
+  # ===============================
+  liquibase:
+    enabled: true
+    default-schema: ${db.schema.name}
+    change-log: classpath:db/changelog/db.changelog.yml
   # ===============================
   # = JPA / HIBERNATE
   # ===============================
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    open-in-view: false
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
     properties:
       hibernate:
         show_sql: true
-  # ===============================
-  # = H2 Settings
-  # ===============================
-  h2:
-    console:
-      enabled: true
-      path: /h2
-      settings:
-        trace: false
-        web-allow-others: false
+        default_schema: ${db.schema.name}
 # ===============================
-# = WEB
+# = ACTUATOR
+# ===============================
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+# ===============================
+# = SERVER
 # ===============================
 server:
-  port: 8080
+  port: ${SERVER_PORT:8080}
+  servlet:
+    context-path: /service
 # ===============================
 # = LOGGING
 # ===============================
 logging:
   level:
     root: info
-    sql:  info
-    web:  info
+    sql: info
+    web: info
+# ===============================
+# = OpenApi
+# ===============================
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+# ===============================
+# = JWT
+# ===============================
+jwt:
+  secret: ${JWT_SECRET}
+  expiration: ${JWT_TTL} # ms

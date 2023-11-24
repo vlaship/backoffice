@@ -1,0 +1,40 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20231122_04_01
+      author: vlaship
+      changes:
+        - createTable:
+            tableName: category_product
+            columns:
+              - column:
+                  name: category_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: product_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 20231122_04_02
+      author: vlaship
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: category_product
+            baseColumnNames: category_id
+            constraintName: fk_catpro_on_category
+            referencedTableName: categories
+            referencedColumnNames: id
+
+  - changeSet:
+      id: 20231122_04_03
+      author: vlaship
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: category_product
+            baseColumnNames: product_id
+            constraintName: fk_catpro_on_product
+            referencedTableName: products
+            referencedColumnNames: id

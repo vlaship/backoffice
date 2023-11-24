@@ -1,10 +1,10 @@
 package vlaship.backoffice.service.impl;
 
+import org.springframework.lang.NonNull;
 import vlaship.backoffice.model.Price;
 import vlaship.backoffice.model.Product;
 import vlaship.backoffice.repository.PriceRepository;
 import vlaship.backoffice.service.AbstractService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,30 +19,45 @@ public class PriceService extends AbstractService<Price> {
 
     private final PriceRepository repository;
 
-    public List<Price> findAll(final Pageable pageable, final String currency) {
+    @NonNull
+    public List<Price> findAll(
+            @NonNull final String currency,
+            @NonNull final Pageable pageable
+    ) {
         return repository.findAllByCurrency(Currency.getInstance(currency.toUpperCase()), pageable);
     }
 
-    public List<Price> findAll(final Pageable pageable, final Product product) {
+    @NonNull
+    public List<Price> findAll(
+            @NonNull final Product product,
+            @NonNull final Pageable pageable
+    ) {
         return repository.findAllByProduct(product, pageable);
     }
 
-    public List<Price> findAll(final Pageable pageable,
-                               final String currency, final BigDecimal from,
-                               final BigDecimal to) {
-        return repository.findAllByAmountBetweenAndCurrency(from, to,
-                Currency.getInstance(currency.toUpperCase()), pageable);
+    @NonNull
+    public List<Price> findAll(
+            @NonNull final String currency,
+            @NonNull final BigDecimal from,
+            @NonNull final BigDecimal to,
+            @NonNull final Pageable pageable
+    ) {
+        return repository.findAllByAmountBetweenAndCurrency(
+                from,
+                to,
+                Currency.getInstance(currency.toUpperCase()),
+                pageable
+        );
     }
 
-    public int countAllByProduct(final Product product) {
+    public int countAllByProduct(@NonNull final Product product) {
         return repository.countAllByProduct(product);
     }
 
-
-    @Autowired
     public PriceService(final PriceRepository repository) {
         super(repository);
         this.repository = repository;
         setTypeClass(Price.class);
     }
+
 }
