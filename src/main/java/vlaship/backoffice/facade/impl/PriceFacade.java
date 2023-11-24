@@ -1,5 +1,6 @@
 package vlaship.backoffice.facade.impl;
 
+import org.springframework.lang.NonNull;
 import vlaship.backoffice.dto.BetweenPrice;
 import vlaship.backoffice.dto.PriceDto;
 import vlaship.backoffice.exception.DeleteException;
@@ -15,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -26,37 +26,46 @@ public class PriceFacade extends AbstractFacade<Price, PriceDto> {
     private final ProductService productService;
 
     public List<PriceDto> findAll(
-            final Pageable pageable,
-            final String currency,
-            final BigDecimal from,
-            final BigDecimal to
+            @NonNull final String currency,
+            @NonNull final BigDecimal from,
+            @NonNull final BigDecimal to,
+            @NonNull final Pageable pageable
     ) {
-        return priceService.findAll(pageable, currency, from, to)
+        return priceService.findAll(currency, from, to, pageable)
                 .stream()
                 .map(priceConverter::map)
-                .collect(Collectors.toList());
+                .toList();
     }
 
-    public List<PriceDto> findAll(final Pageable pageable, final BetweenPrice betweenPrice) {
-        return findAll(pageable, betweenPrice.currency(), betweenPrice.from(), betweenPrice.to());
+    public List<PriceDto> findAll(
+            @NonNull final BetweenPrice betweenPrice,
+            @NonNull final Pageable pageable
+    ) {
+        return findAll(betweenPrice.currency(), betweenPrice.from(), betweenPrice.to(), pageable);
     }
 
-    public List<PriceDto> findAll(final Pageable pageable, final Long productId) {
-        return priceService.findAll(pageable, productService.get(productId))
+    public List<PriceDto> findAll(
+            @NonNull final Long productId,
+            @NonNull final Pageable pageable
+    ) {
+        return priceService.findAll(productService.get(productId), pageable)
                 .stream()
                 .map(priceConverter::map)
-                .collect(Collectors.toList());
+                .toList();
     }
 
-    public List<PriceDto> findAll(final Pageable pageable, final String currency) {
-        return priceService.findAll(pageable, currency)
+    public List<PriceDto> findAll(
+            @NonNull final String currency,
+            @NonNull final Pageable pageable
+    ) {
+        return priceService.findAll(currency, pageable)
                 .stream()
                 .map(priceConverter::map)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
-    protected void checkForDelete(final Price price) {
+    protected void checkForDelete(@NonNull final Price price) {
         if (priceService.countAllByProduct(price.getProduct()) < 2) {
             throw new DeleteException("last " + price + " in " + price.getProduct());
         }

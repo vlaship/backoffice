@@ -1,7 +1,5 @@
 package vlaship.backoffice.exception;
 
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.security.SignatureException;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -26,8 +24,7 @@ public class RequestExceptionHandler {
             case WrongProductInPriceException ex -> ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
             case DeleteException ex -> ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
             case BadCredentialsException ex -> ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, ex.getMessage());
-            case SignatureException ex -> ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, ex.getMessage());
-            case ExpiredJwtException ex -> ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, ex.getMessage());
+            case JwtAuthenticationException ex -> ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, ex.getMessage());
             case AccessDeniedException ex -> ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, ex.getMessage());
             case null, default ->
                     ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, e != null ? e.getMessage() : HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());

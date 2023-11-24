@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -31,27 +30,33 @@ public class ProductFacade extends AbstractFacade<Product, ProductDto> {
     private final PriceService priceService;
 
     @NonNull
-    public List<ProductDto> findAll(@NonNull final Pageable pageable, @NonNull final Long categoryId) {
-        return productService.findAll(pageable, categoryFacade.get(categoryId))
-                .stream()
+    public List<ProductDto> findAll(
+            @NonNull final Long categoryId,
+            @NonNull final Pageable pageable
+    ) {
+        return productService.findAll(List.of(categoryFacade.get(categoryId)), pageable).stream()
                 .map(productConverter::map)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @NonNull
-    public List<ProductDto> findAll(@NonNull final Pageable pageable, @NonNull final String name) {
-        return productService.findAll(pageable, name)
-                .stream()
+    public List<ProductDto> findAll(
+            @NonNull final String name,
+            @NonNull final Pageable pageable
+    ) {
+        return productService.findAll(name, pageable).stream()
                 .map(productConverter::map)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @NonNull
-    public List<ProductDto> findAll(@NonNull final Pageable pageable, @NonNull final PriceDto priceDto) {
-        return productService.findAll(pageable, priceDto.amount(), priceDto.currency())
-                .stream()
+    public List<ProductDto> findAll(
+            @NonNull final PriceDto priceDto,
+            @NonNull final Pageable pageable
+    ) {
+        return productService.findAll(priceDto.amount(), priceDto.currency(), pageable).stream()
                 .map(productConverter::map)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @NonNull
@@ -64,7 +69,10 @@ public class ProductFacade extends AbstractFacade<Product, ProductDto> {
     }
 
     @NonNull
-    public ProductDto add(@NonNull final PriceDto priceDto, @NonNull final Long productId) {
+    public ProductDto add(
+            @NonNull final PriceDto priceDto,
+            @NonNull final Long productId
+    ) {
         final Product found = get(productId);
         final Price price = priceConverter.map(priceDto);
 
@@ -75,7 +83,10 @@ public class ProductFacade extends AbstractFacade<Product, ProductDto> {
     }
 
     @NonNull
-    public ProductDto add(@NonNull final Long categoryId, @NonNull final Long productId) {
+    public ProductDto add(
+            @NonNull final Long categoryId,
+            @NonNull final Long productId
+    ) {
         final Category category = categoryFacade.get(categoryId);
         final Product found = get(productId);
 
@@ -86,7 +97,10 @@ public class ProductFacade extends AbstractFacade<Product, ProductDto> {
     }
 
     @NonNull
-    public ProductDto removeCategory(@NonNull final Long categoryId, @NonNull final Long productId) {
+    public ProductDto removeCategory(
+            @NonNull final Long categoryId,
+            @NonNull final Long productId
+    ) {
         final Product found = get(productId);
 
         if (found.getCategories().size() < 2) {
@@ -101,7 +115,10 @@ public class ProductFacade extends AbstractFacade<Product, ProductDto> {
     }
 
     @NonNull
-    public ProductDto removePrice(@NonNull final Long priceId, @NonNull final Long productId) {
+    public ProductDto removePrice(
+            @NonNull final Long priceId,
+            @NonNull final Long productId
+    ) {
         final Product found = get(productId);
 
         if (found.getPrices().size() < 2) {
@@ -117,6 +134,7 @@ public class ProductFacade extends AbstractFacade<Product, ProductDto> {
 
     @Override
     protected void checkForDelete(@NonNull final Product product) {
+        throw new IllegalStateException();
     }
 
     public ProductFacade(

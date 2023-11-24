@@ -44,7 +44,7 @@ class ProductRepositoryTest {
     @Test
     void test_findAllByCategories() {
         final Category cat1 = categoryRepository.getOne(3l);
-        final List<Product> byCategory1 = repository.findAllByCategories(cat1, PageRequest.of(0, 5));
+        final List<Product> byCategory1 = repository.findAllByCategories(List.of(cat1.getId()), PageRequest.of(0, 5));
 
         then(byCategory1.size()).isEqualTo(2);
         then(byCategory1.get(0).getName()).isEqualTo(PROD + "1");
@@ -52,7 +52,7 @@ class ProductRepositoryTest {
         then(byCategory1.stream().allMatch(x -> x.getCategories().get(0) == cat1)).isTrue();
 
         final Category cat2 = categoryRepository.getOne(2l);
-        final List<Product> byCategory2 = repository.findAllByCategories(cat2, PageRequest.of(0, 5));
+        final List<Product> byCategory2 = repository.findAllByCategories(List.of(cat2.getId()), PageRequest.of(0, 5));
 
         then(byCategory2.size()).isEqualTo(1);
         then(byCategory2.get(0).getName()).isEqualTo(PROD + "3");

@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -28,7 +27,6 @@ public class CategoryFacade extends AbstractFacade<Category, CategoryDto> {
         return categoryConverter.map(saved);
     }
 
-    @NonNull
     @Override
     protected void checkForDelete(@NonNull final Category category) {
         if (!category.getSubCategories().isEmpty()) {
@@ -40,11 +38,14 @@ public class CategoryFacade extends AbstractFacade<Category, CategoryDto> {
     }
 
     @NonNull
-    public List<CategoryDto> findAll(final Pageable pageable, final String name) {
-        return categoryService.findAll(pageable, name)
+    public List<CategoryDto> findAll(
+            @NonNull final String name,
+            @NonNull final Pageable pageable
+    ) {
+        return categoryService.findAll(name, pageable)
                 .stream()
                 .map(categoryConverter::map)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public CategoryFacade(final CategoryMapper categoryConverter, final CategoryService categoryService) {

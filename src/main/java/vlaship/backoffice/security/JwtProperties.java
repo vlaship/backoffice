@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import javax.crypto.SecretKey;
 import java.io.Serializable;
 
 @Getter
@@ -13,5 +14,6 @@ public class JwtProperties implements Serializable {
 
     private String secret;
     private long expiration;
+    private SecretKey secretKey;
 
 }

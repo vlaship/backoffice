@@ -1,15 +1,15 @@
 package vlaship.backoffice.security;
 
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.MacAlgorithm;
+import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
+import vlaship.backoffice.exception.JwtAuthenticationException;
 
-import javax.crypto.SecretKey;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
@@ -21,58 +21,63 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 public class JwtTokenUtil implements Serializable {
 
+    private static final MacAlgorithm ALG = Jwts.SIG.HS512;
+
     private final JwtProperties jwtProperties;
-    private static final SignatureAlgorithm ALG = SignatureAlgorithm.HS512;
 
     @NonNull
     public String generateToken(Authentication authentication) {
-        var claims = new HashMap<String, Object>();
-        return doGenerateToken(claims, authentication.getName());
+        return doGenerateToken(new HashMap<>(), authentication.getName());
     }
 
     @NonNull
     private String doGenerateToken(Map<String, Object> claims, String subject) {
+        var exp = new Date(System.currentTimeMillis() + jwtProperties.getExpiration());
+        var iat = new Date();
         return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(subject)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + jwtProperties.getExpiration()))
-                .signWith(getSecretKey(), ALG)
+                .claims(claims)
+                .subject(subject)
+                .issuedAt(iat)
+                .expiration(exp)
+                .signWith(jwtProperties.getSecretKey(), ALG)
                 .compact();
     }
 
     public boolean validateToken(@NonNull String token) {
         try {
             Jwts.parser()
-                    .setSigningKey(getSecretKey())
-                    .parseClaimsJws(token);
+                    .verifyWith(jwtProperties.getSecretKey())
+                    .build()
+                    .parseSignedClaims(token);
             return true;
-        } catch (MalformedJwtException e) {
-            log.error("Invalid JWT token: {}", e.getMessage());
-        } catch (ExpiredJwtException e) {
-            log.error("JWT token is expired: {}", e.getMessage());
-        } catch (UnsupportedJwtException e) {
-            log.error("JWT token is unsupported: {}", e.getMessage());
-        } catch (IllegalArgumentException e) {
-            log.error("JWT claims string is empty: {}", e.getMessage());
+        } catch (JwtException | IllegalArgumentException e) {
+            switch (e) {
+                case MalformedJwtException ex:
+                    log.error("Invalid JWT token: {}", ex.getMessage());
+                    break;
+                case ExpiredJwtException ex:
+                    log.error("JWT token is expired: {}", ex.getMessage());
+                    break;
+                case UnsupportedJwtException ex:
+                    log.error("JWT token is unsupported: {}", ex.getMessage());
+                    break;
+                case IllegalArgumentException ex:
+                    log.error("JWT claims string is empty: {}", ex.getMessage());
+                    break;
+                case SignatureException ex:
+                    log.error("JWT signature does not match locally computed signature: {}", ex.getMessage());
+                    break;
+                default:
+                    log.error("JWT token is invalid: {}", e.getMessage());
+            }
+
+            throw new JwtAuthenticationException();
         }
-
-        return false;
-    }
-
-    private boolean isTokenExpired(@NonNull String token) {
-        var expiration = extractExpiration(token);
-        return expiration.before(new Date());
     }
 
     @NonNull
     public String extractUsername(@NonNull String token) {
         return extractClaim(token, Claims::getSubject);
-    }
-
-    @NonNull
-    public Date extractExpiration(@NonNull String token) {
-        return extractClaim(token, Claims::getExpiration);
     }
 
     @NonNull
@@ -84,109 +89,10 @@ public class JwtTokenUtil implements Serializable {
     @NonNull
     private Claims extractAllClaims(@NonNull String token) {
         return Jwts.parser()
-                .setSigningKey(getSecretKey())
-                .parseClaimsJws(token)
-                .getBody();
-    }
-
-    @NonNull
-    private SecretKey getSecretKey() {
-        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtProperties.getSecret()));
+                .verifyWith(jwtProperties.getSecretKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
     }
 
 }
-
-//package vlaship.backoffice.security;
-//
-//import io.jsonwebtoken.*;
-//import io.jsonwebtoken.io.Decoders;
-//import io.jsonwebtoken.security.Keys;
-//import io.jsonwebtoken.security.MacAlgorithm;
-//import io.jsonwebtoken.security.SecureDigestAlgorithm;
-//import lombok.RequiredArgsConstructor;
-//import lombok.extern.slf4j.Slf4j;
-//import org.springframework.security.core.Authentication;
-//import org.springframework.stereotype.Component;
-//
-//import javax.crypto.SecretKey;
-//import java.io.Serializable;
-//import java.util.Date;
-//import java.util.HashMap;
-//import java.util.Map;
-//import java.util.function.Function;
-//
-//@Slf4j
-//@Component
-//@RequiredArgsConstructor
-//public class JwtTokenUtil implements Serializable {
-//
-//    private static final MacAlgorithm ALG = Jwts.SIG.HS512;
-//
-//    private final JwtProperties jwtProperties;
-//
-//    public String generateToken(Authentication authentication) {
-//        var claims = new HashMap<String, Object>();
-//        return doGenerateToken(claims, authentication.getName());
-//    }
-//
-//    private String doGenerateToken(Map<String, Object> claims, String subject) {
-//        return Jwts.builder()
-//                .claims(claims)
-//                .subject(subject)
-//                .issuedAt(new Date())
-//                .expiration(new Date(System.currentTimeMillis() + jwtProperties.getExpiration()))
-//                .signWith(getSecretKey(), ALG)
-//                .compact();
-//    }
-//
-//    public boolean validateToken(String token) {
-//        try {
-//            Jwts.parser()
-//                    .verifyWith(getSecretKey())
-//                    .build()
-//                    .parseSignedClaims(token);
-//            return true;
-//        } catch (MalformedJwtException e) {
-//            log.error("Invalid JWT token: {}", e.getMessage());
-//        } catch (ExpiredJwtException e) {
-//            log.error("JWT token is expired: {}", e.getMessage());
-//        } catch (UnsupportedJwtException e) {
-//            log.error("JWT token is unsupported: {}", e.getMessage());
-//        } catch (IllegalArgumentException e) {
-//            log.error("JWT claims string is empty: {}", e.getMessage());
-//        }
-//
-//        return false;
-//    }
-//
-//    private boolean isTokenExpired(String token) {
-//        var expiration = extractExpiration(token);
-//        return expiration.before(new Date());
-//    }
-//
-//    public String extractUsername(String token) {
-//        return extractClaim(token, Claims::getSubject);
-//    }
-//
-//    public Date extractExpiration(String token) {
-//        return extractClaim(token, Claims::getExpiration);
-//    }
-//
-//    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-//        var claims = extractAllClaims(token);
-//        return claimsResolver.apply(claims);
-//    }
-//
-//    private Claims extractAllClaims(String token) {
-//        return Jwts.parser()
-//                .verifyWith(getSecretKey())
-//                .build()
-//                .parseSignedClaims(token)
-//                .getPayload();
-//    }
-//
-//    private SecretKey getSecretKey() {
-//        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtProperties.getSecret()));
-//    }
-//
-//}

@@ -21,9 +21,9 @@ FROM oraclelinux:9-slim
 # Set the working directory inside the container
 WORKDIR /app
 
-## Avoid running code as a root user
-#RUN adduser -D appuser
-#USER appuser
+# Avoid running code as a root user
+RUN useradd -ms /bin/bash appuser
+USER appuser
 
 # Copy only the necessary files from the builder stage
 COPY --from=builder /app/build/native/nativeCompile/app .

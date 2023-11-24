@@ -8,7 +8,6 @@ import vlaship.backoffice.service.BackOfficeService;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public abstract class AbstractFacade<M extends Model, D extends Dto> implements Facade<M, D> {
 
@@ -51,7 +50,7 @@ public abstract class AbstractFacade<M extends Model, D extends Dto> implements 
     @NonNull
     @Override
     public List<D> findAll(@NonNull final Pageable pageable) {
-        return service.findAll(pageable).stream().map(converter::map).collect(Collectors.toList());
+        return service.findAll(pageable).stream().map(converter::map).toList();
     }
 
     protected abstract void checkForDelete(M m);

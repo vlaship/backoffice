@@ -67,7 +67,7 @@ public class ProductController extends AbstractController<Product, ProductDto> {
             @Valid final @RequestBody PriceDto priceDto,
             final Pageable pageable
     ) {
-        return ResponseEntity.ok(facade.findAll(pageable, priceDto));
+        return ResponseEntity.ok(facade.findAll(priceDto, pageable));
     }
 
     @GetMapping("/category/{categoryId}")
@@ -75,7 +75,7 @@ public class ProductController extends AbstractController<Product, ProductDto> {
             final @PathVariable("categoryId") Long categoryId,
             final Pageable pageable
     ) {
-        return ResponseEntity.ok(facade.findAll(pageable, categoryId));
+        return ResponseEntity.ok(facade.findAll(categoryId, pageable));
     }
 
     @GetMapping("/name/{name}")
@@ -83,7 +83,7 @@ public class ProductController extends AbstractController<Product, ProductDto> {
             final @PathVariable("name") String name,
             final Pageable pageable
     ) {
-        return ResponseEntity.ok(facade.findAll(pageable, name));
+        return ResponseEntity.ok(facade.findAll(name, pageable));
     }
 
     public ProductController(final ProductFacade facade) {

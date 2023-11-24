@@ -20,20 +20,29 @@ public class ProductService extends AbstractService<Product> {
     private final ProductRepository repository;
 
     @NonNull
-    public List<Product> findAll(@NonNull final Pageable pageable, @NonNull final String name) {
+    public List<Product> findAll(
+            @NonNull final String name,
+            @NonNull final Pageable pageable
+    ) {
         return repository.findAllByName(name, pageable);
     }
 
     @NonNull
-    public List<Product> findAll(@NonNull final Pageable pageable, @NonNull final Category category) {
-        return repository.findAllByCategories(category, pageable);
+    public List<Product> findAll(
+            @NonNull final List<Category> categories,
+            @NonNull final Pageable pageable
+    ) {
+        var ids = categories.stream()
+                .map(Category::getId)
+                .toList();
+        return repository.findAllByCategories(ids, pageable);
     }
 
     @NonNull
     public List<Product> findAll(
-            @NonNull final Pageable pageable,
             @NonNull final BigDecimal amount,
-            @NonNull final String currency
+            @NonNull final String currency,
+            @NonNull final Pageable pageable
     ) {
         return repository.findAllByPrice(amount, Currency.getInstance(currency.toUpperCase()), pageable);
     }

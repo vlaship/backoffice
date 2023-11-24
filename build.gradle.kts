@@ -4,7 +4,7 @@ plugins {
     id("io.spring.dependency-management") version "1.1.4"
 //    id("io.spring.javaformat") version "0.0.40" add \n between fields
     id("com.gorylenko.gradle-git-properties") version "2.4.1"
-    id("org.graalvm.buildtools.native") version "0.9.28"
+//    id("org.graalvm.buildtools.native") version "0.9.28"
 }
 
 group = "vlaship"
@@ -21,7 +21,7 @@ configurations {
     }
 }
 
-val jwtVersion = "0.11.5" // latest "0.12.3", but doesn't work with graalvm
+val jwtVersion = "0.12.3" // "0.11.5" works with graalvm
 val openApiVersion = "2.2.0"
 val mapstructVersion = "1.5.5.Final"
 val preLiquibaseVersion = "1.4.0"
@@ -70,27 +70,24 @@ gitProperties {
     keys = arrayListOf("git.branch", "git.commit.id", "git.commit.id.abbrev", "git.commit.time", "git.tags")
 }
 
-tasks.jar {
-    archiveFileName.set("app.jar")
+// task unpack
+task("unpack", type = Copy::class) {
+    dependsOn("build")
+    from(zipTree(tasks.bootJar.get().archiveFile.get()))
+    into("build/unpacked")
 }
 
-tasks {
-    bootJar {
-        archiveFileName.set("boot.jar")
-    }
-}
-
-graalvmNative {
-    binaries {
-        named("main") {
-            imageName.set("app")
-            useFatJar.set(true)
-        }
-    }
-    binaries.all {
-        buildArgs.add("--verbose")
-        resources.autodetect()
-    }
-
-    toolchainDetection.set(true)
-}
+//graalvmNative {
+//    binaries {
+//        named("main") {
+//            imageName.set("app")
+//            useFatJar.set(true)
+//        }
+//    }
+//    binaries.all {
+//        buildArgs.add("--verbose")
+//        resources.autodetect()
+//    }
+//
+//    toolchainDetection.set(true)
+//}

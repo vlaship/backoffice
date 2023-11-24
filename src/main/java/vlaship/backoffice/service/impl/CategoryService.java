@@ -17,7 +17,10 @@ public class CategoryService extends AbstractService<Category> {
     private final CategoryRepository repository;
 
     @NonNull
-    public List<Category> findAll(@NonNull final Pageable pageable, @NonNull final String name) {
+    public List<Category> findAll(
+            @NonNull final String name,
+            @NonNull final Pageable pageable
+    ) {
         return repository.findAllByName(name, pageable);
     }
 

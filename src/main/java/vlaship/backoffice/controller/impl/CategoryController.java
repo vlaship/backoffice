@@ -29,7 +29,7 @@ public class CategoryController extends AbstractController<Category, CategoryDto
 
     @GetMapping("/name/{name}")
     public ResponseEntity<List<CategoryDto>> find(final @PathVariable("name") String name, final Pageable pageable) {
-        return ResponseEntity.ok(categoryFacade.findAll(pageable, name));
+        return ResponseEntity.ok(categoryFacade.findAll(name, pageable));
     }
 
     public CategoryController(final CategoryFacade categoryFacade) {

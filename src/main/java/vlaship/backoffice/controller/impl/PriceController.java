@@ -28,7 +28,7 @@ public class PriceController extends AbstractController<Price, PriceDto> {
             final @PathVariable("to") BigDecimal to,
             final Pageable pageable
     ) {
-        return ResponseEntity.ok(priceFacade.findAll(pageable, currency, from, to));
+        return ResponseEntity.ok(priceFacade.findAll(currency, from, to, pageable));
     }
 
     @GetMapping("/between")
@@ -36,7 +36,7 @@ public class PriceController extends AbstractController<Price, PriceDto> {
             @Valid final @RequestBody BetweenPrice betweenPrice,
             final Pageable pageable
     ) {
-        return ResponseEntity.ok(priceFacade.findAll(pageable, betweenPrice));
+        return ResponseEntity.ok(priceFacade.findAll(betweenPrice, pageable));
     }
 
     @GetMapping("/currency/{currency}")
@@ -44,7 +44,7 @@ public class PriceController extends AbstractController<Price, PriceDto> {
             final @PathVariable("currency") String currency,
             final Pageable pageable
     ) {
-        return ResponseEntity.ok(priceFacade.findAll(pageable, currency));
+        return ResponseEntity.ok(priceFacade.findAll(currency, pageable));
     }
 
     @GetMapping("/product/{productId}")
@@ -52,7 +52,7 @@ public class PriceController extends AbstractController<Price, PriceDto> {
             final @PathVariable("productId") Long productId,
             final Pageable pageable
     ) {
-        return ResponseEntity.ok(priceFacade.findAll(pageable, productId));
+        return ResponseEntity.ok(priceFacade.findAll(productId, pageable));
     }
 
     @GetMapping("/product")
@@ -60,7 +60,7 @@ public class PriceController extends AbstractController<Price, PriceDto> {
             @Valid final @RequestBody ProductDto productDto,
             final Pageable pageable
     ) {
-        return ResponseEntity.ok(priceFacade.findAll(pageable, productDto.id()));
+        return ResponseEntity.ok(priceFacade.findAll(productDto.id(), pageable));
     }
 
     public PriceController(final PriceFacade priceFacade) {

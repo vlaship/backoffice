@@ -20,21 +20,27 @@ public class PriceService extends AbstractService<Price> {
     private final PriceRepository repository;
 
     @NonNull
-    public List<Price> findAll(@NonNull final Pageable pageable, @NonNull final String currency) {
+    public List<Price> findAll(
+            @NonNull final String currency,
+            @NonNull final Pageable pageable
+    ) {
         return repository.findAllByCurrency(Currency.getInstance(currency.toUpperCase()), pageable);
     }
 
     @NonNull
-    public List<Price> findAll(@NonNull final Pageable pageable, @NonNull final Product product) {
+    public List<Price> findAll(
+            @NonNull final Product product,
+            @NonNull final Pageable pageable
+    ) {
         return repository.findAllByProduct(product, pageable);
     }
 
     @NonNull
     public List<Price> findAll(
-            @NonNull final Pageable pageable,
             @NonNull final String currency,
             @NonNull final BigDecimal from,
-            @NonNull final BigDecimal to
+            @NonNull final BigDecimal to,
+            @NonNull final Pageable pageable
     ) {
         return repository.findAllByAmountBetweenAndCurrency(
                 from,

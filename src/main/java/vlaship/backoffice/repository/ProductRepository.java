@@ -1,6 +1,5 @@
 package vlaship.backoffice.repository;
 
-import vlaship.backoffice.model.Category;
 import vlaship.backoffice.model.Product;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,9 +15,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findAllByName(String name, Pageable pageable);
 
     @Query("""
-                SELECT prod FROM Price price
-                INNER JOIN Product prod ON prod.id = price.product.id
-                WHERE price.amount = :amount AND price.currency LIKE :currency
+            FROM Price price
+            INNER JOIN Product prod ON prod.id = price.product.id
+            WHERE price.amount = :amount AND price.currency = :currency
             """)
     List<Product> findAllByPrice(
             @Param("amount") BigDecimal amount,
@@ -26,6 +25,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             Pageable pageable
     );
 
-    List<Product> findAllByCategories(Category category, Pageable pageable);
+    @Query("""
+            FROM Product prod
+            INNER JOIN prod.categories cat ON cat.id IN :categoryIds
+            """)
+    List<Product> findAllByCategories(List<Long> categoryIds, Pageable pageable);
 
 }
