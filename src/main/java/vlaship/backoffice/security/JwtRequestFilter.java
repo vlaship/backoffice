@@ -2,6 +2,7 @@ package vlaship.backoffice.security;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,6 +17,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
+import java.io.IOException;
+import java.util.List;
+
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
@@ -25,24 +29,34 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private final UserDetailsService jwtUserDetailsService;
     private final JwtTokenUtil jwtTokenUtil;
     private final HandlerExceptionResolver resolver;
+    private final List<String> whiteUrls;
 
     public JwtRequestFilter(
             UserDetailsService jwtUserDetailsService,
             JwtTokenUtil jwtTokenUtil,
             @Qualifier("handlerExceptionResolver")
-            HandlerExceptionResolver resolver
+            HandlerExceptionResolver resolver,
+            List<String> whiteUrls
     ) {
         this.jwtUserDetailsService = jwtUserDetailsService;
         this.jwtTokenUtil = jwtTokenUtil;
         this.resolver = resolver;
+        this.whiteUrls = whiteUrls;
     }
 
     @Override
     protected void doFilterInternal(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            FilterChain chain
-    ) {
+            @NonNull HttpServletRequest request,
+            @NonNull HttpServletResponse response,
+            @NonNull FilterChain chain
+    ) throws ServletException, IOException {
+        var skip = whiteUrls.stream()
+                .anyMatch(url -> request.getServletPath().contains(url));
+
+        if (skip) {
+            chain.doFilter(request, response);
+            return;
+        }
 
         var jwtToken = extractToken(request);
 

@@ -1,6 +1,6 @@
 plugins {
     java
-    id("org.springframework.boot") version "3.2.0"
+    id("org.springframework.boot") version "3.2.1"
     id("io.spring.dependency-management") version "1.1.4"
 //    id("io.spring.javaformat") version "0.0.40" add \n between fields
     id("com.gorylenko.gradle-git-properties") version "2.4.1"
@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "vlaship"
-version = "0.0.3-SNAPSHOT"
+version = "0.0.4-SNAPSHOT"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21
@@ -22,9 +22,9 @@ configurations {
 }
 
 val jwtVersion = "0.12.3" // "0.11.5" works with graalvm
-val openApiVersion = "2.2.0"
+val openApiVersion = "2.3.0"
 val mapstructVersion = "1.5.5.Final"
-val preLiquibaseVersion = "1.4.0"
+val preLiquibaseVersion = "1.5.0"
 
 dependencies {
     // lombok
