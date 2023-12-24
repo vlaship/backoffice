@@ -36,15 +36,8 @@ public class SecurityConfig {
                 .cors(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                // OpenAPI
-                                "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**",
-                                // Actuator
-                                "/actuator/**",
-                                // Login
-                                "/api/auth/**"
-                        ).permitAll()
+                .authorizeHttpRequests(req -> req
+                        .requestMatchers(SecurityUrlsConfig.WHITE_URLS).permitAll()
                         // other requests have to be authenticated
                         .anyRequest().authenticated()
                 )
