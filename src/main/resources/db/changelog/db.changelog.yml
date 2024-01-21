@@ -9,3 +9,5 @@ databaseChangeLog:
       file: db/changelog/2023/11/20231122_04_create_category_product.yml
   - include:
       file: db/changelog/2023/11/20231122_05_create_prices.yml
+  - include:
+      file: db/changelog/2023/11/20231122_06_extra_indexes.yml
