@@ -1,4 +1,4 @@
-package vlaship.backoffice.integration;
+package dev.vlaship.backoffice.integration;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
