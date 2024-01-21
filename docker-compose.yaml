@@ -48,6 +48,8 @@ services:
       DB_USER: ${DB_USER}
       DB_PASS: ${DB_PASS}
       DB_NAME: ${DB_NAME}
+      DB_SCHEMA: ${DB_SCHEMA}
       SERVER_PORT: 18080
       JWT_SECRET: ${JWT_SECRET}
       JWT_TTL: ${JWT_TTL}
+      APP_NAME: ${APP_NAME}
