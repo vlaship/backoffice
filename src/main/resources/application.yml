@@ -1,8 +1,6 @@
-db.schema.name: back_office
-
 spring:
-  main:
-    banner-mode: 'off'
+  application:
+    name: ${APP_NAME}
   # ===============================
   # = VIRTUAL THREADS
   # ===============================
@@ -22,7 +20,7 @@ spring:
   # ===============================
   liquibase:
     enabled: true
-    default-schema: ${db.schema.name}
+    default-schema: ${DB_SCHEMA}
     change-log: classpath:db/changelog/db.changelog.yml
   # ===============================
   # = JPA / HIBERNATE
@@ -34,7 +32,9 @@ spring:
     properties:
       hibernate:
         show_sql: true
-        default_schema: ${db.schema.name}
+        format_sql: true
+        use_sql_comments: true
+        default_schema: ${DB_SCHEMA}
 # ===============================
 # = ACTUATOR
 # ===============================
@@ -59,14 +59,8 @@ logging:
     sql: info
     web: info
 # ===============================
-# = OpenApi
-# ===============================
-springdoc:
-  swagger-ui:
-    path: /swagger-ui.html
-# ===============================
 # = JWT
 # ===============================
 jwt:
   secret: ${JWT_SECRET}
-  expiration: ${JWT_TTL} # ms
+  expiration-seconds: ${JWT_TTL_SECONDS:3600}
