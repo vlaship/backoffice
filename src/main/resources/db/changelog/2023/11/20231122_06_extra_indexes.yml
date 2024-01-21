@@ -1,0 +1,44 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20231122_06_01
+      author: vlaship
+      changes:
+        - createIndex:
+            tableName: categories
+            indexName: categories_parent_id_idx
+            columns:
+              - column:
+                  name: parent_id
+
+  - changeSet:
+      id: 20231122_06_02
+      author: vlaship
+      changes:
+        - createIndex:
+            tableName: category_product
+            indexName: category_product_category_id_idx
+            columns:
+              - column:
+                  name: category_id
+
+  - changeSet:
+      id: 20231122_06_03
+      author: vlaship
+      changes:
+        - createIndex:
+            tableName: category_product
+            indexName: category_product_product_id_idx
+            columns:
+              - column:
+                  name: product_id
+
+  - changeSet:
+      id: 20231122_06_04
+      author: vlaship
+      changes:
+        - createIndex:
+            tableName: prices
+            indexName: prices_product_id_idx
+            columns:
+              - column:
+                  name: product_id
