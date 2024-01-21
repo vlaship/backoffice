@@ -32,4 +32,4 @@ USER appuser
 COPY --from=builder /app/upacked /upacked/app
 
 # Run the binary when the container starts
-CMD ["java", "-cp", "app:app/lib/*", "vlaship.backoffice.App"]
+CMD ["java", "-cp", "app:app/lib/*", "dev.vlaship.backoffice.App"]
