@@ -1,7 +1,12 @@
 name: Java CI with Gradle
 
 on:
-  - push
+  push:
+    branches:
+      - '*'
+  pull_request:
+    branches:
+      - 'master'
 
 permissions:
   contents: read
@@ -10,6 +15,7 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref != 'refs/heads/master'
 
     steps:
       - name: Checkout
@@ -19,7 +25,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: '21'
-          distribution: 'temurin'
+          distribution: 'zulu'
 
       - name: Cache Gradle dependencies
         uses: actions/cache@v3
@@ -36,3 +42,20 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew clean build -x test --no-daemon
+
+  docker-build:
+
+    needs: build
+
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./jvm.Dockerfile
