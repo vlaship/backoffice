@@ -1,0 +1,11 @@
+client:
+  base-url: http://localhost:8080/service
+  path: /api
+  readTimeout: 60s
+  connectionTimeout: 10s
+  pooling:
+    maxTotal: 200
+    defaultMaxPerRoute: 100
+  retry:
+    count: 3
+    interval: 10

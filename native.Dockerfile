@@ -12,7 +12,7 @@ WORKDIR /app
 COPY . .
 
 # Build the binary
-RUN ./gradlew nativeCompile -x test
+RUN ./gradlew backoffice-app:nativeCompile -x test
 
 ### Run stage
 # Create a minimal production image
@@ -26,7 +26,7 @@ RUN useradd -ms /bin/bash appuser
 USER appuser
 
 # Copy only the necessary files from the builder stage
-COPY --from=builder /app/build/native/nativeCompile/app .
+COPY --from=builder /app/backoffice-app/build/native/nativeCompile/app .
 
 # Run the binary when the container starts
 CMD ["./app"]

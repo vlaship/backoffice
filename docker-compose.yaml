@@ -36,7 +36,7 @@ services:
   jvm-api:
     build:
       context: .
-      dockerfile: jvm.Dockerfile
+      dockerfile: gradle.Dockerfile
     restart: unless-stopped
     ports:
       - "18080:18080"
