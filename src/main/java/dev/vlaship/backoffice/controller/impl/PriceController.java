@@ -1,6 +1,6 @@
 package dev.vlaship.backoffice.controller.impl;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
+import dev.vlaship.backoffice.api.PriceApi;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import dev.vlaship.backoffice.controller.AbstractController;
@@ -12,57 +12,53 @@ import dev.vlaship.backoffice.model.Price;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
-import jakarta.validation.Valid;
-
 import java.math.BigDecimal;
 import java.util.List;
 
 @Slf4j
 @RestController
-@Tag(name = "price")
-@RequestMapping("/api/price")
-public class PriceController extends AbstractController<Price, PriceDto> {
+public class PriceController extends AbstractController<Price, PriceDto> implements PriceApi {
 
     private final PriceFacade priceFacade;
 
-    @GetMapping("/between/{currency}/{from}/{to}")
+    @Override
     public ResponseEntity<List<PriceDto>> findAllBetween(
-            final @PathVariable("currency") String currency,
-            final @PathVariable("from") BigDecimal from,
-            final @PathVariable("to") BigDecimal to,
-            final Pageable pageable
+            String currency,
+            BigDecimal from,
+            BigDecimal to,
+            Pageable pageable
     ) {
         return ResponseEntity.ok(priceFacade.findAll(currency, from, to, pageable));
     }
 
-    @GetMapping("/between")
+    @Override
     public ResponseEntity<List<PriceDto>> findAllBetween(
-            @Valid final @RequestBody BetweenPrice betweenPrice,
-            final Pageable pageable
+            BetweenPrice betweenPrice,
+            Pageable pageable
     ) {
         return ResponseEntity.ok(priceFacade.findAll(betweenPrice, pageable));
     }
 
-    @GetMapping("/currency/{currency}")
+    @Override
     public ResponseEntity<List<PriceDto>> findAllByCurrency(
-            final @PathVariable("currency") String currency,
-            final Pageable pageable
+            String currency,
+            Pageable pageable
     ) {
         return ResponseEntity.ok(priceFacade.findAll(currency, pageable));
     }
 
-    @GetMapping("/product/{productId}")
+    @Override
     public ResponseEntity<List<PriceDto>> findAllByProduct(
-            final @PathVariable("productId") Long productId,
-            final Pageable pageable
+            Long productId,
+            Pageable pageable
     ) {
         return ResponseEntity.ok(priceFacade.findAll(productId, pageable));
     }
 
-    @GetMapping("/product")
+    @Override
     public ResponseEntity<List<PriceDto>> findAllByProduct(
-            @Valid final @RequestBody ProductDto productDto,
-            final Pageable pageable
+            ProductDto productDto,
+            Pageable pageable
     ) {
         return ResponseEntity.ok(priceFacade.findAll(productDto.id(), pageable));
     }

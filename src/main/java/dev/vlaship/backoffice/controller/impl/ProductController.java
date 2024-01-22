@@ -1,6 +1,6 @@
 package dev.vlaship.backoffice.controller.impl;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
+import dev.vlaship.backoffice.api.ProductApi;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import dev.vlaship.backoffice.controller.AbstractController;
@@ -10,82 +10,75 @@ import dev.vlaship.backoffice.dto.ProductCreationDto;
 import dev.vlaship.backoffice.facade.impl.ProductFacade;
 import dev.vlaship.backoffice.model.Product;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import jakarta.validation.Valid;
 
 import java.net.URI;
 import java.util.List;
 
 @Slf4j
 @RestController
-@Tag(name = "product")
-@RequestMapping("/api/product")
-public class ProductController extends AbstractController<Product, ProductDto> {
+public class ProductController extends AbstractController<Product, ProductDto> implements ProductApi {
 
     private final ProductFacade facade;
 
-    @PostMapping("/create")
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<ProductDto> create(@Valid final @RequestBody ProductCreationDto productCreationDto) {
+    @Override
+    public ResponseEntity<ProductDto> create(ProductCreationDto productCreationDto) {
         var dto = facade.create(productCreationDto);
         return ResponseEntity.created(URI.create("/product/" + dto.id())).body(dto);
     }
 
-    @PutMapping("/{productId}/add/price")
-    @ResponseStatus(HttpStatus.CREATED)
+    @Override
     public ResponseEntity<ProductDto> add(
-            final @PathVariable("productId") Long productId,
-            @Valid final @RequestBody PriceDto priceDto
+            Long productId,
+            PriceDto priceDto
     ) {
-        return ResponseEntity.accepted().body(facade.add(priceDto, productId));
+        return ResponseEntity.ok(facade.add(priceDto, productId));
     }
 
-    @PutMapping("/{productId}/add/category/{categoryId}")
+    @Override
     public ResponseEntity<ProductDto> add(
-            final @PathVariable("productId") Long productId,
-            final @PathVariable("categoryId") Long categoryId
+            Long productId,
+            Long categoryId
     ) {
-        return ResponseEntity.accepted().body(facade.add(categoryId, productId));
+        return ResponseEntity.ok(facade.add(categoryId, productId));
     }
 
-    @PutMapping("/{productId}/remove/category/{categoryId}")
+    @Override
     public ResponseEntity<ProductDto> removeCategory(
-            final @PathVariable("productId") Long productId,
-            final @PathVariable("categoryId") Long categoryId
+            Long productId,
+            Long categoryId
     ) {
-        return ResponseEntity.accepted().body(facade.removeCategory(categoryId, productId));
+        return ResponseEntity.ok(facade.removeCategory(categoryId, productId));
     }
 
-    @PutMapping("/{productId}/remove/price/{priceId}")
+    @Override
     public ResponseEntity<ProductDto> removePrice(
-            final @PathVariable("productId") Long productId,
-            final @PathVariable("priceId") Long priceId
+            Long productId,
+            Long priceId
     ) {
-        return ResponseEntity.accepted().body(facade.removePrice(priceId, productId));
+        return ResponseEntity.ok(facade.removePrice(priceId, productId));
     }
 
-    @GetMapping("/price")
+    @Override
     public ResponseEntity<List<ProductDto>> findAllByPrice(
-            @Valid final @RequestBody PriceDto priceDto,
-            final Pageable pageable
+            PriceDto priceDto,
+            Pageable pageable
     ) {
         return ResponseEntity.ok(facade.findAll(priceDto, pageable));
     }
 
-    @GetMapping("/category/{categoryId}")
+    @Override
     public ResponseEntity<List<ProductDto>> findAllByCategory(
-            final @PathVariable("categoryId") Long categoryId,
-            final Pageable pageable
+            Long categoryId,
+            Pageable pageable
     ) {
         return ResponseEntity.ok(facade.findAll(categoryId, pageable));
     }
 
-    @GetMapping("/name/{name}")
+    @Override
     public ResponseEntity<List<ProductDto>> findAllName(
-            final @PathVariable("name") String name,
-            final Pageable pageable
+            String name,
+            Pageable pageable
     ) {
         return ResponseEntity.ok(facade.findAll(name, pageable));
     }
