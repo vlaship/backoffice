@@ -1,6 +1,6 @@
 ### Build stage
 # Builder gradle
-FROM azul/zulu-openjdk-alpine:21 AS builder
+FROM gradle:jdk21-alpine AS builder
 
 # Set the working directory inside the container
 WORKDIR /
@@ -9,13 +9,15 @@ WORKDIR /
 COPY . .
 
 # Build
-RUN gradlew backoffice-app:unpack -x test --no-daemon
+RUN gradle clean backoffice-app:unpack -x test --no-daemon
 
 # Unpack the jar
-ARG UNPACKED=backoffice-app/build/unpacked
+ARG UNPACKED=/backoffice-app/build/unpacked
+
+# Copy unpacked into the container
+COPY ${UNPACKED}/BOOT-INF/classes /upacked/app
 COPY ${UNPACKED}/BOOT-INF/lib /upacked/app/lib
 COPY ${UNPACKED}/META-INF /upacked/app/META-INF
-COPY ${UNPACKED}/BOOT-INF/classes /upacked/app
 
 ### Run stage
 # Create a minimal production image

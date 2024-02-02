@@ -1,26 +1,28 @@
 package dev.vlaship.backoffice.security;
 
+import dev.vlaship.backoffice.exception.JwtAuthenticationException;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Qualifier;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.io.IOException;
 import java.util.List;
 
+@Slf4j
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
@@ -28,19 +30,15 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     private final UserDetailsService jwtUserDetailsService;
     private final JwtTokenUtil jwtTokenUtil;
-    private final HandlerExceptionResolver resolver;
     private final List<String> whiteUrls;
 
     public JwtRequestFilter(
             UserDetailsService jwtUserDetailsService,
             JwtTokenUtil jwtTokenUtil,
-            @Qualifier("handlerExceptionResolver")
-            HandlerExceptionResolver resolver,
             List<String> whiteUrls
     ) {
         this.jwtUserDetailsService = jwtUserDetailsService;
         this.jwtTokenUtil = jwtTokenUtil;
-        this.resolver = resolver;
         this.whiteUrls = whiteUrls;
     }
 
@@ -50,13 +48,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain chain
     ) throws ServletException, IOException {
-        var skip = whiteUrls.stream()
-                .anyMatch(url -> request.getServletPath().contains(url));
-
-        if (skip) {
-            chain.doFilter(request, response);
-            return;
-        }
+//        var skip = whiteUrls.stream()
+//                .anyMatch(url -> request.getServletPath().contains(url));
+//
+//        if (skip) {
+//            chain.doFilter(request, response);
+//            return;
+//        }
 
         var jwtToken = extractToken(request);
 
@@ -64,21 +62,18 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             if (jwtToken != null) {
                 jwtTokenUtil.validateToken(jwtToken);
                 var username = getUsername(jwtToken);
-
                 var userDetails = this.jwtUserDetailsService.loadUserByUsername(username);
-                var auth = new UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        null,
-                        userDetails.getAuthorities()
-                );
+
+                var auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
 
-            chain.doFilter(request, response);
-        } catch (Exception e) {
-            resolver.resolveException(request, response, null, e);
+        } catch (JwtAuthenticationException | UsernameNotFoundException ex) {
+            log.debug("error validate credentials: {}", ex.getMessage());
         }
+
+        chain.doFilter(request, response);
     }
 
     @Nullable
@@ -101,5 +96,4 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
         return null;
     }
-
 }

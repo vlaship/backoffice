@@ -10,7 +10,6 @@ COPY . .
 
 # Unpack the jar
 ARG UNPACKED=/backoffice-app/build/unpacked
-
 COPY ${UNPACKED}/BOOT-INF/lib /upacked/app/lib
 COPY ${UNPACKED}/META-INF /upacked/app/META-INF
 COPY ${UNPACKED}/BOOT-INF/classes /upacked/app

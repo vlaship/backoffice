@@ -14,18 +14,20 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+@Profile("apache")
 @Configuration
 @RequiredArgsConstructor
-@EnableConfigurationProperties(ClientProperties.class)
-public class Config {
+@EnableConfigurationProperties(ApacheClientProperties.class)
+public class ApacheClientConfig {
 
     @Bean("clientConnectionManager")
-    public PoolingHttpClientConnectionManager poolingHttpClientConnectionManager(ClientProperties clientProperties) {
+    public PoolingHttpClientConnectionManager poolingHttpClientConnectionManager(ApacheClientProperties clientProperties) {
         var connectionManager = new PoolingHttpClientConnectionManager();
         ConnectionConfig connectionConfig = ConnectionConfig.custom()
                 .setConnectTimeout(Timeout.of(clientProperties.connectionTimeout()))
@@ -43,7 +45,7 @@ public class Config {
     }
 
     @Bean("clientRetryStrategy")
-    public HttpRequestRetryStrategy httpRequestRetryStrategy(ClientProperties clientProperties) {
+    public HttpRequestRetryStrategy httpRequestRetryStrategy(ApacheClientProperties clientProperties) {
         return new DefaultHttpRequestRetryStrategy(
                 clientProperties.retry().count(),
                 TimeValue.ofMilliseconds(clientProperties.retry().interval())

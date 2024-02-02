@@ -7,6 +7,7 @@ import dev.vlaship.backoffice.dto.SignupRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -19,23 +20,32 @@ public class AuthClient implements AuthApi {
 
     @Override
     public ResponseEntity<Void> signup(SignupRequest request) {
-        var url = UriComponentsBuilder
-                .fromUriString(clientProperties.baseUrl())
+        var url = UriComponentsBuilder.fromUriString(clientProperties.baseUrl())
                 .path(clientProperties.path())
                 .path("/signup")
                 .build()
                 .toString();
-        return restTemplate.postForEntity(url, request, Void.class);
+        return RestClient.builder(restTemplate)
+                .baseUrl(url)
+                .build()
+                .post()
+                .body(request)
+                .retrieve()
+                .toBodilessEntity();
     }
 
     @Override
     public ResponseEntity<LoginResponse> login(LoginRequest request) {
-        var url = UriComponentsBuilder
-                .fromUriString(clientProperties.baseUrl())
+        var url = UriComponentsBuilder.fromUriString(clientProperties.baseUrl())
                 .path(clientProperties.path())
                 .path("/login")
                 .build()
                 .toString();
-        return restTemplate.postForEntity(url, request, LoginResponse.class);
+        return RestClient.builder(restTemplate)
+                .baseUrl(url)
+                .build()
+                .post()
+                .retrieve()
+                .toEntity(LoginResponse.class);
     }
 }
