@@ -9,10 +9,10 @@ WORKDIR /tmp
 COPY . .
 
 # Build
-RUN ./gradlew backoffice-app:build -x test --no-daemon
+RUN gradle clean backoffice-app:bootJar -x test --no-daemon
 
 # Copy the source code into the container
-COPY ./backoffice-app/build/libs/backoffice-app.jar app.jar
+COPY backoffice-app/build/libs/backoffice-app.jar app.jar
 
 # Extract the layers
 RUN java -Djarmode=layertools -jar app.jar extract
