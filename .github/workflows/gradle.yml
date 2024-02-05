@@ -59,8 +59,4 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Build Docker image
-        uses: docker/build-push-action@v5
-        with:
-          no-cache: true
-          context: .
-          file: ./gradle.Dockerfile
+        run: docker buildx b --file gradle.Dockerfile --no-cache .
