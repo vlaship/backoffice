@@ -9,7 +9,7 @@ WORKDIR /tmp
 COPY . .
 
 # Build
-RUN gradle backoffice-app:build -x test --no-daemon
+RUN ./gradlew backoffice-app:build -x test --no-daemon
 
 # Copy the source code into the container
 COPY ./backoffice-app/build/libs/backoffice-app.jar app.jar
