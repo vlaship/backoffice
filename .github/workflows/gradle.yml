@@ -59,4 +59,4 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Build Docker image
-        run: docker buildx b --no-cache --file docker/jvm.Dockerfile .
+        run: docker buildx b --no-cache --file jvm.Dockerfile .
