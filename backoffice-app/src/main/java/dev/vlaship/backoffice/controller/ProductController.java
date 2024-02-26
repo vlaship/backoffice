@@ -1,23 +1,21 @@
-package dev.vlaship.backoffice.controller.impl;
+package dev.vlaship.backoffice.controller;
 
 import dev.vlaship.backoffice.api.ProductApi;
-import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import dev.vlaship.backoffice.controller.AbstractController;
 import dev.vlaship.backoffice.dto.PriceDto;
 import dev.vlaship.backoffice.dto.ProductDto;
 import dev.vlaship.backoffice.dto.ProductCreationDto;
 import dev.vlaship.backoffice.facade.impl.ProductFacade;
-import dev.vlaship.backoffice.model.Product;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
 
-@Slf4j
 @RestController
-public class ProductController extends AbstractController<Product, ProductDto> implements ProductApi {
+@RequiredArgsConstructor
+public class ProductController implements ProductApi {
 
     private final ProductFacade facade;
 
@@ -83,9 +81,24 @@ public class ProductController extends AbstractController<Product, ProductDto> i
         return ResponseEntity.ok(facade.findAll(name, pageable));
     }
 
-    public ProductController(final ProductFacade facade) {
-        super(facade);
-        this.facade = facade;
+    @Override
+    public ResponseEntity<List<ProductDto>> findAll(Pageable pageable) {
+        return ResponseEntity.ok(facade.findAll(pageable));
     }
 
+    @Override
+    public ResponseEntity<ProductDto> update(ProductDto dto) {
+        return ResponseEntity.accepted().body(facade.update(dto));
+    }
+
+    @Override
+    public ResponseEntity<Void> delete(Long id) {
+        facade.delete(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @Override
+    public ResponseEntity<ProductDto> find(Long id) {
+        return ResponseEntity.ok(facade.find(id));
+    }
 }

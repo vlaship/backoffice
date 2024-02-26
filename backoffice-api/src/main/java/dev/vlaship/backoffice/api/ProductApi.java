@@ -3,7 +3,6 @@ package dev.vlaship.backoffice.api;
 import dev.vlaship.backoffice.dto.PriceDto;
 import dev.vlaship.backoffice.dto.ProductCreationDto;
 import dev.vlaship.backoffice.dto.ProductDto;
-import dev.vlaship.backoffice.model.Product;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -19,7 +18,99 @@ import java.util.List;
 
 @Tag(name = "product")
 @RequestMapping("/api/product")
-public interface ProductApi extends Api<Product, ProductDto> {
+public interface ProductApi {
+
+    @Operation(
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Ok"),
+                    @ApiResponse(responseCode = "400", description = "Bad Request", content = {
+                            @Content(mediaType = "*/*", schema = @Schema(implementation = ProblemDetail.class))
+                    }),
+                    @ApiResponse(responseCode = "401", description = "Unauthorized", content = {
+                            @Content(mediaType = "*/*", schema = @Schema(implementation = ProblemDetail.class))
+                    }),
+                    @ApiResponse(responseCode = "403", description = "Forbidden", content = {
+                            @Content(mediaType = "*/*", schema = @Schema(implementation = ProblemDetail.class))
+                    }),
+                    @ApiResponse(responseCode = "404", description = "Not Found", content = {
+                            @Content(mediaType = "*/*", schema = @Schema(implementation = ProblemDetail.class))
+                    }),
+                    @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
+                            @Content(mediaType = "*/*", schema = @Schema(implementation = ProblemDetail.class))
+                    })
+            }
+    )
+    @PutMapping("/update")
+    ResponseEntity<ProductDto> update(@Valid final @RequestBody ProductDto dto);
+
+    @Operation(
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Ok"),
+                    @ApiResponse(responseCode = "400", description = "Bad Request", content = {
+                            @Content(mediaType = "*/*", schema = @Schema(implementation = ProblemDetail.class))
+                    }),
+                    @ApiResponse(responseCode = "401", description = "Unauthorized", content = {
+                            @Content(mediaType = "*/*", schema = @Schema(implementation = ProblemDetail.class))
+                    }),
+                    @ApiResponse(responseCode = "403", description = "Forbidden", content = {
+                            @Content(mediaType = "*/*", schema = @Schema(implementation = ProblemDetail.class))
+                    }),
+                    @ApiResponse(responseCode = "404", description = "Not Found", content = {
+                            @Content(mediaType = "*/*", schema = @Schema(implementation = ProblemDetail.class))
+                    }),
+                    @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
+                            @Content(mediaType = "*/*", schema = @Schema(implementation = ProblemDetail.class))
+                    })
+            }
+    )
+    @DeleteMapping("/delete/{id}")
+    ResponseEntity<Void> delete(final @PathVariable("id") Long id);
+
+    @Operation(
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Ok"),
+                    @ApiResponse(responseCode = "400", description = "Bad Request", content = {
+                            @Content(mediaType = "*/*", schema = @Schema(implementation = ProblemDetail.class))
+                    }),
+                    @ApiResponse(responseCode = "401", description = "Unauthorized", content = {
+                            @Content(mediaType = "*/*", schema = @Schema(implementation = ProblemDetail.class))
+                    }),
+                    @ApiResponse(responseCode = "403", description = "Forbidden", content = {
+                            @Content(mediaType = "*/*", schema = @Schema(implementation = ProblemDetail.class))
+                    }),
+                    @ApiResponse(responseCode = "404", description = "Not Found", content = {
+                            @Content(mediaType = "*/*", schema = @Schema(implementation = ProblemDetail.class))
+                    }),
+                    @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
+                            @Content(mediaType = "*/*", schema = @Schema(implementation = ProblemDetail.class))
+                    })
+            }
+    )
+    @GetMapping("/{id}")
+    ResponseEntity<ProductDto> find(final @PathVariable("id") Long id);
+
+    @Operation(
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Ok"),
+                    @ApiResponse(responseCode = "400", description = "Bad Request", content = {
+                            @Content(mediaType = "*/*", schema = @Schema(implementation = ProblemDetail.class))
+                    }),
+                    @ApiResponse(responseCode = "401", description = "Unauthorized", content = {
+                            @Content(mediaType = "*/*", schema = @Schema(implementation = ProblemDetail.class))
+                    }),
+                    @ApiResponse(responseCode = "403", description = "Forbidden", content = {
+                            @Content(mediaType = "*/*", schema = @Schema(implementation = ProblemDetail.class))
+                    }),
+                    @ApiResponse(responseCode = "404", description = "Not Found", content = {
+                            @Content(mediaType = "*/*", schema = @Schema(implementation = ProblemDetail.class))
+                    }),
+                    @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
+                            @Content(mediaType = "*/*", schema = @Schema(implementation = ProblemDetail.class))
+                    })
+            }
+    )
+    @GetMapping("/list")
+    ResponseEntity<List<ProductDto>> findAll(final Pageable pageable);
 
     @Operation(
             operationId = "createProduct",
@@ -249,5 +340,4 @@ public interface ProductApi extends Api<Product, ProductDto> {
             final @PathVariable("name") String name,
             final Pageable pageable
     );
-
 }
