@@ -13,4 +13,4 @@ bin/
 out/
 *private.env*
 .env
-
+*.log

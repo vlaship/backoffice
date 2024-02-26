@@ -1,3 +1,6 @@
+application:
+  title: backoffice-app
+  version: 1.0.0
 spring:
   application:
     name: ${APP_NAME}
@@ -31,7 +34,7 @@ spring:
       ddl-auto: validate
     properties:
       hibernate:
-        show_sql: true
+        show_sql: false
         format_sql: true
         use_sql_comments: true
         default_schema: ${DB_SCHEMA}
@@ -58,6 +61,7 @@ logging:
     root: info
     sql: info
     web: info
+    dev.vlaship.backoffice: debug
 # ===============================
 # = JWT
 # ===============================

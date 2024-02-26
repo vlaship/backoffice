@@ -1,6 +1,6 @@
 [versions]
 openApiVersion = "2.3.0"
-springBootVersion = "3.2.2"
+springBootVersion = "3.2.3"
 springDepManVersion = "1.1.4"
 kotlinGradlePluginVersion = "1.9.22"
 graalvmGradlePluginVersion = "0.9.28"
