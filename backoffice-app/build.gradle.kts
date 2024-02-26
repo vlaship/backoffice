@@ -42,6 +42,10 @@ dependencies {
     implementation("net.lbruun.springboot:preliquibase-spring-boot-starter:$preLiquibaseVersion")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
+    // cache
+    implementation("org.springframework.boot:spring-boot-starter-cache")
+    implementation("com.github.ben-manes.caffeine:caffeine")
+
     // actuator
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("io.opentelemetry.instrumentation:opentelemetry-instrumentation-annotations:$openTelemetryVersion")

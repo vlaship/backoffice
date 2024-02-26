@@ -1,6 +1,5 @@
 package dev.vlaship.backoffice.controller;
 
-import dev.vlaship.backoffice.api.Api;
 import org.springframework.http.ResponseEntity;
 import dev.vlaship.backoffice.dto.Dto;
 import dev.vlaship.backoffice.facade.Facade;
@@ -9,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-public class AbstractController<M extends Model, D extends Dto> implements Api<M, D> {
+public class AbstractController<M extends Model, D extends Dto> {
 
     private final Facade<M, D> facade;
 

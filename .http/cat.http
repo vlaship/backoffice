@@ -20,6 +20,10 @@ Content-Type: application/json
 GET {{host}}/api/category/list
 Authorization: Bearer {{token}}
 
+### /category/name/test
+GET {{host}}/api/category/name/test
+Authorization: Bearer {{token}}
+
 ### /product/list
 GET {{host}}/api/product/list?page=0&size=1&sort=namn,asc
 Authorization: Bearer {{token}}
