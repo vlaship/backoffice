@@ -5,8 +5,6 @@ import dev.vlaship.backoffice.dto.PriceDto;
 import dev.vlaship.backoffice.dto.ProductDto;
 import dev.vlaship.backoffice.mapper.impl.PriceMapper;
 import dev.vlaship.backoffice.mapper.impl.ProductMapper;
-import dev.vlaship.backoffice.facade.impl.CategoryFacade;
-import dev.vlaship.backoffice.facade.impl.ProductFacade;
 import dev.vlaship.backoffice.model.Category;
 import dev.vlaship.backoffice.model.Price;
 import dev.vlaship.backoffice.model.Product;

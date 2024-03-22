@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import dev.vlaship.backoffice.dto.PriceDto;
 import dev.vlaship.backoffice.dto.ProductDto;
 import dev.vlaship.backoffice.dto.ProductCreationDto;
-import dev.vlaship.backoffice.facade.impl.ProductFacade;
+import dev.vlaship.backoffice.facade.ProductFacade;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 

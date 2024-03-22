@@ -5,7 +5,7 @@ import dev.vlaship.backoffice.dto.Dto;
 import dev.vlaship.backoffice.model.Model;
 import dev.vlaship.backoffice.mapper.BackOfficeMapper;
 import dev.vlaship.backoffice.service.BackOfficeService;
-import org.springframework.data.domain.Pageable;
+import dev.vlaship.backoffice.dto.Pageable;
 
 import java.util.List;
 

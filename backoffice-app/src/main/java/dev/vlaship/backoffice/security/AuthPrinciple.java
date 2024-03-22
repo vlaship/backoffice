@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.List;
 
 @AllArgsConstructor
-public class DbUserPrinciple implements UserDetails {
+public class AuthPrinciple implements UserDetails {
 
     private final User user;
 

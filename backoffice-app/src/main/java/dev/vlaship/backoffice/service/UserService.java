@@ -9,7 +9,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import dev.vlaship.backoffice.model.User;
 import dev.vlaship.backoffice.repository.UserRepository;
-import dev.vlaship.backoffice.security.JwtTokenUtil;
 
 @Slf4j
 @Service
@@ -19,12 +18,13 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
-    private final JwtTokenUtil jwtTokenUtil;
+    private final TokenService tokenService;
 
     @NonNull
     public String login(@NonNull User user) {
         var auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getName(), user.getPassword()));
-        return jwtTokenUtil.generateToken(auth);
+        var jwt = tokenService.generateToken(auth.getName());
+        return jwt.getTokenValue();
     }
 
     public void signup(@NonNull User user) {

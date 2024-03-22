@@ -1,4 +1,4 @@
-package dev.vlaship.backoffice.facade.impl;
+package dev.vlaship.backoffice.facade;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
@@ -9,7 +9,6 @@ import dev.vlaship.backoffice.exception.DeleteException;
 import dev.vlaship.backoffice.model.Category;
 import dev.vlaship.backoffice.model.Price;
 import dev.vlaship.backoffice.model.Product;
-import dev.vlaship.backoffice.facade.AbstractFacade;
 import dev.vlaship.backoffice.mapper.impl.PriceMapper;
 import dev.vlaship.backoffice.mapper.impl.ProductMapper;
 import dev.vlaship.backoffice.service.impl.PriceService;

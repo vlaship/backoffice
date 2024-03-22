@@ -9,14 +9,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class DbUserDetailsService implements UserDetailsService {
+public class AuthUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(final String name) {
         var user = userRepository.findByName(name).orElseThrow(() -> new UsernameNotFoundException(name));
-        return new DbUserPrinciple(user);
+        return new AuthPrinciple(user);
     }
-
 }

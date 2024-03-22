@@ -1,4 +1,4 @@
-package dev.vlaship.backoffice.facade.impl;
+package dev.vlaship.backoffice.facade;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;

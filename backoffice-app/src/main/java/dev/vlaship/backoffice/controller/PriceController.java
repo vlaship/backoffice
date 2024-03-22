@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import dev.vlaship.backoffice.dto.BetweenPrice;
 import dev.vlaship.backoffice.dto.PriceDto;
 import dev.vlaship.backoffice.dto.ProductDto;
-import dev.vlaship.backoffice.facade.impl.PriceFacade;
+import dev.vlaship.backoffice.facade.PriceFacade;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
