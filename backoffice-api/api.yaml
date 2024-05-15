@@ -30,42 +30,18 @@ paths:
             type: integer
             format: int64
       responses:
-        '200':
-          description: Ok
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProductDto'
-        '400':
-          description: Bad Request
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '401':
-          description: Unauthorized
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '403':
-          description: Forbidden
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '404':
-          description: Not Found
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '500':
-          description: Internal Server Error
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
+        200:
+          $ref: '#/components/responses/ProductResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
 
   /v1/product/{productId}/remove/category/{categoryId}:
     put:
@@ -87,42 +63,18 @@ paths:
             type: integer
             format: int64
       responses:
-        '200':
-          description: Ok
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProductDto'
-        '400':
-          description: Bad Request
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '401':
-          description: Unauthorized
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '403':
-          description: Forbidden
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '404':
-          description: Not Found
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '500':
-          description: Internal Server Error
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
+        200:
+          $ref: '#/components/responses/ProductResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
 
   /v1/product/{productId}/add/price:
     put:
@@ -138,48 +90,20 @@ paths:
             type: integer
             format: int64
       requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PriceDto'
-        required: true
+        $ref: '#/components/requestBodies/PriceDto'
       responses:
-        '200':
-          description: Ok
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProductDto'
-        '400':
-          description: Bad Request
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '401':
-          description: Unauthorized
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '403':
-          description: Forbidden
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '404':
-          description: Not Found
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '500':
-          description: Internal Server Error
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
+        200:
+          $ref: '#/components/responses/ProductResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
 
   /v1/product/{productId}/add/category/{categoryId}:
     put:
@@ -201,42 +125,18 @@ paths:
             type: integer
             format: int64
       responses:
-        '200':
-          description: Ok
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProductDto'
-        '400':
-          description: Bad Request
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '401':
-          description: Unauthorized
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '403':
-          description: Forbidden
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '404':
-          description: Not Found
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '500':
-          description: Internal Server Error
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
+        200:
+          $ref: '#/components/responses/ProductResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
 
   /v1/product/update:
     put:
@@ -244,48 +144,20 @@ paths:
         - product
       operationId: updateProduct
       requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ProductDto'
-        required: true
+        $ref: '#/components/requestBodies/ProductDto'
       responses:
-        '200':
-          description: Ok
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProductDto'
-        '400':
-          description: Bad Request
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '401':
-          description: Unauthorized
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '403':
-          description: Forbidden
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '404':
-          description: Not Found
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '500':
-          description: Internal Server Error
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
+        200:
+          $ref: '#/components/responses/ProductResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
 
   /v1/price/update:
     put:
@@ -293,48 +165,20 @@ paths:
         - price
       operationId: updatePrice
       requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PriceDto'
-        required: true
+        $ref: '#/components/requestBodies/PriceDto'
       responses:
-        '200':
-          description: Ok
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/PriceDto'
-        '400':
-          description: Bad Request
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '401':
-          description: Unauthorized
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '403':
-          description: Forbidden
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '404':
-          description: Not Found
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '500':
-          description: Internal Server Error
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
+        200:
+          $ref: '#/components/responses/PriceResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
 
   /v1/category/update:
     put:
@@ -342,48 +186,21 @@ paths:
         - category
       operationId: updateCategory
       requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CategoryDto'
-        required: true
+        $ref: '#/components/requestBodies/CategoryDto'
       responses:
-        '200':
-          description: Ok
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/CategoryDto'
-        '400':
-          description: Bad Request
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '401':
-          description: Unauthorized
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '403':
-          description: Forbidden
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '404':
-          description: Not Found
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '500':
-          description: Internal Server Error
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
+        200:
+          $ref: '#/components/responses/CategoryResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
   /v1/product/create:
     post:
       tags:
@@ -391,48 +208,21 @@ paths:
       summary: create product
       operationId: createProduct
       requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ProductCreationDto'
-        required: true
+        $ref: '#/components/requestBodies/ProductCreationDto'
       responses:
-        '201':
-          description: Created
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProductDto'
-        '400':
-          description: Bad Request
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '401':
-          description: Unauthorized
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '403':
-          description: Forbidden
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '404':
-          description: Not Found
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '500':
-          description: Internal Server Error
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
+        201:
+          $ref: '#/components/responses/ProductResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
   /v1/category/create:
     post:
       tags:
@@ -440,48 +230,21 @@ paths:
       summary: create category
       operationId: createCategory
       requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CategoryDto'
-        required: true
+        $ref: '#/components/requestBodies/CategoryDto'
       responses:
-        '201':
-          description: Created
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/CategoryDto'
-        '400':
-          description: Bad Request
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '401':
-          description: Unauthorized
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '403':
-          description: Forbidden
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '404':
-          description: Not Found
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '500':
-          description: Internal Server Error
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
+        201:
+          $ref: '#/components/responses/CategoryResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
   /v1/auth/signup:
     post:
       tags:
@@ -489,44 +252,21 @@ paths:
       summary: sign up
       operationId: signup
       requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SignupRequest'
-        required: true
+        $ref: '#/components/requestBodies/SignupRequest'
       responses:
-        '201':
+        201:
           description: Created
-        '400':
-          description: Bad Request
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '401':
-          description: Unauthorized
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '403':
-          description: Forbidden
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '404':
-          description: Not Found
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '500':
-          description: Internal Server Error
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
   /v1/auth/login:
     post:
       tags:
@@ -534,48 +274,21 @@ paths:
       summary: login
       operationId: login
       requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/LoginRequest'
-        required: true
+        $ref: '#/components/requestBodies/LoginRequest'
       responses:
-        '200':
-          description: Ok
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/LoginResponse'
-        '400':
-          description: Bad Request
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '401':
-          description: Unauthorized
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '403':
-          description: Forbidden
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '404':
-          description: Not Found
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '500':
-          description: Internal Server Error
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
+        200:
+          $ref: '#/components/responses/LoginResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
   /v1/product/{id}:
     get:
       tags:
@@ -589,42 +302,19 @@ paths:
             type: integer
             format: int64
       responses:
-        '200':
-          description: Ok
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProductDto'
-        '400':
-          description: Bad Request
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '401':
-          description: Unauthorized
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '403':
-          description: Forbidden
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '404':
-          description: Not Found
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '500':
-          description: Internal Server Error
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
+        200:
+          $ref: '#/components/responses/ProductResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
   /v1/product/price:
     get:
       tags:
@@ -632,55 +322,27 @@ paths:
       summary: find all products by price
       operationId: getProductsByPrice
       parameters:
-        - name: priceDto
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/PriceDto'
         - name: pageable
           in: query
           required: true
           schema:
             $ref: '#/components/schemas/Pageable'
+      requestBody:
+        $ref: '#/components/requestBodies/PriceDto'
       responses:
-        '200':
-          description: Ok
-          content:
-            'application/json':
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ProductDto'
-        '400':
-          description: Bad Request
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '401':
-          description: Unauthorized
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '403':
-          description: Forbidden
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '404':
-          description: Not Found
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '500':
-          description: Internal Server Error
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
+        200:
+          $ref: '#/components/responses/ProductsResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
   /v1/product/name/{name}:
     get:
       tags:
@@ -699,44 +361,19 @@ paths:
           schema:
             $ref: '#/components/schemas/Pageable'
       responses:
-        '200':
-          description: Ok
-          content:
-            'application/json':
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ProductDto'
-        '400':
-          description: Bad Request
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '401':
-          description: Unauthorized
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '403':
-          description: Forbidden
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '404':
-          description: Not Found
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '500':
-          description: Internal Server Error
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
+        200:
+          $ref: '#/components/responses/ProductsResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
   /v1/product/list:
     get:
       tags:
@@ -749,44 +386,19 @@ paths:
           schema:
             $ref: '#/components/schemas/Pageable'
       responses:
-        '200':
-          description: Ok
-          content:
-            'application/json':
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ProductDto'
-        '400':
-          description: Bad Request
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '401':
-          description: Unauthorized
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '403':
-          description: Forbidden
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '404':
-          description: Not Found
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '500':
-          description: Internal Server Error
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
+        200:
+          $ref: '#/components/responses/ProductsResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
   /v1/product/category/{categoryId}:
     get:
       tags:
@@ -806,44 +418,19 @@ paths:
           schema:
             $ref: '#/components/schemas/Pageable'
       responses:
-        '200':
-          description: Ok
-          content:
-            'application/json':
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ProductDto'
-        '400':
-          description: Bad Request
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '401':
-          description: Unauthorized
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '403':
-          description: Forbidden
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '404':
-          description: Not Found
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '500':
-          description: Internal Server Error
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
+        200:
+          $ref: '#/components/responses/ProductsResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
   /v1/price/{id}:
     get:
       tags:
@@ -857,42 +444,19 @@ paths:
             type: integer
             format: int64
       responses:
-        '200':
-          description: Ok
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/PriceDto'
-        '400':
-          description: Bad Request
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '401':
-          description: Unauthorized
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '403':
-          description: Forbidden
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '404':
-          description: Not Found
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '500':
-          description: Internal Server Error
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
+        200:
+          $ref: '#/components/responses/PriceResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
   /v1/price/product:
     get:
       tags:
@@ -900,55 +464,27 @@ paths:
       summary: find all prices by product
       operationId: getPricesByProduct
       parameters:
-        - name: productDto
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/ProductDto'
         - name: pageable
           in: query
           required: true
           schema:
             $ref: '#/components/schemas/Pageable'
+      requestBody:
+        $ref: '#/components/requestBodies/ProductDto'
       responses:
-        '200':
-          description: Ok
-          content:
-            'application/json':
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/PriceDto'
-        '400':
-          description: Bad Request
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '401':
-          description: Unauthorized
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '403':
-          description: Forbidden
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '404':
-          description: Not Found
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '500':
-          description: Internal Server Error
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
+        200:
+          $ref: '#/components/responses/PricesResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
   /v1/price/product/{productId}:
     get:
       tags:
@@ -968,44 +504,19 @@ paths:
           schema:
             $ref: '#/components/schemas/Pageable'
       responses:
-        '200':
-          description: Ok
-          content:
-            'application/json':
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/PriceDto'
-        '400':
-          description: Bad Request
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '401':
-          description: Unauthorized
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '403':
-          description: Forbidden
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '404':
-          description: Not Found
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '500':
-          description: Internal Server Error
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
+        200:
+          $ref: '#/components/responses/PricesResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
   /v1/price/list:
     get:
       tags:
@@ -1018,44 +529,19 @@ paths:
           schema:
             $ref: '#/components/schemas/Pageable'
       responses:
-        '200':
-          description: Ok
-          content:
-            'application/json':
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/PriceDto'
-        '400':
-          description: Bad Request
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '401':
-          description: Unauthorized
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '403':
-          description: Forbidden
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '404':
-          description: Not Found
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '500':
-          description: Internal Server Error
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
+        200:
+          $ref: '#/components/responses/PricesResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
   /v1/price/currency/{currency}:
     get:
       tags:
@@ -1074,44 +560,19 @@ paths:
           schema:
             $ref: '#/components/schemas/Pageable'
       responses:
-        '200':
-          description: Ok
-          content:
-            'application/json':
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/PriceDto'
-        '400':
-          description: Bad Request
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '401':
-          description: Unauthorized
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '403':
-          description: Forbidden
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '404':
-          description: Not Found
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '500':
-          description: Internal Server Error
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
+        200:
+          $ref: '#/components/responses/PricesResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
   /v1/price/between:
     get:
       tags:
@@ -1119,55 +580,27 @@ paths:
       summary: find all prices between
       operationId: getPricesBetween
       parameters:
-        - name: betweenPrice
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/BetweenPrice'
         - name: pageable
           in: query
           required: true
           schema:
             $ref: '#/components/schemas/Pageable'
+      requestBody:
+        $ref: '#/components/requestBodies/BetweenPrice'
       responses:
-        '200':
-          description: Ok
-          content:
-            'application/json':
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/PriceDto'
-        '400':
-          description: Bad Request
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '401':
-          description: Unauthorized
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '403':
-          description: Forbidden
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '404':
-          description: Not Found
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '500':
-          description: Internal Server Error
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
+        200:
+          $ref: '#/components/responses/PricesResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
   /v1/price/between/{currency}/{from}/{to}:
     get:
       tags:
@@ -1196,44 +629,19 @@ paths:
           schema:
             $ref: '#/components/schemas/Pageable'
       responses:
-        '200':
-          description: Ok
-          content:
-            'application/json':
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/PriceDto'
-        '400':
-          description: Bad Request
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '401':
-          description: Unauthorized
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '403':
-          description: Forbidden
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '404':
-          description: Not Found
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '500':
-          description: Internal Server Error
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
+        200:
+          $ref: '#/components/responses/PricesResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
   /v1/category/{id}:
     get:
       tags:
@@ -1247,42 +655,19 @@ paths:
             type: integer
             format: int64
       responses:
-        '200':
-          description: Ok
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/CategoryDto'
-        '400':
-          description: Bad Request
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '401':
-          description: Unauthorized
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '403':
-          description: Forbidden
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '404':
-          description: Not Found
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '500':
-          description: Internal Server Error
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
+        200:
+          $ref: '#/components/responses/CategoryResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
   /v1/category/name/{name}:
     get:
       tags:
@@ -1301,44 +686,19 @@ paths:
           schema:
             $ref: '#/components/schemas/Pageable'
       responses:
-        '200':
-          description: Ok
-          content:
-            'application/json':
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/CategoryDto'
-        '400':
-          description: Bad Request
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '401':
-          description: Unauthorized
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '403':
-          description: Forbidden
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '404':
-          description: Not Found
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '500':
-          description: Internal Server Error
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
+        200:
+          $ref: '#/components/responses/CategoriesResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
   /v1/category/list:
     get:
       tags:
@@ -1351,44 +711,19 @@ paths:
           schema:
             $ref: '#/components/schemas/Pageable'
       responses:
-        '200':
-          description: Ok
-          content:
-            'application/json':
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/CategoryDto'
-        '400':
-          description: Bad Request
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '401':
-          description: Unauthorized
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '403':
-          description: Forbidden
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '404':
-          description: Not Found
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '500':
-          description: Internal Server Error
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
+        200:
+          $ref: '#/components/responses/CategoriesResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
   /v1/product/delete/{id}:
     delete:
       tags:
@@ -1402,38 +737,19 @@ paths:
             type: integer
             format: int64
       responses:
-        '200':
+        200:
           description: Ok
-        '400':
-          description: Bad Request
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '401':
-          description: Unauthorized
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '403':
-          description: Forbidden
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '404':
-          description: Not Found
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '500':
-          description: Internal Server Error
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
   /v1/price/delete/{id}:
     delete:
       tags:
@@ -1447,38 +763,19 @@ paths:
             type: integer
             format: int64
       responses:
-        '200':
+        200:
           description: Ok
-        '400':
-          description: Bad Request
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '401':
-          description: Unauthorized
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '403':
-          description: Forbidden
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '404':
-          description: Not Found
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '500':
-          description: Internal Server Error
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
   /v1/category/delete/{id}:
     delete:
       tags:
@@ -1492,39 +789,133 @@ paths:
             type: integer
             format: int64
       responses:
-        '200':
+        200:
           description: Ok
-        '400':
-          description: Bad Request
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '401':
-          description: Unauthorized
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '403':
-          description: Forbidden
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '404':
-          description: Not Found
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
-        '500':
-          description: Internal Server Error
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/ProblemDetail'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
 components:
+  #############################################
+  ## Request Bodies
+  #############################################
+  requestBodies:
+    PriceDto:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PriceDto'
+    BetweenPrice:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BetweenPrice'
+    ProductDto:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProductDto'
+    CategoryDto:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CategoryDto'
+    ProductCreationDto:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProductCreationDto'
+    SignupRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SignupRequest'
+    LoginRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LoginRequest'
+
+  #############################################
+  ## Responses
+  #############################################
+  responses:
+    CategoryResponse:
+      description: Category
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CategoryDto'
+    CategoriesResponse:
+      description: Categories
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/CategoryDto'
+
+    ProductResponse:
+      description: Product
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProductDto'
+    ProductsResponse:
+      description: Products
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/ProductDto'
+
+    PriceResponse:
+      description: Price
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PriceDto'
+    PricesResponse:
+      description: Prices
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/PriceDto'
+
+    LoginResponse:
+      description: Login
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LoginResponse'
+
+    RequestError:
+      description: Request Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetail'
+
+  #############################################
+  ## Schemas
+  #############################################
   schemas:
     # ProblemDetail
     ProblemDetail:
@@ -1557,6 +948,7 @@ components:
           items:
             type: integer
             format: int64
+
     PriceDto:
       required:
         - amount
@@ -1576,6 +968,7 @@ components:
         productId:
           type: integer
           format: int64
+
     CategoryDto:
       required:
         - id
@@ -1599,7 +992,8 @@ components:
           type: array
           items:
             type: integer
-            format: int64
+            format:
+
     ProductCreationDto:
       required:
         - amount
@@ -1619,6 +1013,7 @@ components:
         categoryId:
           type: integer
           format: int64
+
     BetweenPrice:
       required:
         - currency
@@ -1661,9 +1056,3 @@ components:
       properties:
         token:
           type: string
-
-#  securitySchemes:
-#    Bearer Authentication:
-#      type: http
-#      scheme: bearer
-#      bearerFormat: JWT

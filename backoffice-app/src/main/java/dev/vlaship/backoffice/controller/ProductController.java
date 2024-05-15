@@ -20,85 +20,64 @@ public class ProductController implements ProductApi {
     private final ProductFacade facade;
 
     @Override
-    public ResponseEntity<ProductDto> create(ProductCreationDto productCreationDto) {
-        var dto = facade.create(productCreationDto);
-        return ResponseEntity.created(URI.create("/product/" + dto.id())).body(dto);
-    }
-
-    @Override
-    public ResponseEntity<ProductDto> add(
-            Long productId,
-            PriceDto priceDto
-    ) {
-        return ResponseEntity.ok(facade.add(priceDto, productId));
-    }
-
-    @Override
-    public ResponseEntity<ProductDto> add(
-            Long productId,
-            Long categoryId
-    ) {
+    public ResponseEntity<ProductDto> addCategoryToProduct(Long productId, Long categoryId) {
         return ResponseEntity.ok(facade.add(categoryId, productId));
     }
 
     @Override
-    public ResponseEntity<ProductDto> removeCategory(
-            Long productId,
-            Long categoryId
-    ) {
-        return ResponseEntity.ok(facade.removeCategory(categoryId, productId));
+    public ResponseEntity<ProductDto> addPriceToProduct(Long productId, PriceDto priceDto) {
+        return ResponseEntity.ok(facade.add(priceDto, productId));
     }
 
     @Override
-    public ResponseEntity<ProductDto> removePrice(
-            Long productId,
-            Long priceId
-    ) {
-        return ResponseEntity.ok(facade.removePrice(priceId, productId));
+    public ResponseEntity<ProductDto> createProduct(ProductCreationDto productCreationDto) {
+        var dto = facade.create(productCreationDto);
+        return ResponseEntity.created(URI.create("/product/" + dto.getId())).body(dto);
     }
 
     @Override
-    public ResponseEntity<List<ProductDto>> findAllByPrice(
-            PriceDto priceDto,
-            Pageable pageable
-    ) {
-        return ResponseEntity.ok(facade.findAll(priceDto, pageable));
-    }
-
-    @Override
-    public ResponseEntity<List<ProductDto>> findAllByCategory(
-            Long categoryId,
-            Pageable pageable
-    ) {
-        return ResponseEntity.ok(facade.findAll(categoryId, pageable));
-    }
-
-    @Override
-    public ResponseEntity<List<ProductDto>> findAllName(
-            String name,
-            Pageable pageable
-    ) {
-        return ResponseEntity.ok(facade.findAll(name, pageable));
-    }
-
-    @Override
-    public ResponseEntity<List<ProductDto>> findAll(Pageable pageable) {
-        return ResponseEntity.ok(facade.findAll(pageable));
-    }
-
-    @Override
-    public ResponseEntity<ProductDto> update(ProductDto dto) {
-        return ResponseEntity.accepted().body(facade.update(dto));
-    }
-
-    @Override
-    public ResponseEntity<Void> delete(Long id) {
+    public ResponseEntity<Void> deleteProduct(Long id) {
         facade.delete(id);
         return ResponseEntity.ok().build();
     }
 
     @Override
-    public ResponseEntity<ProductDto> find(Long id) {
+    public ResponseEntity<ProductDto> getProductById(Long id) {
         return ResponseEntity.ok(facade.find(id));
+    }
+
+    @Override
+    public ResponseEntity<List<ProductDto>> getProducts(Pageable pageable) {
+        return ResponseEntity.ok(facade.findAll(pageable));
+    }
+
+    @Override
+    public ResponseEntity<List<ProductDto>> getProductsByCategoryId(Long categoryId, Pageable pageable) {
+        return ResponseEntity.ok(facade.findAll(categoryId, pageable));
+    }
+
+    @Override
+    public ResponseEntity<List<ProductDto>> getProductsByName(String name, Pageable pageable) {
+        return ResponseEntity.ok(facade.findAll(name, pageable));
+    }
+
+    @Override
+    public ResponseEntity<List<ProductDto>> getProductsByPrice(PriceDto priceDto, Pageable pageable) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<ProductDto> removeCategoryFromProduct(Long productId, Long categoryId) {
+        return ResponseEntity.ok(facade.removeCategory(categoryId, productId));
+    }
+
+    @Override
+    public ResponseEntity<ProductDto> removePriceFromProduct(Long productId, Long priceId) {
+        return ResponseEntity.ok(facade.removePrice(priceId, productId));
+    }
+
+    @Override
+    public ResponseEntity<ProductDto> updateProduct(ProductDto productDto) {
+        return ResponseEntity.accepted().body(facade.update(productDto));
     }
 }

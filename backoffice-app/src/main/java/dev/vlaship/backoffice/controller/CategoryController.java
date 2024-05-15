@@ -1,8 +1,8 @@
 package dev.vlaship.backoffice.controller;
 
 import dev.vlaship.backoffice.api.CategoryApi;
-import dev.vlaship.backoffice.dto.Pageable;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import dev.vlaship.backoffice.dto.CategoryDto;
 import dev.vlaship.backoffice.facade.CategoryFacade;

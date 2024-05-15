@@ -1,7 +1,7 @@
 [versions]
-springdocWebVersion = "2.3.0"
+springdocWebVersion = "2.5.0"
 springdocDataVersion = "1.7.0"
-springBootVersion = "3.2.4"
+springBootVersion = "3.2.5"
 springDepManVersion = "1.1.4"
 kotlinGradlePluginVersion = "1.9.22"
 graalvmGradlePluginVersion = "0.9.28"

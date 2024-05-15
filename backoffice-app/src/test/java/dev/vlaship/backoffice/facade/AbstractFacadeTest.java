@@ -1,7 +1,7 @@
 package dev.vlaship.backoffice.facade;
 
 import dev.vlaship.backoffice.dto.CategoryDto;
-import dev.vlaship.backoffice.mapper.impl.CategoryMapper;
+import dev.vlaship.backoffice.mapper.CategoryMapper;
 import dev.vlaship.backoffice.model.Category;
 import dev.vlaship.backoffice.service.impl.CategoryService;
 import org.springframework.data.domain.Page;

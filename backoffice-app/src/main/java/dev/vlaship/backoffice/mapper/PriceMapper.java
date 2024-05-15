@@ -1,21 +1,19 @@
-package dev.vlaship.backoffice.mapper.impl;
+package dev.vlaship.backoffice.mapper;
 
 import org.springframework.lang.NonNull;
 import dev.vlaship.backoffice.dto.PriceDto;
 import dev.vlaship.backoffice.exception.WrongProductInPriceException;
 import dev.vlaship.backoffice.model.Price;
-import dev.vlaship.backoffice.mapper.BackOfficeMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.Currency;
 
 @Service
-public class PriceMapper implements BackOfficeMapper<Price, PriceDto> {
+public class PriceMapper {
 
     @NonNull
-    @Override
     public PriceDto map(@NonNull final Price price) {
-        var builder = PriceDto.builder()
+        var builder = new PriceDto()
                 .id(price.getId())
                 .amount(price.getAmount())
                 .currency(price.getCurrency().getCurrencyCode());
@@ -24,26 +22,25 @@ public class PriceMapper implements BackOfficeMapper<Price, PriceDto> {
             builder.productId(price.getProduct().getId());
         }
 
-        return builder.build();
+        return builder;
     }
 
     @NonNull
     public Price map(@NonNull final PriceDto priceDto) {
         return Price.builder()
-                .amount(priceDto.amount())
-                .currency(Currency.getInstance(priceDto.currency().toUpperCase()))
+                .amount(priceDto.getAmount())
+                .currency(Currency.getInstance(priceDto.getCurrency().toUpperCase()))
                 .build();
     }
 
     @NonNull
-    @Override
     public Price merge(@NonNull final PriceDto priceDto, @NonNull final Price price) {
-        if (priceDto.productId() != null && !price.getProduct().getId().equals(priceDto.productId())) {
+        if (priceDto.getProductId() != null && !price.getProduct().getId().equals(priceDto.getProductId())) {
             throw new WrongProductInPriceException(priceDto);
         }
 
-        price.setAmount(priceDto.amount());
-        price.setCurrency(Currency.getInstance(priceDto.currency().toUpperCase()));
+        price.setAmount(priceDto.getAmount());
+        price.setCurrency(Currency.getInstance(priceDto.getCurrency().toUpperCase()));
 
         return price;
     }

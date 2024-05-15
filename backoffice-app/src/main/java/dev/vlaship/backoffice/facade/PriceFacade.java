@@ -1,16 +1,15 @@
 package dev.vlaship.backoffice.facade;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
 import dev.vlaship.backoffice.dto.BetweenPrice;
 import dev.vlaship.backoffice.dto.PriceDto;
 import dev.vlaship.backoffice.exception.DeleteException;
 import dev.vlaship.backoffice.model.Price;
-import dev.vlaship.backoffice.facade.AbstractFacade;
-import dev.vlaship.backoffice.mapper.impl.PriceMapper;
+import dev.vlaship.backoffice.mapper.PriceMapper;
 import dev.vlaship.backoffice.service.impl.PriceService;
 import dev.vlaship.backoffice.service.impl.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,10 +20,11 @@ import java.util.List;
 @Slf4j
 @Service
 @Transactional
-public class PriceFacade extends AbstractFacade<Price, PriceDto> {
+@RequiredArgsConstructor
+public class PriceFacade {
 
-    private final PriceService priceService;
-    private final PriceMapper priceConverter;
+    private final PriceService service;
+    private final PriceMapper mapper;
     private final ProductService productService;
 
     public List<PriceDto> findAll(
@@ -33,9 +33,9 @@ public class PriceFacade extends AbstractFacade<Price, PriceDto> {
             @NonNull final BigDecimal to,
             @NonNull final Pageable pageable
     ) {
-        return priceService.findAll(currency, from, to, pageable)
+        return service.findAll(currency, from, to, pageable)
                 .stream()
-                .map(priceConverter::map)
+                .map(mapper::map)
                 .toList();
     }
 
@@ -43,16 +43,16 @@ public class PriceFacade extends AbstractFacade<Price, PriceDto> {
             @NonNull final BetweenPrice betweenPrice,
             @NonNull final Pageable pageable
     ) {
-        return findAll(betweenPrice.currency(), betweenPrice.from(), betweenPrice.to(), pageable);
+        return findAll(betweenPrice.getCurrency(), betweenPrice.getFrom(), betweenPrice.getTo(), pageable);
     }
 
     public List<PriceDto> findAll(
             @NonNull final Long productId,
             @NonNull final Pageable pageable
     ) {
-        return priceService.findAll(productService.get(productId), pageable)
+        return service.findAll(productService.get(productId), pageable)
                 .stream()
-                .map(priceConverter::map)
+                .map(mapper::map)
                 .toList();
     }
 
@@ -60,29 +60,50 @@ public class PriceFacade extends AbstractFacade<Price, PriceDto> {
             @NonNull final String currency,
             @NonNull final Pageable pageable
     ) {
-        return priceService.findAll(currency, pageable)
+        return service.findAll(currency, pageable)
                 .stream()
-                .map(priceConverter::map)
+                .map(mapper::map)
                 .toList();
     }
 
-    @Override
     protected void checkForDelete(@NonNull final Price price) {
-        if (priceService.countAllByProduct(price.getProduct()) < 2) {
+        if (service.countAllByProduct(price.getProduct()) < 2) {
             throw new DeleteException("last " + price + " in " + price.getProduct());
         }
     }
 
-    @Autowired
-    public PriceFacade(
-            final PriceService priceService,
-            final PriceMapper priceConverter,
-            final ProductService productService
-    ) {
-        super(priceConverter, priceService);
-        this.priceService = priceService;
-        this.priceConverter = priceConverter;
-        this.productService = productService;
+    @NonNull
+    public Price get(@NonNull final Long id) {
+        return service.find(id);
+    }
+
+    @NonNull
+    private Price get(@NonNull final PriceDto d) {
+        return get(d.getId());
+    }
+
+    @NonNull
+    public PriceDto update(@NonNull final PriceDto dto) {
+        Price m = mapper.merge(dto, get(dto));
+        final Price saved = service.save(m);
+        return mapper.map(saved);
+    }
+
+    @NonNull
+    public void delete(@NonNull final Long id) {
+        final Price m = get(id);
+        checkForDelete(m);
+        service.delete(m);
+    }
+
+    @NonNull
+    public PriceDto find(@NonNull final Long id) {
+        return mapper.map(service.find(id));
+    }
+
+    @NonNull
+    public List<PriceDto> findAll(@NonNull final Pageable pageable) {
+        return service.findAll(pageable).stream().map(mapper::map).toList();
     }
 
 }

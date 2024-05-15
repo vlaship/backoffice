@@ -1,7 +1,6 @@
 package dev.vlaship.backoffice.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.lang.NonNull;
 import dev.vlaship.backoffice.model.Category;
 import dev.vlaship.backoffice.repository.CategoryRepository;
@@ -20,7 +19,6 @@ public class CategoryService extends AbstractService<Category> {
 
     @NonNull
     @Transactional(readOnly = true)
-    @Cacheable(value = "cacheName1", keyGenerator = "customKeyGenerator")
     public List<Category> findAll(
             @NonNull final String name,
             @NonNull final Pageable pageable
