@@ -62,7 +62,7 @@ public class ProductController implements ProductApi {
     }
 
     @Override
-    public ResponseEntity<List<ProductDto>> getProductsByPrice(PriceDto priceDto, Pageable pageable) {
+    public ResponseEntity<List<ProductDto>> getProductsByPrice(Pageable pageable, PriceDto priceDto) {
         return null;
     }
 

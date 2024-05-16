@@ -36,7 +36,7 @@ public class PriceController implements PriceApi {
     }
 
     @Override
-    public ResponseEntity<List<PriceDto>> getPricesBetween(BetweenPrice betweenPrice, Pageable pageable) {
+    public ResponseEntity<List<PriceDto>> getPricesBetween(Pageable pageable, BetweenPrice betweenPrice) {
         return ResponseEntity.ok(facade.findAll(betweenPrice, pageable));
     }
 
@@ -51,7 +51,7 @@ public class PriceController implements PriceApi {
     }
 
     @Override
-    public ResponseEntity<List<PriceDto>> getPricesByProduct(ProductDto productDto, Pageable pageable) {
+    public ResponseEntity<List<PriceDto>> getPricesByProduct(Pageable pageable, ProductDto productDto) {
         return ResponseEntity.ok(facade.findAll(productDto.getId(), pageable));
     }
 

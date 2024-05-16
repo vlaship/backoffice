@@ -321,14 +321,14 @@ paths:
         - product
       summary: find all products by price
       operationId: getProductsByPrice
+      requestBody:
+        $ref: '#/components/requestBodies/PriceDto'
       parameters:
         - name: pageable
           in: query
           required: true
           schema:
             $ref: '#/components/schemas/Pageable'
-      requestBody:
-        $ref: '#/components/requestBodies/PriceDto'
       responses:
         200:
           $ref: '#/components/responses/ProductsResponse'
@@ -463,14 +463,14 @@ paths:
         - price
       summary: find all prices by product
       operationId: getPricesByProduct
+      requestBody:
+        $ref: '#/components/requestBodies/ProductDto'
       parameters:
         - name: pageable
           in: query
           required: true
           schema:
             $ref: '#/components/schemas/Pageable'
-      requestBody:
-        $ref: '#/components/requestBodies/ProductDto'
       responses:
         200:
           $ref: '#/components/responses/PricesResponse'
@@ -579,14 +579,14 @@ paths:
         - price
       summary: find all prices between
       operationId: getPricesBetween
+      requestBody:
+        $ref: '#/components/requestBodies/BetweenPrice'
       parameters:
         - name: pageable
           in: query
           required: true
           schema:
             $ref: '#/components/schemas/Pageable'
-      requestBody:
-        $ref: '#/components/requestBodies/BetweenPrice'
       responses:
         200:
           $ref: '#/components/responses/PricesResponse'
@@ -917,7 +917,7 @@ components:
   ## Schemas
   #############################################
   schemas:
-    # ProblemDetail
+    # Spring
     ProblemDetail:
       type: object
     Pageable:
@@ -992,7 +992,7 @@ components:
           type: array
           items:
             type: integer
-            format:
+            format: int64
 
     ProductCreationDto:
       required:

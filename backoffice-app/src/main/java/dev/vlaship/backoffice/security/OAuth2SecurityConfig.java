@@ -51,7 +51,7 @@ public class OAuth2SecurityConfig {
                                 // Actuator
                                 "/actuator/**",
                                 // Auth
-                                "/api/auth/**"
+                                "/v1/auth/**"
                         ).permitAll()
                         // other requests have to be authenticated
                         .anyRequest().authenticated()
