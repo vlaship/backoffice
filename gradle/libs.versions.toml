@@ -1,13 +1,27 @@
 [versions]
-openApiVersion = "2.3.0"
-springBootVersion = "3.2.3"
+springdocWebVersion = "2.5.0"
+springdocDataVersion = "1.7.0"
+springBootVersion = "3.2.5"
 springDepManVersion = "1.1.4"
 kotlinGradlePluginVersion = "1.9.22"
 graalvmGradlePluginVersion = "0.9.28"
 gitPropertiesGradlePluginVersion = "2.4.1"
+preLiquibaseVersion = "1.5.0"
+findbugsVersion = "3.0.2"
+mapstructVersion = "1.5.5.Final"
+swaggerAnnotationsVersion = "2.2.21"
+openapiGeneratorVersion = "7.5.0"
+jacksonDatabindNullableVersion = "0.2.6"
 
 [libraries]
-springdoc = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "openApiVersion" }
+jackson-databind-nullable = { module = "org.openapitools:jackson-databind-nullable", version.ref = "jacksonDatabindNullableVersion" }
+swagger-annotations = { module = "io.swagger.core.v3:swagger-annotations", version.ref = "swaggerAnnotationsVersion" }
+mapstruct = { module = "org.mapstruct:mapstruct", version.ref = "mapstructVersion" }
+mapstruct-processor = { module = "org.mapstruct:mapstruct-processor", version.ref = "mapstructVersion" }
+findbugs = { module = "com.google.code.findbugs:jsr305", version.ref = "findbugsVersion" }
+preLiquibase = { module = "net.lbruun.springboot:preliquibase-spring-boot-starter", version.ref = "preLiquibaseVersion" }
+springdocWeb = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "springdocWebVersion" }
+springdocData = { module = "org.springdoc:springdoc-openapi-data-rest", version.ref = "springdocDataVersion" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlinGradlePluginVersion" }
 graalvm-gradle-plugin = { module = "org.graalvm.buildtools.native:org.graalvm.buildtools.native.gradle.plugin", version.ref = "graalvmGradlePluginVersion" }
 spring-boot-gradle-plugin = { module = "org.springframework.boot:spring-boot-gradle-plugin", version.ref = "springBootVersion" }
@@ -16,3 +30,5 @@ git-properties-gradle-plugin = { module = "com.gorylenko.gradle-git-properties:g
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "springBootVersion" }
 spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "springDepManVersion" }
+openapi-generator = { id = "org.openapi.generator", version.ref = "openapiGeneratorVersion" }
+graalvm-buildtools-native = { id = "org.graalvm.buildtools.native", version.ref = "graalvmGradlePluginVersion" }

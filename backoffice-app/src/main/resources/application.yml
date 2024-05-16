@@ -63,8 +63,10 @@ logging:
     web: info
     dev.vlaship.backoffice: debug
 # ===============================
-# = JWT
+# = OAuth2
 # ===============================
-jwt:
-  secret: ${JWT_SECRET}
-  expiration-seconds: ${JWT_TTL_SECONDS:3600}
+oauth2:
+  rsa:
+    private-key: classpath:certs/private-key.pem
+    public-key: classpath:certs/public-key.pem
+  expiration: ${JWT_TTL_SECONDS:PT1H}

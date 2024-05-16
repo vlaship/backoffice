@@ -1,5 +1,5 @@
 ### sign up
-POST {{host}}/api/auth/signup
+POST {{host}}/auth/signup
 Content-Type: application/json
 
 {
@@ -8,7 +8,7 @@ Content-Type: application/json
 }
 
 ### login
-POST {{host}}/api/auth/login
+POST {{host}}/auth/login
 Content-Type: application/json
 
 {
@@ -17,17 +17,17 @@ Content-Type: application/json
 }
 
 ### /category/list
-GET {{host}}/api/category/list
+GET {{host}}/category/list
 Authorization: Bearer {{token}}
 
 ### /category/name/test
-GET {{host}}/api/category/name/test
+GET {{host}}/category/name/test
 Authorization: Bearer {{token}}
 
 ### /product/list
-GET {{host}}/api/product/list?page=0&size=1&sort=namn,asc
+GET {{host}}/product/list?page=0&size=1&sort=namn,asc
 Authorization: Bearer {{token}}
 
 ### /product/1
-GET {{host}}/api/product/1
+GET {{host}}/product/1
 Authorization: Bearer {{token}}

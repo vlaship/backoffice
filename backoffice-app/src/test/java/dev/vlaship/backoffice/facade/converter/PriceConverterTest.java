@@ -2,7 +2,7 @@ package dev.vlaship.backoffice.facade.converter;
 
 import org.junit.jupiter.api.BeforeAll;
 import dev.vlaship.backoffice.dto.PriceDto;
-import dev.vlaship.backoffice.mapper.impl.PriceMapper;
+import dev.vlaship.backoffice.mapper.PriceMapper;
 import dev.vlaship.backoffice.model.Price;
 import dev.vlaship.backoffice.model.Product;
 import org.junit.jupiter.api.Test;

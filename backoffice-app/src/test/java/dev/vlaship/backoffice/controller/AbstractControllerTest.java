@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeAll;
 import dev.vlaship.backoffice.dto.PriceDto;
 import dev.vlaship.backoffice.exception.NotFoundException;
-import dev.vlaship.backoffice.facade.impl.PriceFacade;
+import dev.vlaship.backoffice.facade.PriceFacade;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;

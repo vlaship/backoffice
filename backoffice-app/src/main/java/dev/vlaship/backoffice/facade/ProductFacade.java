@@ -1,5 +1,6 @@
-package dev.vlaship.backoffice.facade.impl;
+package dev.vlaship.backoffice.facade;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
 import dev.vlaship.backoffice.dto.PriceDto;
@@ -9,9 +10,8 @@ import dev.vlaship.backoffice.exception.DeleteException;
 import dev.vlaship.backoffice.model.Category;
 import dev.vlaship.backoffice.model.Price;
 import dev.vlaship.backoffice.model.Product;
-import dev.vlaship.backoffice.facade.AbstractFacade;
-import dev.vlaship.backoffice.mapper.impl.PriceMapper;
-import dev.vlaship.backoffice.mapper.impl.ProductMapper;
+import dev.vlaship.backoffice.mapper.PriceMapper;
+import dev.vlaship.backoffice.mapper.ProductMapper;
 import dev.vlaship.backoffice.service.impl.PriceService;
 import dev.vlaship.backoffice.service.impl.ProductService;
 import org.springframework.data.domain.Pageable;
@@ -23,12 +23,13 @@ import java.util.List;
 @Slf4j
 @Service
 @Transactional
-public class ProductFacade extends AbstractFacade<Product, ProductDto> {
+@RequiredArgsConstructor
+public class ProductFacade {
 
     private final CategoryFacade categoryFacade;
-    private final ProductMapper productConverter;
-    private final ProductService productService;
-    private final PriceMapper priceConverter;
+    private final ProductMapper mapper;
+    private final ProductService service;
+    private final PriceMapper priceMapper;
     private final PriceService priceService;
 
     @NonNull
@@ -36,8 +37,8 @@ public class ProductFacade extends AbstractFacade<Product, ProductDto> {
             @NonNull final Long categoryId,
             @NonNull final Pageable pageable
     ) {
-        return productService.findAll(List.of(categoryFacade.get(categoryId)), pageable).stream()
-                .map(productConverter::map)
+        return service.findAll(List.of(categoryFacade.get(categoryId)), pageable).stream()
+                .map(mapper::map)
                 .toList();
     }
 
@@ -46,8 +47,8 @@ public class ProductFacade extends AbstractFacade<Product, ProductDto> {
             @NonNull final String name,
             @NonNull final Pageable pageable
     ) {
-        return productService.findAll(name, pageable).stream()
-                .map(productConverter::map)
+        return service.findAll(name, pageable).stream()
+                .map(mapper::map)
                 .toList();
     }
 
@@ -56,18 +57,18 @@ public class ProductFacade extends AbstractFacade<Product, ProductDto> {
             @NonNull final PriceDto priceDto,
             @NonNull final Pageable pageable
     ) {
-        return productService.findAll(priceDto.amount(), priceDto.currency(), pageable).stream()
-                .map(productConverter::map)
+        return service.findAll(priceDto.getAmount(), priceDto.getCurrency(), pageable).stream()
+                .map(mapper::map)
                 .toList();
     }
 
     @NonNull
     public ProductDto create(@NonNull final ProductCreationDto productCreationDto) {
-        final Category category = categoryFacade.get(productCreationDto.categoryId());
-        final Product converted = productConverter.map(productCreationDto, category);
+        final Category category = categoryFacade.get(productCreationDto.getCategoryId());
+        final Product converted = mapper.map(productCreationDto, category);
 
-        final Product saved = productService.save(converted);
-        return productConverter.map(saved);
+        final Product saved = service.save(converted);
+        return mapper.map(saved);
     }
 
     @NonNull
@@ -76,12 +77,12 @@ public class ProductFacade extends AbstractFacade<Product, ProductDto> {
             @NonNull final Long productId
     ) {
         final Product found = get(productId);
-        final Price price = priceConverter.map(priceDto);
+        final Price price = priceMapper.map(priceDto);
 
         found.getPrices().add(price);
         price.setProduct(found);
-        final Product saved = productService.save(found);
-        return productConverter.map(saved);
+        final Product saved = service.save(found);
+        return mapper.map(saved);
     }
 
     @NonNull
@@ -94,8 +95,8 @@ public class ProductFacade extends AbstractFacade<Product, ProductDto> {
 
         found.getCategories().add(category);
 
-        final Product saved = productService.save(found);
-        return productConverter.map(saved);
+        final Product saved = service.save(found);
+        return mapper.map(saved);
     }
 
     @NonNull
@@ -112,8 +113,8 @@ public class ProductFacade extends AbstractFacade<Product, ProductDto> {
         final Category category = categoryFacade.get(categoryId);
         found.getCategories().remove(category);
 
-        final Product saved = productService.save(found);
-        return productConverter.map(saved);
+        final Product saved = service.save(found);
+        return mapper.map(saved);
     }
 
     @NonNull
@@ -130,28 +131,40 @@ public class ProductFacade extends AbstractFacade<Product, ProductDto> {
         final Price price = priceService.get(priceId);
         found.getPrices().remove(price);
 
-        final Product saved = productService.save(found);
-        return productConverter.map(saved);
+        final Product saved = service.save(found);
+        return mapper.map(saved);
     }
 
-    @Override
-    protected void checkForDelete(@NonNull final Product product) {
-        throw new IllegalStateException();
+    @NonNull
+    public Product get(@NonNull final Long id) {
+        return service.find(id);
     }
 
-    public ProductFacade(
-            final ProductService productService,
-            final CategoryFacade categoryFacade,
-            final ProductMapper productConverter,
-            final PriceMapper priceConverter,
-            final PriceService priceService
-    ) {
-        super(productConverter, productService);
-        this.productService = productService;
-        this.categoryFacade = categoryFacade;
-        this.productConverter = productConverter;
-        this.priceConverter = priceConverter;
-        this.priceService = priceService;
+    @NonNull
+    private Product get(@NonNull final ProductDto d) {
+        return get(d.getId());
     }
 
+    @NonNull
+    public ProductDto update(@NonNull final ProductDto dto) {
+        var m = mapper.merge(dto, get(dto));
+        var saved = service.save(m);
+        return mapper.map(saved);
+    }
+
+    @NonNull
+    public void delete(@NonNull final Long id) {
+        var m = get(id);
+        service.delete(m);
+    }
+
+    @NonNull
+    public ProductDto find(@NonNull final Long id) {
+        return mapper.map(service.find(id));
+    }
+
+    @NonNull
+    public List<ProductDto> findAll(@NonNull final Pageable pageable) {
+        return service.findAll(pageable).stream().map(mapper::map).toList();
+    }
 }

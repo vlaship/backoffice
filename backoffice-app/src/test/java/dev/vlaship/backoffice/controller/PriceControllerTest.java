@@ -6,7 +6,7 @@ import dev.vlaship.backoffice.dto.PriceDto;
 import dev.vlaship.backoffice.dto.ProductDto;
 import dev.vlaship.backoffice.exception.BadRequestException;
 import dev.vlaship.backoffice.exception.DeleteException;
-import dev.vlaship.backoffice.facade.impl.PriceFacade;
+import dev.vlaship.backoffice.facade.PriceFacade;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

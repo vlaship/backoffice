@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import dev.vlaship.backoffice.dto.ProductCreationDto;
 import dev.vlaship.backoffice.dto.ProductDto;
-import dev.vlaship.backoffice.mapper.impl.ProductMapper;
+import dev.vlaship.backoffice.mapper.ProductMapper;
 import dev.vlaship.backoffice.model.Category;
 import dev.vlaship.backoffice.model.Price;
 import dev.vlaship.backoffice.model.Product;

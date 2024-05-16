@@ -1,7 +1,6 @@
 package dev.vlaship.backoffice.facade;
 
-import dev.vlaship.backoffice.mapper.impl.PriceMapper;
-import dev.vlaship.backoffice.facade.impl.PriceFacade;
+import dev.vlaship.backoffice.mapper.PriceMapper;
 import dev.vlaship.backoffice.model.Price;
 import dev.vlaship.backoffice.model.Product;
 import dev.vlaship.backoffice.repository.PriceRepository;

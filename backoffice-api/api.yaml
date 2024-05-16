@@ -1,0 +1,1058 @@
+openapi: 3.0.3
+
+info:
+  title: Shop API
+  description: API for Shop
+  version: 0.0.3
+
+servers:
+  - url: http://localhost:18080/service/api
+    description: Generated server url
+
+paths:
+  /v1/product/{productId}/remove/price/{priceId}:
+    put:
+      tags:
+        - product
+      summary: remove price from product
+      operationId: removePriceFromProduct
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: priceId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          $ref: '#/components/responses/ProductResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
+  /v1/product/{productId}/remove/category/{categoryId}:
+    put:
+      tags:
+        - product
+      summary: remove category from product
+      operationId: removeCategoryFromProduct
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: categoryId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          $ref: '#/components/responses/ProductResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
+  /v1/product/{productId}/add/price:
+    put:
+      tags:
+        - product
+      summary: add price to product
+      operationId: addPriceToProduct
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        $ref: '#/components/requestBodies/PriceDto'
+      responses:
+        200:
+          $ref: '#/components/responses/ProductResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
+  /v1/product/{productId}/add/category/{categoryId}:
+    put:
+      tags:
+        - product
+      summary: add category to product
+      operationId: addCategoryToProduct
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: categoryId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          $ref: '#/components/responses/ProductResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
+  /v1/product/update:
+    put:
+      tags:
+        - product
+      operationId: updateProduct
+      requestBody:
+        $ref: '#/components/requestBodies/ProductDto'
+      responses:
+        200:
+          $ref: '#/components/responses/ProductResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
+  /v1/price/update:
+    put:
+      tags:
+        - price
+      operationId: updatePrice
+      requestBody:
+        $ref: '#/components/requestBodies/PriceDto'
+      responses:
+        200:
+          $ref: '#/components/responses/PriceResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
+  /v1/category/update:
+    put:
+      tags:
+        - category
+      operationId: updateCategory
+      requestBody:
+        $ref: '#/components/requestBodies/CategoryDto'
+      responses:
+        200:
+          $ref: '#/components/responses/CategoryResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
+  /v1/product/create:
+    post:
+      tags:
+        - product
+      summary: create product
+      operationId: createProduct
+      requestBody:
+        $ref: '#/components/requestBodies/ProductCreationDto'
+      responses:
+        201:
+          $ref: '#/components/responses/ProductResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
+  /v1/category/create:
+    post:
+      tags:
+        - category
+      summary: create category
+      operationId: createCategory
+      requestBody:
+        $ref: '#/components/requestBodies/CategoryDto'
+      responses:
+        201:
+          $ref: '#/components/responses/CategoryResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
+  /v1/auth/signup:
+    post:
+      tags:
+        - auth
+      summary: sign up
+      operationId: signup
+      requestBody:
+        $ref: '#/components/requestBodies/SignupRequest'
+      responses:
+        201:
+          description: Created
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
+  /v1/auth/login:
+    post:
+      tags:
+        - auth
+      summary: login
+      operationId: login
+      requestBody:
+        $ref: '#/components/requestBodies/LoginRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/LoginResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
+  /v1/product/{id}:
+    get:
+      tags:
+        - product
+      operationId: getProductById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          $ref: '#/components/responses/ProductResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
+  /v1/product/price:
+    get:
+      tags:
+        - product
+      summary: find all products by price
+      operationId: getProductsByPrice
+      requestBody:
+        $ref: '#/components/requestBodies/PriceDto'
+      parameters:
+        - name: pageable
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Pageable'
+      responses:
+        200:
+          $ref: '#/components/responses/ProductsResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
+  /v1/product/name/{name}:
+    get:
+      tags:
+        - product
+      summary: find all products by name
+      operationId: getProductsByName
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: pageable
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Pageable'
+      responses:
+        200:
+          $ref: '#/components/responses/ProductsResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
+  /v1/product/list:
+    get:
+      tags:
+        - product
+      operationId: getProducts
+      parameters:
+        - name: pageable
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Pageable'
+      responses:
+        200:
+          $ref: '#/components/responses/ProductsResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
+  /v1/product/category/{categoryId}:
+    get:
+      tags:
+        - product
+      summary: find all products by category
+      operationId: getProductsByCategoryId
+      parameters:
+        - name: categoryId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: pageable
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Pageable'
+      responses:
+        200:
+          $ref: '#/components/responses/ProductsResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
+  /v1/price/{id}:
+    get:
+      tags:
+        - price
+      operationId: getPriceById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          $ref: '#/components/responses/PriceResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
+  /v1/price/product:
+    get:
+      tags:
+        - price
+      summary: find all prices by product
+      operationId: getPricesByProduct
+      requestBody:
+        $ref: '#/components/requestBodies/ProductDto'
+      parameters:
+        - name: pageable
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Pageable'
+      responses:
+        200:
+          $ref: '#/components/responses/PricesResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
+  /v1/price/product/{productId}:
+    get:
+      tags:
+        - price
+      summary: find all prices by product
+      operationId: getPricesByProductId
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: pageable
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Pageable'
+      responses:
+        200:
+          $ref: '#/components/responses/PricesResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
+  /v1/price/list:
+    get:
+      tags:
+        - price
+      operationId: getPrices
+      parameters:
+        - name: pageable
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Pageable'
+      responses:
+        200:
+          $ref: '#/components/responses/PricesResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
+  /v1/price/currency/{currency}:
+    get:
+      tags:
+        - price
+      summary: find all prices by currency
+      operationId: getPricesByCurrency
+      parameters:
+        - name: currency
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: pageable
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Pageable'
+      responses:
+        200:
+          $ref: '#/components/responses/PricesResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
+  /v1/price/between:
+    get:
+      tags:
+        - price
+      summary: find all prices between
+      operationId: getPricesBetween
+      requestBody:
+        $ref: '#/components/requestBodies/BetweenPrice'
+      parameters:
+        - name: pageable
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Pageable'
+      responses:
+        200:
+          $ref: '#/components/responses/PricesResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
+  /v1/price/between/{currency}/{from}/{to}:
+    get:
+      tags:
+        - price
+      summary: find all prices between and currency
+      operationId: getPricesBetweenAndCurrency
+      parameters:
+        - name: currency
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: from
+          in: path
+          required: true
+          schema:
+            type: number
+        - name: to
+          in: path
+          required: true
+          schema:
+            type: number
+        - name: pageable
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Pageable'
+      responses:
+        200:
+          $ref: '#/components/responses/PricesResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
+  /v1/category/{id}:
+    get:
+      tags:
+        - category
+      operationId: getCategoryById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          $ref: '#/components/responses/CategoryResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
+  /v1/category/name/{name}:
+    get:
+      tags:
+        - category
+      summary: get category by name
+      operationId: getCategoryByName
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: pageable
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Pageable'
+      responses:
+        200:
+          $ref: '#/components/responses/CategoriesResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
+  /v1/category/list:
+    get:
+      tags:
+        - category
+      operationId: getCategories
+      parameters:
+        - name: pageable
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Pageable'
+      responses:
+        200:
+          $ref: '#/components/responses/CategoriesResponse'
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
+  /v1/product/delete/{id}:
+    delete:
+      tags:
+        - product
+      operationId: deleteProduct
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Ok
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
+  /v1/price/delete/{id}:
+    delete:
+      tags:
+        - price
+      operationId: deletePrice
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Ok
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
+  /v1/category/delete/{id}:
+    delete:
+      tags:
+        - category
+      operationId: deleteCategory
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Ok
+        400:
+          $ref: '#/components/responses/RequestError'
+        401:
+          $ref: '#/components/responses/RequestError'
+        403:
+          $ref: '#/components/responses/RequestError'
+        404:
+          $ref: '#/components/responses/RequestError'
+        500:
+          $ref: '#/components/responses/RequestError'
+
+components:
+  #############################################
+  ## Request Bodies
+  #############################################
+  requestBodies:
+    PriceDto:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PriceDto'
+    BetweenPrice:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BetweenPrice'
+    ProductDto:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProductDto'
+    CategoryDto:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CategoryDto'
+    ProductCreationDto:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProductCreationDto'
+    SignupRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SignupRequest'
+    LoginRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LoginRequest'
+
+  #############################################
+  ## Responses
+  #############################################
+  responses:
+    CategoryResponse:
+      description: Category
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CategoryDto'
+    CategoriesResponse:
+      description: Categories
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/CategoryDto'
+
+    ProductResponse:
+      description: Product
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProductDto'
+    ProductsResponse:
+      description: Products
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/ProductDto'
+
+    PriceResponse:
+      description: Price
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PriceDto'
+    PricesResponse:
+      description: Prices
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/PriceDto'
+
+    LoginResponse:
+      description: Login
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LoginResponse'
+
+    RequestError:
+      description: Request Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetail'
+
+  #############################################
+  ## Schemas
+  #############################################
+  schemas:
+    # Spring
+    ProblemDetail:
+      type: object
+    Pageable:
+      type: object
+      properties:
+        dump:
+          type: boolean
+
+    # DTO Business
+    ProductDto:
+      required:
+        - id
+        - name
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        prices:
+          type: array
+          items:
+            type: integer
+            format: int64
+        categories:
+          type: array
+          items:
+            type: integer
+            format: int64
+
+    PriceDto:
+      required:
+        - amount
+        - currency
+        - id
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        currency:
+          maxLength: 3
+          minLength: 3
+          type: string
+        amount:
+          type: number
+        productId:
+          type: integer
+          format: int64
+
+    CategoryDto:
+      required:
+        - id
+        - name
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        products:
+          type: array
+          items:
+            type: integer
+            format: int64
+        parentId:
+          type: integer
+          format: int64
+        subCategories:
+          type: array
+          items:
+            type: integer
+            format: int64
+
+    ProductCreationDto:
+      required:
+        - amount
+        - categoryId
+        - currency
+        - name
+      type: object
+      properties:
+        currency:
+          maxLength: 3
+          minLength: 3
+          type: string
+        amount:
+          type: number
+        name:
+          type: string
+        categoryId:
+          type: integer
+          format: int64
+
+    BetweenPrice:
+      required:
+        - currency
+        - from
+        - to
+      type: object
+      properties:
+        from:
+          type: number
+        to:
+          type: number
+        currency:
+          maxLength: 3
+          minLength: 3
+          type: string
+
+    # DTO Auth
+    SignupRequest:
+      required:
+        - password
+        - username
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    LoginRequest:
+      required:
+        - password
+        - username
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
