@@ -11,6 +11,9 @@ WORKDIR /tmp
 # Copy the source code into the container
 COPY . .
 
+# Make the Gradle wrapper script executable
+RUN chmod +x gradlew
+
 # Build the binary
 RUN ./gradlew clean :backoffice-app:nativeCompile -x test
 
