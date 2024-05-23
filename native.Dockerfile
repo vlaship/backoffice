@@ -6,7 +6,7 @@ FROM ghcr.io/graalvm/native-image-community:21-ol9 AS builder
 RUN microdnf install findutils
 
 # Set the working directory inside the container
-WORKDIR /app
+WORKDIR /tmp
 
 # Copy the source code into the container
 COPY . .
@@ -26,7 +26,10 @@ RUN useradd -ms /bin/bash appuser
 USER appuser
 
 # Copy only the necessary files from the builder stage
-COPY --from=builder /app/backoffice-app/build/native/nativeCompile/app .
+COPY --from=builder /tmp/backoffice-app/build/native/nativeCompile/backoffice-app .
+
+# Ensure the binary has execution permissions
+RUN chmod +x ./backoffice-app
 
 # Run the binary when the container starts
-CMD ["./app"]
+CMD ["./backoffice-app"]

@@ -60,3 +60,6 @@ jobs:
 
       - name: Build Docker image
         run: docker build --no-cache --file ./jvm.Dockerfile .
+
+      - name: Build Docker image
+        run: docker build --no-cache --file ./native.Dockerfile .
