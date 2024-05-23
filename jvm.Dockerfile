@@ -11,11 +11,8 @@ COPY . .
 # Build
 RUN gradle clean :backoffice-app:bootJar -x test --no-daemon
 
-# Copy the source code into the container
-COPY backoffice-app/build/libs/backoffice-app.jar app.jar
-
 # Extract the layers
-RUN java -Djarmode=layertools -jar app.jar extract
+RUN java -Djarmode=layertools -jar backoffice-app/build/libs/backoffice-app.jar extract
 
 ### Run stage
 # Create a minimal production image
@@ -31,4 +28,4 @@ COPY --from=builder /tmp/spring-boot-loader/ ./
 COPY --from=builder /tmp/application/ ./
 
 # Run the binary when the container starts
-ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
+ENTRYPOINT ["java", "org.springframework.boot.loader.launch.JarLauncher"]

@@ -12,7 +12,7 @@ WORKDIR /app
 COPY . .
 
 # Build the binary
-RUN ./gradlew backoffice-app:nativeCompile -x test
+RUN ./gradlew clean :backoffice-app:nativeCompile -x test
 
 ### Run stage
 # Create a minimal production image
