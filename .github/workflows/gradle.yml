@@ -1,9 +1,12 @@
-name: Build images
+name: Java CI with Gradle
 
 on:
   push:
     branches:
       - '**'  # Build on push to any branch
+  pull_request:
+    branches:
+      - master  # Build and push on pull requests to master branch
 
 jobs:
 
@@ -23,9 +26,9 @@ jobs:
     - name: Build Docker Native Image
       run: docker build --no-cache --file ./native.Dockerfile .
 
-  push-to-registry:
+  push-native-image:
     needs: build
-    if: github.ref == 'refs/heads/master'  # Run this job only on push to master branch
+    if: github.event_name == 'pull_request' && github.base_ref == 'refs/heads/master'  # Run this job only on pull requests to master branch
     runs-on: ubuntu-latest
 
     steps:
@@ -42,12 +45,7 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Build and Push Docker JVM Image
-      run: |
-        docker build --file ./jvm.Dockerfile . --tag ghcr.io/${{ github.repository }}/jvm:latest
-        docker push ghcr.io/${{ github.repository }}/backoffice-jvm:latest
-
     - name: Build and Push Docker Native Image
       run: |
-        docker build --file ./native.Dockerfile . --tag ghcr.io/${{ github.repository }}/native:latest
-        docker push ghcr.io/${{ github.repository }}/backoffice-native:latest
+        docker build --file ./native.Dockerfile . --tag ghcr.io/${{ github.repository }}/native:pr-${{ github.event.pull_request.number }}
+        docker push ghcr.io/${{ github.repository }}/native:pr-${{ github.event.pull_request.number }}
