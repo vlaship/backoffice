@@ -24,4 +24,4 @@ jobs:
 #        run: docker build --no-cache --file ./jvm.Dockerfile .
 
       - name: Build Docker Native Image
-        run: docker build --no-cache --file ./native.Dockerfile .
+        run: docker build --file ./native.Dockerfile .
