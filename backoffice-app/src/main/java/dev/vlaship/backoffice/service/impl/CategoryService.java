@@ -20,8 +20,8 @@ public class CategoryService extends AbstractService<Category> {
     @NonNull
     @Transactional(readOnly = true)
     public List<Category> findAll(
-            @NonNull final String name,
-            @NonNull final Pageable pageable
+            @NonNull String name,
+            @NonNull Pageable pageable
     ) {
         log.debug("find all categories by name: {}", name);
         return repository.findAllByName(name, pageable);

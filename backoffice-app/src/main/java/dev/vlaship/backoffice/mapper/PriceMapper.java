@@ -12,7 +12,7 @@ import java.util.Currency;
 public class PriceMapper {
 
     @NonNull
-    public PriceDto map(@NonNull final Price price) {
+    public PriceDto map(@NonNull Price price) {
         var builder = new PriceDto()
                 .id(price.getId())
                 .amount(price.getAmount())
@@ -26,7 +26,7 @@ public class PriceMapper {
     }
 
     @NonNull
-    public Price map(@NonNull final PriceDto priceDto) {
+    public Price map(@NonNull PriceDto priceDto) {
         return Price.builder()
                 .amount(priceDto.getAmount())
                 .currency(Currency.getInstance(priceDto.getCurrency().toUpperCase()))
@@ -34,7 +34,7 @@ public class PriceMapper {
     }
 
     @NonNull
-    public Price merge(@NonNull final PriceDto priceDto, @NonNull final Price price) {
+    public Price merge(@NonNull PriceDto priceDto, @NonNull Price price) {
         if (priceDto.getProductId() != null && !price.getProduct().getId().equals(priceDto.getProductId())) {
             throw new WrongProductInPriceException(priceDto);
         }

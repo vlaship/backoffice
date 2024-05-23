@@ -24,25 +24,25 @@ public class CategoryFacade {
     private final CategoryMapper converter;
 
     @NonNull
-    public CategoryDto create(@NonNull final CategoryDto categoryDto) {
+    public CategoryDto create(@NonNull CategoryDto categoryDto) {
         final Category converted = converter.map(categoryDto);
         final Category saved = service.save(converted);
         return converter.map(saved);
     }
 
-    protected void checkForDelete(@NonNull final Category category) {
+    protected void checkForDelete(@NonNull Category category) {
         if (!category.getSubCategories().isEmpty()) {
-            throw new DeleteException(category + ", because it has sub categories");
+            throw new DeleteException("Category " + category + " cannot be deleted because it has subcategories");
         }
         if (!category.getProducts().isEmpty()) {
-            throw new DeleteException(category + ", because it has products");
+            throw new DeleteException("Category " + category + " cannot be deleted because it has products");
         }
     }
 
     @NonNull
     public List<CategoryDto> findAll(
-            @NonNull final String name,
-            @NonNull final Pageable pageable
+            @NonNull String name,
+            @NonNull Pageable pageable
     ) {
         return service.findAll(name, pageable)
                 .stream()
@@ -51,36 +51,36 @@ public class CategoryFacade {
     }
 
     @NonNull
-    public Category get(@NonNull final Long id) {
+    public Category get(@NonNull Long id) {
         return service.find(id);
     }
 
     @NonNull
-    private Category get(@NonNull final CategoryDto d) {
+    private Category get(@NonNull CategoryDto d) {
         return get(d.getId());
     }
 
     @NonNull
-    public CategoryDto update(@NonNull final CategoryDto dto) {
+    public CategoryDto update(@NonNull CategoryDto dto) {
         var m = converter.merge(dto, get(dto));
         var saved = service.save(m);
         return converter.map(saved);
     }
 
     @NonNull
-    public void delete(@NonNull final Long id) {
+    public void delete(@NonNull Long id) {
         var m = get(id);
         checkForDelete(m);
         service.delete(m);
     }
 
     @NonNull
-    public CategoryDto find(@NonNull final Long id) {
+    public CategoryDto find(@NonNull Long id) {
         return converter.map(service.find(id));
     }
 
     @NonNull
-    public List<CategoryDto> findAll(@NonNull final Pageable pageable) {
+    public List<CategoryDto> findAll(@NonNull Pageable pageable) {
         return service.findAll(pageable).stream().map(converter::map).toList();
     }
 

@@ -15,8 +15,7 @@ public class RequestExceptionHandler {
 
     @ExceptionHandler(value = {Exception.class})
     public ResponseEntity<ProblemDetail> handling(final Exception e) {
-
-        ProblemDetail problemDetail = switch (e) {
+        var problemDetail = switch (e) {
             case BadRequestException ex -> ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
             case MethodArgumentNotValidException ex -> ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
             case PropertyReferenceException ex -> ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
@@ -26,8 +25,7 @@ public class RequestExceptionHandler {
             case BadCredentialsException ex -> ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, ex.getMessage());
             case JwtAuthenticationException ex -> ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, ex.getMessage());
             case AccessDeniedException ex -> ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, ex.getMessage());
-            case null, default ->
-                    ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, e != null ? e.getMessage() : HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
+            case null, default -> ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, getDetail(e));
         };
 
         return ResponseEntity
@@ -35,4 +33,7 @@ public class RequestExceptionHandler {
                 .body(problemDetail);
     }
 
+    private String getDetail(Exception e) {
+        return e != null ? e.getMessage() : HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase();
+    }
 }

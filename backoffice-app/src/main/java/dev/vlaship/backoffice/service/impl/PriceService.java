@@ -23,26 +23,26 @@ public class PriceService extends AbstractService<Price> {
 
     @NonNull
     public List<Price> findAll(
-            @NonNull final String currency,
-            @NonNull final Pageable pageable
+            @NonNull String currency,
+            @NonNull Pageable pageable
     ) {
         return repository.findAllByCurrency(Currency.getInstance(currency.toUpperCase()), pageable);
     }
 
     @NonNull
     public List<Price> findAll(
-            @NonNull final Product product,
-            @NonNull final Pageable pageable
+            @NonNull Product product,
+            @NonNull Pageable pageable
     ) {
         return repository.findAllByProduct(product, pageable);
     }
 
     @NonNull
     public List<Price> findAll(
-            @NonNull final String currency,
-            @NonNull final BigDecimal from,
-            @NonNull final BigDecimal to,
-            @NonNull final Pageable pageable
+            @NonNull String currency,
+            @NonNull BigDecimal from,
+            @NonNull BigDecimal to,
+            @NonNull Pageable pageable
     ) {
         return repository.findAllByAmountBetweenAndCurrency(
                 from,
@@ -52,7 +52,7 @@ public class PriceService extends AbstractService<Price> {
         );
     }
 
-    public int countAllByProduct(@NonNull final Product product) {
+    public int countAllByProduct(@NonNull Product product) {
         return repository.countAllByProduct(product);
     }
 

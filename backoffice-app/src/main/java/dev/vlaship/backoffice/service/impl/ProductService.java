@@ -23,16 +23,16 @@ public class ProductService extends AbstractService<Product> {
 
     @NonNull
     public List<Product> findAll(
-            @NonNull final String name,
-            @NonNull final Pageable pageable
+            @NonNull String name,
+            @NonNull Pageable pageable
     ) {
         return repository.findAllByName(name, pageable);
     }
 
     @NonNull
     public List<Product> findAll(
-            @NonNull final List<Category> categories,
-            @NonNull final Pageable pageable
+            @NonNull List<Category> categories,
+            @NonNull Pageable pageable
     ) {
         var ids = categories.stream()
                 .map(Category::getId)
@@ -42,9 +42,9 @@ public class ProductService extends AbstractService<Product> {
 
     @NonNull
     public List<Product> findAll(
-            @NonNull final BigDecimal amount,
-            @NonNull final String currency,
-            @NonNull final Pageable pageable
+            @NonNull BigDecimal amount,
+            @NonNull String currency,
+            @NonNull Pageable pageable
     ) {
         return repository.findAllByPrice(amount, Currency.getInstance(currency.toUpperCase()), pageable);
     }

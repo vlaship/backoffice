@@ -14,7 +14,7 @@ import java.util.Currency;
 public class ProductMapper {
 
     @NonNull
-    public ProductDto map(@NonNull final Product product) {
+    public ProductDto map(@NonNull Product product) {
         var categories = product.getCategories()
                 .stream()
                 .map(Category::getId)
@@ -32,7 +32,7 @@ public class ProductMapper {
     }
 
     @NonNull
-    public Product map(@NonNull final ProductCreationDto productCreationDto, @NonNull final Category category) {
+    public Product map(@NonNull ProductCreationDto productCreationDto, @NonNull Category category) {
         var price = Price.builder()
                 .amount(productCreationDto.getAmount())
                 .currency(Currency.getInstance(productCreationDto.getCurrency().toUpperCase()))
@@ -48,7 +48,7 @@ public class ProductMapper {
     }
 
     @NonNull
-    public Product merge(@NonNull final ProductDto productDto, @NonNull final Product product) {
+    public Product merge(@NonNull ProductDto productDto, @NonNull Product product) {
         product.setName(productDto.getName());
         return product;
     }
