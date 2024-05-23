@@ -3,40 +3,41 @@ name: Java CI with Gradle
 on:
   push:
     branches:
-      - '*'
-  pull_request:
-    branches:
-      - '*'
+      - '**'
   workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  DockerBuildPush:
+
+  build-docker-images:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' && github.ref != 'refs/heads/master' # Run on push to any branch except master
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Docker JVM Image
+        run: docker build --file ./jvm.Dockerfile .
 
       - name: Build Docker Native Image
         run: docker build --file ./native.Dockerfile .
 
-  DockerBuildPR:
+  build-and-push-docker-images:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master' # Run on push to master branch
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v2
 
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v2
@@ -47,5 +48,5 @@ jobs:
 
       - name: Build and Push Docker Native Image
         run: |
-          docker build --file ./native.Dockerfile -t ghcr.io/${{ github.repository_owner }}/my-native-app:pr-${{ github.event.number }} .
-          docker push ghcr.io/${{ github.repository_owner }}/my-native-app:pr-${{ github.event.number }}
+          docker build --file ./native.Dockerfile . --tag ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:latest
+          docker push ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:latest
