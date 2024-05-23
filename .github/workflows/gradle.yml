@@ -10,45 +10,7 @@ permissions:
   contents: read
 
 jobs:
-#  gradle-docker-build:
-#
-#    runs-on: ubuntu-latest
-#    if: github.event_name == 'push' && github.ref != 'refs/heads/master'
-#
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v4
-#
-#      - name: Set up JDK
-#        uses: actions/setup-java@v4
-#        with:
-#          java-version: '21'
-#          distribution: 'zulu'
-#
-#      - name: Cache Gradle dependencies
-#        uses: actions/cache@v3
-#        with:
-#          path: |
-#            ~/.gradle/caches
-#            ~/.gradle/wrapper
-#          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-#          restore-keys: |
-#            ${{ runner.os }}-gradle-
-#
-#      - name: Change wrapper permissions
-#        run: chmod +x ./gradlew
-#
-#      - name: Build with Gradle
-#        run: ./gradlew clean backoffice-app:unpack -x test --no-daemon
-#
-#      - name: Build Docker image
-#        uses: docker/build-push-action@v3
-#        with:
-#          context: .
-#          file: ./unpacked.Dockerfile
-
   docker-build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -58,8 +20,8 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-#      - name: Build Docker image
+#      - name: Build Docker JVM Image
 #        run: docker build --no-cache --file ./jvm.Dockerfile .
 
-      - name: Build Docker image
+      - name: Build Docker Native Image
         run: docker build --no-cache --file ./native.Dockerfile .
