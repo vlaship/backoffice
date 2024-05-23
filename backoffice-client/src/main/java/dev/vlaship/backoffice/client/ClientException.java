@@ -9,4 +9,8 @@ public class ClientException extends RuntimeException {
     public ClientException(URI url, HttpMethod method, HttpStatusCode status, final String message) {
         super(message);
     }
+
+    public ClientException(URI url, HttpMethod method, HttpStatusCode status, final String message, Throwable cause) {
+        super(message, cause);
+    }
 }

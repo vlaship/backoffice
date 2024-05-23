@@ -22,30 +22,30 @@ public abstract class AbstractService<M extends Model> implements BackOfficeServ
 
     @NonNull
     @Override
-    public M find(@NonNull final Long id) {
+    public M find(@NonNull Long id) {
         return repository.findById(id).orElseThrow(() -> new NotFoundException(typeClass.getSimpleName(), id));
     }
 
     @NonNull
     @Override
-    public M get(@NonNull final Long id) {
+    public M get(@NonNull Long id) {
         return repository.findById(id).orElseThrow(() -> new BadRequestException(typeClass.getSimpleName(), id));
     }
 
     @NonNull
     @Override
-    public List<M> findAll(@NonNull final Pageable pageable) {
+    public List<M> findAll(@NonNull Pageable pageable) {
         return repository.findAll(pageable).getContent();
     }
 
     @Override
-    public void delete(@NonNull final M m) {
+    public void delete(@NonNull M m) {
         repository.delete(m);
     }
 
     @NonNull
     @Override
-    public M save(@NonNull final M m) {
+    public M save(@NonNull M m) {
         return repository.save(m);
     }
 

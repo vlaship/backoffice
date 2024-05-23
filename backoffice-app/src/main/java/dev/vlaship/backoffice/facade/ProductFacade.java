@@ -34,8 +34,8 @@ public class ProductFacade {
 
     @NonNull
     public List<ProductDto> findAll(
-            @NonNull final Long categoryId,
-            @NonNull final Pageable pageable
+            @NonNull Long categoryId,
+            @NonNull Pageable pageable
     ) {
         return service.findAll(List.of(categoryFacade.get(categoryId)), pageable).stream()
                 .map(mapper::map)
@@ -44,8 +44,8 @@ public class ProductFacade {
 
     @NonNull
     public List<ProductDto> findAll(
-            @NonNull final String name,
-            @NonNull final Pageable pageable
+            @NonNull String name,
+            @NonNull Pageable pageable
     ) {
         return service.findAll(name, pageable).stream()
                 .map(mapper::map)
@@ -54,8 +54,8 @@ public class ProductFacade {
 
     @NonNull
     public List<ProductDto> findAll(
-            @NonNull final PriceDto priceDto,
-            @NonNull final Pageable pageable
+            @NonNull PriceDto priceDto,
+            @NonNull Pageable pageable
     ) {
         return service.findAll(priceDto.getAmount(), priceDto.getCurrency(), pageable).stream()
                 .map(mapper::map)
@@ -63,7 +63,7 @@ public class ProductFacade {
     }
 
     @NonNull
-    public ProductDto create(@NonNull final ProductCreationDto productCreationDto) {
+    public ProductDto create(@NonNull ProductCreationDto productCreationDto) {
         final Category category = categoryFacade.get(productCreationDto.getCategoryId());
         final Product converted = mapper.map(productCreationDto, category);
 
@@ -73,8 +73,8 @@ public class ProductFacade {
 
     @NonNull
     public ProductDto add(
-            @NonNull final PriceDto priceDto,
-            @NonNull final Long productId
+            @NonNull PriceDto priceDto,
+            @NonNull Long productId
     ) {
         final Product found = get(productId);
         final Price price = priceMapper.map(priceDto);
@@ -87,8 +87,8 @@ public class ProductFacade {
 
     @NonNull
     public ProductDto add(
-            @NonNull final Long categoryId,
-            @NonNull final Long productId
+            @NonNull Long categoryId,
+            @NonNull Long productId
     ) {
         final Category category = categoryFacade.get(categoryId);
         final Product found = get(productId);
@@ -101,8 +101,8 @@ public class ProductFacade {
 
     @NonNull
     public ProductDto removeCategory(
-            @NonNull final Long categoryId,
-            @NonNull final Long productId
+            @NonNull Long categoryId,
+            @NonNull Long productId
     ) {
         final Product found = get(productId);
 
@@ -119,8 +119,8 @@ public class ProductFacade {
 
     @NonNull
     public ProductDto removePrice(
-            @NonNull final Long priceId,
-            @NonNull final Long productId
+            @NonNull Long priceId,
+            @NonNull Long productId
     ) {
         final Product found = get(productId);
 
@@ -136,35 +136,35 @@ public class ProductFacade {
     }
 
     @NonNull
-    public Product get(@NonNull final Long id) {
+    public Product get(@NonNull Long id) {
         return service.find(id);
     }
 
     @NonNull
-    private Product get(@NonNull final ProductDto d) {
+    private Product get(@NonNull ProductDto d) {
         return get(d.getId());
     }
 
     @NonNull
-    public ProductDto update(@NonNull final ProductDto dto) {
+    public ProductDto update(@NonNull ProductDto dto) {
         var m = mapper.merge(dto, get(dto));
         var saved = service.save(m);
         return mapper.map(saved);
     }
 
     @NonNull
-    public void delete(@NonNull final Long id) {
+    public void delete(@NonNull Long id) {
         var m = get(id);
         service.delete(m);
     }
 
     @NonNull
-    public ProductDto find(@NonNull final Long id) {
+    public ProductDto find(@NonNull Long id) {
         return mapper.map(service.find(id));
     }
 
     @NonNull
-    public List<ProductDto> findAll(@NonNull final Pageable pageable) {
+    public List<ProductDto> findAll(@NonNull Pageable pageable) {
         return service.findAll(pageable).stream().map(mapper::map).toList();
     }
 }

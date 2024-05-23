@@ -20,8 +20,8 @@ public class ClientResponseErrorHandler extends DefaultResponseErrorHandler {
             log.error("Error: {} {} {} {}", url, method, status, body);
             throw new ClientException(url, method, status, body);
         } catch (Exception e) {
-            log.error("Error: {} {} {}", url, method, status);
-            throw new ClientException(url, method, status, e.getMessage());
+            log.error("Error: {} {} {}", url, method, status, e);
+            throw new ClientException(url, method, status, e.getMessage(), e);
         }
     }
 }

@@ -20,7 +20,7 @@ public class CategoryMapper {
     }
 
     @NonNull
-    public CategoryDto map(@NonNull final Category category) {
+    public CategoryDto map(@NonNull Category category) {
         var subCategories = category.getSubCategories()
                 .stream()
                 .map(Category::getId)
@@ -44,7 +44,7 @@ public class CategoryMapper {
     }
 
     @NonNull
-    public Category map(@NonNull final CategoryDto categoryDto) {
+    public Category map(@NonNull CategoryDto categoryDto) {
         var parentCategory = getParentCategory(categoryDto.getParentId());
 
         return Category.builder()
@@ -63,7 +63,7 @@ public class CategoryMapper {
     }
 
     @NonNull
-    public Category merge(@NonNull final CategoryDto categoryDto, @NonNull final Category category) {
+    public Category merge(@NonNull CategoryDto categoryDto, @NonNull Category category) {
         var parentCategory = getParentCategory(categoryDto.getParentId());
 
         category.setName(categoryDto.getName());
